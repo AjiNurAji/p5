@@ -13,6 +13,7 @@ export interface BreadcrumbItem {
 export interface NavGroup {
     title: string;
     items: NavItem[];
+    access?: string;
 }
 
 export interface NavItem {
@@ -20,6 +21,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    access?: string;
 }
 
 export interface SharedData {
@@ -35,6 +37,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    role: string;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
