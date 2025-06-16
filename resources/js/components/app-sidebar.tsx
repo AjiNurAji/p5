@@ -4,28 +4,49 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import type { NavGroup, NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, UsersRound } from 'lucide-react';
+import { Folder, LayoutGrid, ListTodo, Receipt, ReceiptText, UsersRound } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavGroup[] = [
   {
-    title: "General",
+    title: "Umum",
     items: [
       {
-        title: 'Dashboard',
+        title: 'dasbor',
         href: '/dashboard',
         icon: LayoutGrid,
+      },
+      {
+        title: 'kas',
+        href: '/kas',
+        icon: ReceiptText
+      },
+      {
+        title: 'tugas',
+        href: '/tasks',
+        icon: ListTodo
       },
     ]
   },
   {
-    title: "Users",
-    access: "superadmin,admin",
+    title: 'Pengguna',
+    access: 'superadmin,admin',
     items: [
       {
-        title: 'Users',
+        title: 'Pengguna',
         href: '/users',
         icon: UsersRound
+      }
+    ]
+  },
+  {
+    title: 'transaksi',
+    access: 'superadmin,admin',
+    items: [
+      {
+        title: 'Kas',
+        href: '/transaction',
+        icon: Receipt
       }
     ]
   }
@@ -33,14 +54,9 @@ const mainNavItems: NavGroup[] = [
 
 const footerNavItems: NavItem[] = [
   {
-    title: 'Repository',
-    href: 'https://github.com/laravel/react-starter-kit',
+    title: 'Pusat Data',
+    href: '/repository',
     icon: Folder,
-  },
-  {
-    title: 'Documentation',
-    href: 'https://laravel.com/docs/starter-kits#react',
-    icon: BookOpen,
   },
 ];
 
