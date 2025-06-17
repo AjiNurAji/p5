@@ -1,5 +1,5 @@
-import { SidebarData } from '@/types';
-import { BookOpen, LayoutGrid, ListTodo, ReceiptText, UserRoundPlus, UsersRound } from 'lucide-react';
+import { NavItem, SidebarData } from '@/types';
+import { BookOpen, Folder, LayoutGrid, ListTodo, ReceiptText, UserRoundPlus, UsersRound } from 'lucide-react';
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -45,3 +45,11 @@ export const sidebarData: SidebarData = {
     }
   ],
 };
+
+export const footerNavItems: NavItem[] = [
+  {
+    title: 'Pusat Data',
+    href: '/repository',
+    icon: Folder,
+  },
+];

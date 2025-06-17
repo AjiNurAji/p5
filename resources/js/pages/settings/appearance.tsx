@@ -26,7 +26,7 @@ export default function Appearance() {
                     <AppearanceTabs />
                 </div>
                 <div className="space-y-6">
-                    <HeadingSmall title="Layout" description="Pilih layout tampilan yang sesuai dengan preferensi Anda." />
+                    <HeadingSmall title="Tata Letak" description="Pilih tata letak tampilan yang sesuai dengan preferensi Anda." />
                     <LayoutToggleTab />
                 </div>
             </SettingsLayout>
