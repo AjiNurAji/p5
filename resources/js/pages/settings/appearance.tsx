@@ -6,6 +6,7 @@ import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { LayoutToggleTab } from '@/components/layout-tabs';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,6 +24,10 @@ export default function Appearance() {
                 <div className="space-y-6">
                     <HeadingSmall title="Tema" description="Pilih tema tampilan yang sesuai dengan preferensi Anda." />
                     <AppearanceTabs />
+                </div>
+                <div className="space-y-6">
+                    <HeadingSmall title="Layout" description="Pilih layout tampilan yang sesuai dengan preferensi Anda." />
+                    <LayoutToggleTab />
                 </div>
             </SettingsLayout>
         </AppLayout>
