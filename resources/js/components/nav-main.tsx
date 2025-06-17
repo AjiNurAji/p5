@@ -18,12 +18,28 @@ export const NavMain = ({ items, title }: NavGroup) => {
       <SidebarGroupLabel className="capitalize">{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const key = `${item.title}-${item.access}`;
-          if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} />;
+          if (item.access) {
+            return (
+              item.access.split(',').map((a) => {
+                if (a === user.role) {
+                  const key = `${item.title}-${item.access}`;
+                  if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} />;
 
-          if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} />;
+                  if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} />;
 
-          return <SidebarMenuCollapsible key={key} item={item} url={url} />;
+                  return <SidebarMenuCollapsible key={key} item={item} url={url} />;
+                }
+              })
+            )
+          }
+          else {
+            const key = `${item.title}-${item.access}`;
+            if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} />;
+
+            if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} />;
+
+            return <SidebarMenuCollapsible key={key} item={item} url={url} />;
+          }
         })}
       </SidebarMenu>
     </SidebarGroup>
@@ -33,8 +49,8 @@ const SidebarMenuLink = ({ item, url }: { item: NavLink, url: string }) => {
   const { setOpenMobile } = useSidebar();
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={url.startsWith(item.href??'')} tooltip={{ children: item.title }}>
-        <Link href={item.href??''} prefetch onClick={() => setOpenMobile(false)}>
+      <SidebarMenuButton asChild isActive={url.startsWith(item.href ?? '')} tooltip={{ children: item.title }}>
+        <Link href={item.href ?? ''} prefetch onClick={() => setOpenMobile(false)}>
           {item.icon && <item.icon />}
           <span className="capitalize">{item.title}</span>
         </Link>

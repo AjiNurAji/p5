@@ -25,6 +25,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: 'pengguna',
+      access: 'superadmin,admin',
       items: [
         {
           title: 'pengguna',
@@ -35,6 +36,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: 'pendidikan',
+      access: 'superadmin,admin',
       items: [
         {
           title: 'matkul',
