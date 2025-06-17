@@ -1,5 +1,5 @@
 import { NavItem, SidebarData } from '@/types';
-import { BookOpen, Folder, LayoutGrid, ListTodo, ReceiptText, UserRoundPlus, UsersRound } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ListTodo, ReceiptText, UsersRound } from 'lucide-react';
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -13,7 +13,7 @@ export const sidebarData: SidebarData = {
         },
         {
           title: 'tugas',
-          href: '/tasks',
+          href: route('tasks.index'),
           icon: ListTodo
         },
         {
@@ -30,7 +30,7 @@ export const sidebarData: SidebarData = {
         {
           title: 'pengguna',
           icon: UsersRound,
-          href: '/users',
+          href: route('users.index'),
         }
       ]
     },

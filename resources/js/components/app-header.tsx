@@ -11,7 +11,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { footerNavItems, sidebarData } from './data/sidebar-data';
@@ -67,15 +67,27 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                   <div className="flex h-full flex-col justify-between text-sm">
                     <div className="flex flex-col space-y-4">
-                      {sidebarData.navGroup.map((item) => (
-                        item.items.map((i) => (
-                          <Link key={i.title} href={i.href} className="flex items-center capitalize space-x-2 font-medium">
-                            {i.icon && <Icon iconNode={i.icon} className="h-5 w-5" />}
-                            <span>{i.title}</span>
-                          </Link>
-
-                        ))
-                      ))}
+                      {sidebarData.navGroup.map((item) =>
+                        item.access ? (
+                          item.access.split(',').map(a => (
+                            a === page.props.auth.user.role && (
+                              item.items.map((i) => (
+                                <Link key={i.title} href={i.href} className="flex items-center space-x-2 font-medium capitalize">
+                                  {i.icon && <Icon iconNode={i.icon} className="h-5 w-5" />}
+                                  <span>{i.title}</span>
+                                </Link>
+                              ))
+                            )
+                          ))
+                        ) : (
+                          item.items.map((i) => (
+                            <Link key={i.title} href={i.href} className="flex items-center space-x-2 font-medium capitalize">
+                              {i.icon && <Icon iconNode={i.icon} className="h-5 w-5" />}
+                              <span>{i.title}</span>
+                            </Link>
+                          ))
+                        )
+                      )}
                     </div>
 
                     <div className="flex flex-col space-y-4">
@@ -106,35 +118,25 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
           <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
             <NavigationMenu className="flex h-full items-stretch">
               <NavigationMenuList className="flex h-full items-stretch space-x-2">
-                {sidebarData.navGroup.map((nav) => (
-                  nav.items.map((item, index) => (
-                    <NavigationMenuItem key={index} className="relative flex h-full items-center">
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          navigationMenuTriggerStyle(),
-                          page.url === item.href && activeItemStyles,
-                          'h-9 cursor-pointer px-3 capitalize',
-                        )}
-                      >
-                        {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
-                        {item.title}
-                      </Link>
-                      {page.url === item.href && (
-                        <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-                      )}
-                    </NavigationMenuItem>
-                  ))
-                ))}
+                {sidebarData.navGroup.map((nav) =>
+                  nav.access
+                    ? nav.access.split(',').map(
+                      (a) =>
+                        a === page.props.auth.user.role &&
+                        nav.items.map((item, index) => (
+                          <MenuItem key={index} item={item} url={page.url} />
+                        )),
+                    )
+                    : nav.items.map((item, index) => (
+                      <MenuItem key={index} item={item} url={page.url} />
+                    )),
+                )}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
 
           <div className="ml-auto flex items-center space-x-2">
             <div className="relative flex items-center space-x-1">
-              <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
-              </Button>
               <div className="hidden lg:flex">
                 {footerNavItems.map((item) => (
                   <TooltipProvider key={item.title} delayDuration={0}>
@@ -186,3 +188,22 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     </>
   );
 }
+
+const MenuItem = ({ item, url }: { item: NavItem, url: string }) => (
+  <NavigationMenuItem className="relative flex h-full items-center">
+    <Link
+      href={item.href}
+      className={cn(
+        navigationMenuTriggerStyle(),
+        url === item.href && activeItemStyles,
+        'h-9 cursor-pointer px-3 capitalize',
+      )}
+    >
+      {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
+      {item.title}
+    </Link>
+    {url === item.href && (
+      <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
+    )}
+  </NavigationMenuItem>
+)

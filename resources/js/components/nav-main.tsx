@@ -1,5 +1,5 @@
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "@/components/ui/sidebar";
-import type { NavCollapsible, NavGroup, NavLink, SharedData } from "@/types";
+import type { NavCollapsible, NavGroup, NavLink, SharedData, User } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -23,48 +23,66 @@ export const NavMain = ({ items, title }: NavGroup) => {
               item.access.split(',').map((a) => {
                 if (a === user.role) {
                   const key = `${item.title}-${item.access}`;
-                  if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} />;
+                  if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} user={user} />;
 
-                  if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} />;
+                  if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} user={user} />;
 
-                  return <SidebarMenuCollapsible key={key} item={item} url={url} />;
+                  return <SidebarMenuCollapsible key={key} item={item} url={url} user={user} />;
                 }
               })
             )
           }
           else {
             const key = `${item.title}-${item.access}`;
-            if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} />;
+            if (!item.items) return <SidebarMenuLink key={key} item={item} url={url} user={user} />;
 
-            if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} />;
+            if (state === "collapsed") return <SidebarMenuCollapsedDropdown key={key} item={item} url={url} user={user} />;
 
-            return <SidebarMenuCollapsible key={key} item={item} url={url} />;
+            return <SidebarMenuCollapsible key={key} item={item} url={url} user={user} />;
           }
         })}
       </SidebarMenu>
     </SidebarGroup>
   );
 };
-const SidebarMenuLink = ({ item, url }: { item: NavLink, url: string }) => {
+const SidebarMenuLink = ({ item, url, user }: { item: NavLink, url: string, user: User }) => {
   const { setOpenMobile } = useSidebar();
+
   return (
-    <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={url.startsWith(item.href ?? '')} tooltip={{ children: item.title }}>
-        <Link href={item.href ?? ''} prefetch onClick={() => setOpenMobile(false)}>
-          {item.icon && <item.icon />}
-          <span className="capitalize">{item.title}</span>
-        </Link>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
+    item.access ?
+      item.access.split(',').map(
+        a => (
+          a === user.role && (
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={item.href.includes(url)} tooltip={{ children: item.title }}>
+                <Link href={item.href} prefetch onClick={() => setOpenMobile(false)}>
+                  {item.icon && <item.icon />}
+                  <span className="capitalize">{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )
+        )
+      )
+      : (
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild isActive={item.href.includes(url)} tooltip={{ children: item.title }}>
+            <Link href={item.href} prefetch onClick={() => setOpenMobile(false)}>
+              {item.icon && <item.icon />}
+              <span className="capitalize">{item.title}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      )
   )
 };
 
-const SidebarMenuCollapsedDropdown = ({ item, url }: { item: NavCollapsible, url: string }) => {
+const SidebarMenuCollapsedDropdown = ({ item, url, user }: { item: NavCollapsible, url: string, user: User }) => {
   return (
     <SidebarMenuItem>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuButton isActive={url.startsWith(item.href)} tooltip={{ children: item.title }}>
+          <SidebarMenuButton isActive={item.href.includes(url)} tooltip={{ children: item.title }}>
             {item.icon && <item.icon />}
             <span className="capitalize">{item.title}</span>
           </SidebarMenuButton>
@@ -75,14 +93,26 @@ const SidebarMenuCollapsedDropdown = ({ item, url }: { item: NavCollapsible, url
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {item.items.map(sub => (
-            <DropdownMenuItem key={`${sub.title}-${sub.access}`}>
-              <SidebarMenuButton asChild isActive={url.startsWith(sub.href)} tooltip={{ children: sub.title }}>
-                <Link href={sub.href} prefetch>
-                  {sub.icon && <sub.icon />}
-                  <span className="capitalize">{sub.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </DropdownMenuItem>
+            sub.access ?
+              sub.access.split(',').map(a => (
+                a === user.role &&
+                <DropdownMenuItem key={`${sub.title}-${sub.access}`}>
+                  <SidebarMenuButton asChild isActive={item.href.includes(url)} tooltip={{ children: sub.title }}>
+                    <Link href={sub.href} prefetch>
+                      {sub.icon && <sub.icon />}
+                      <span className="capitalize">{sub.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </DropdownMenuItem>
+              ))
+              : <DropdownMenuItem key={`${sub.title}-${sub.access}`}>
+                <SidebarMenuButton asChild isActive={item.href.includes(url)} tooltip={{ children: sub.title }}>
+                  <Link href={sub.href} prefetch>
+                    {sub.icon && <sub.icon />}
+                    <span className="capitalize">{sub.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
@@ -90,10 +120,10 @@ const SidebarMenuCollapsedDropdown = ({ item, url }: { item: NavCollapsible, url
   )
 };
 
-const SidebarMenuCollapsible = ({ item, url }: { item: NavCollapsible, url: string }) => {
+const SidebarMenuCollapsible = ({ item, url, user }: { item: NavCollapsible, url: string, user: User }) => {
   const { setOpenMobile } = useSidebar();
   return (
-    <Collapsible asChild defaultOpen={url.startsWith(item.href)} className="group/collapsible">
+    <Collapsible asChild defaultOpen={item.href.includes(url)} className="group/collapsible">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton tooltip={item.title}>
@@ -105,48 +135,33 @@ const SidebarMenuCollapsible = ({ item, url }: { item: NavCollapsible, url: stri
         <CollapsibleContent className="CollapsibleContent">
           <SidebarMenuSub>
             {item.items.map((subItem) => (
-              <SidebarMenuSubItem key={subItem.title}>
-                <SidebarMenuSubButton asChild isActive={url.startsWith(subItem.href)}>
-                  <Link href={subItem.href} prefetch onClick={() => setOpenMobile(false)}>
-                    {subItem.icon && <subItem.icon />}
-                    <span className="capitalize">{subItem.title}</span>
-                  </Link>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
+              subItem.access ? (
+                subItem.access.split(',').map(a => (
+                  a === user.role && (
+                    <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubButton asChild isActive={item.href.includes(url)}>
+                        <Link href={subItem.href} prefetch onClick={() => setOpenMobile(false)}>
+                          {subItem.icon && <subItem.icon />}
+                          <span className="capitalize">{subItem.title}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  )
+                ))
+              ) : (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton asChild isActive={item.href.includes(url)}>
+                    <Link href={subItem.href} prefetch onClick={() => setOpenMobile(false)}>
+                      {subItem.icon && <subItem.icon />}
+                      <span className="capitalize">{subItem.title}</span>
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              )
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
       </SidebarMenuItem>
     </Collapsible>
   )
-};
-
-// const MenuAccess = ({ item, url, user }: { item: NavGroup, url: string, user: User }) => (
-//   <SidebarGroup className="px-2 py-0">
-//     <SidebarGroupLabel className='capitalize'>{item.title}</SidebarGroupLabel>
-//     <SidebarMenu>
-//       {item.items.map((i) => (
-//         i.access ? i.access?.split(',').map((a) => (
-//           a === user.role && (
-//             <SidebarMenuItem key={i.title}>
-//               <SidebarMenuButton asChild isActive={url.startsWith(i.href)} tooltip={{ children: i.title }}>
-//                 <Link href={i.href} prefetch>
-//                   {i.icon && <i.icon />}
-//                   <span className='capitalize'>{i.title}</span>
-//                 </Link>
-//               </SidebarMenuButton>
-//             </SidebarMenuItem>
-//           ))) : (
-//           <SidebarMenuItem key={i.title}>
-//             <SidebarMenuButton asChild isActive={url.startsWith(i.href)} tooltip={{ children: i.title }}>
-//               <Link href={i.href} prefetch>
-//                 {i.icon && <i.icon />}
-//                 <span className='capitalize'>{i.title}</span>
-//               </Link>
-//             </SidebarMenuButton>
-//           </SidebarMenuItem>
-//         )
-//       ))}
-//     </SidebarMenu>
-//   </SidebarGroup>
-// )
+}
