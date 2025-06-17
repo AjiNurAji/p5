@@ -30,17 +30,28 @@ export default function Dashboard() {
           <CardDashboard title='Total Terselesaikan' icon={ListCheck} value={30} />
         </div>
         <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl md:min-h-min grid grid-cols-1 gap-4 lg:grid-cols-7">
+          <Card className='col-span-1 lg:col-span-4'>
+            <CardHeader>
+              <CardTitle>Pembayaran Kas</CardTitle>
+              <CardDescription>
+                Total 24 transaksi kas bulan ini.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RecentSales />
+            </CardContent>
+          </Card>
           <Card className='col-span-1 lg:col-span-3'>
-                <CardHeader>
-                  <CardTitle>Pembayaran Kas</CardTitle>
-                  <CardDescription>
-                    Total 24 transaksi kas bulan ini.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RecentSales />
-                </CardContent>
-              </Card>
+            <CardHeader>
+              <CardTitle>Pembayaran Kas</CardTitle>
+              <CardDescription>
+                Total 24 transaksi kas bulan ini.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RecentSales />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AppLayout>
