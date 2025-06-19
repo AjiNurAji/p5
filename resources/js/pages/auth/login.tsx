@@ -1,14 +1,14 @@
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthSplitLayout from '@/layouts/auth/auth-split-layout';
+import toast from 'react-hot-toast';
+import { InputPassword } from '@/components/ui/input-password';
 
 type LoginForm = {
   id_number: string;
@@ -30,13 +30,17 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
+    const loading = toast.loading('Memproses...');
+
     post(route('login'), {
+      onSuccess: () => toast.success('Berhasil masuk!', { id: loading }),
+      onError: () => toast.error('Email atau kata sandi yang Anda masukkan tidak sesuai.', { id: loading }),
       onFinish: () => reset('password'),
     });
   };
 
   return (
-    <AuthLayout title="Silakan masuk ke akun Anda" description="Masukkan NIM dan kata sandi Anda di bawah ini untuk mengakses akun.">
+    <AuthSplitLayout title="Silakan masuk ke akun Anda" description="Masukkan NIM dan kata sandi Anda di bawah ini untuk mengakses akun.">
       <Head title="Masuk" />
 
       <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -54,7 +58,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
               onChange={(e) => setData('id_number', e.target.value)}
               placeholder="412xxxxx"
             />
-            <InputError message={errors.id_number} />
           </div>
 
           <div className="grid gap-2">
@@ -66,17 +69,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 </TextLink>
               )}
             </div>
-            <Input
+            <InputPassword 
               id="password"
-              type="password"
               required
               tabIndex={2}
               autoComplete="current-password"
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
-              placeholder="Password"
-            />
-            <InputError message={errors.password} />
+              placeholder="Password" />
           </div>
 
           <div className="flex items-center space-x-3">
@@ -105,6 +105,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
       </form>
 
       {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-    </AuthLayout>
+    </AuthSplitLayout>
   );
 }

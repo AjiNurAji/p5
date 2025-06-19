@@ -2,9 +2,13 @@ import { Forbidden } from "@/components/errors/forbidden";
 import Heading from "@/components/heading";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, SharedData } from "@/types";
-import { usePage } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import UsersProvider from "./context/users-context";
+import { UserDialogs } from "./components/users-dialogs";
+import { UsersTable } from "./components/tables/user-table";
+import { columns } from "./components/tables/user-column";
+import { userListSchema } from "./components/data/schema";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -14,10 +18,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const UsersPage = () => {
-  const { auth: { user } } = usePage<SharedData>().props;
+  const { users, auth: { user } } = usePage<SharedData>().props;
+
+  const userList = userListSchema.parse(users);
+
+  // console.log(userList[0].);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Pengguna" />
       <UsersProvider>
         {user.role === 'member' ?
           <Forbidden />
@@ -29,10 +38,12 @@ const UsersPage = () => {
                 <UsersPrimaryButtons />
               </div>
               <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12'>
-                {/* <UsersTable data={userList} columns={columns} /> */}
+                <UsersTable data={userList} columns={columns} />
               </div>
             </div>
           )}
+
+        <UserDialogs />
       </UsersProvider>
     </AppLayout>
   )

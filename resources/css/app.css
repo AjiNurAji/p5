@@ -154,6 +154,14 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+      @apply bg-background text-foreground;
+    }
+
+    button {
+      @apply cursor-pointer;
+    }
+
+    .go2072408551 {
+      @apply !bg-background border border-border dark:!text-foreground text-xs py-1.5 px-2.5;
     }
 }
