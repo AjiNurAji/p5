@@ -9,18 +9,15 @@ export interface CardDashboardProps {
 
 export const CardDashboard = ({ title, icon: Icon, value }: CardDashboardProps) => {
   return (
-    <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-sm font-medium'>
+    <Card className="gap-4 p-0">
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 border-b border-border pt-4 pb-3'>
+        <CardTitle className='text-sm font-medium capitalize'>
           {title}
         </CardTitle>
         <Icon className='text-muted-foreground h-4 w-4' />
       </CardHeader>
-      <CardContent>
-        <div className='text-2xl font-bold'>{value}</div>
-        <p className='text-muted-foreground text-xs'>
-          +20.1% from last month
-        </p>
+      <CardContent className="pb-4">
+        <div className='text-2xl font-bold text-center'>{value}</div>
       </CardContent>
     </Card>
   )

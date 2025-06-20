@@ -2,8 +2,8 @@ import { CardDashboard } from '@/components/custom/card-dashboard';
 import { RecentSales } from '@/components/custom/recent-sales';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { SharedData, type BreadcrumbItem } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
 import { DollarSign, ListCheck, ListTodo, UserRound } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -13,13 +13,20 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
+interface UserCardProps {
+  title: string;
+  count: number;
+}
+
 export default function Dashboard() {
+  const { user_card } = usePage<SharedData>().props;
+  const cardUser: UserCardProps = user_card as UserCardProps;
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Dasbor" />
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
         <div className="grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <CardDashboard title='Total Pengguna' icon={UserRound} value={30} />
+          <CardDashboard title={cardUser?.title as string} icon={UserRound} value={cardUser.count} />
           <CardDashboard title='Total Kas' icon={DollarSign} value={
             Intl.NumberFormat("en-ID", {
               style: 'currency',

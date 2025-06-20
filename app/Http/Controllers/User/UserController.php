@@ -7,11 +7,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+  
+  public function dashboard()
+    {
+      $user = User::all();
+
+      return Inertia::render('dashboard', [
+        'user_card' => [
+          'title' => 'total pengguna',
+          'count' => $user->count(),
+        ]
+      ]);
+    }
+
   /**
    * Display a listing of the resource.
    */
