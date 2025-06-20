@@ -54,20 +54,34 @@ export const columns: ColumnDef<User>[] = [
       ),
     },
     enableHiding: false,
+    sortDescFirst: false,
+  },
+  {
+    accessorKey: 'id_number',
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title='NIM' />
+    ),
+    cell: ({ row }) => (
+      <div className='w-fit text-nowrap'>{row.getValue('id_number')}</div>
+    ),
+    enableHiding: false,
+    enableSorting: false
   },
   {
     accessorKey: 'email',
     header: ({ column }) => (
-      <TableColumnHeader column={column} title='Email' />
+      <TableColumnHeader column={column} title='Alamat Email' />
     ),
     cell: ({ row }) => (
       <div className='w-fit text-nowrap'>{row.getValue('email')}</div>
     ),
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: 'role',
     header: ({ column }) => (
-      <TableColumnHeader column={column} title='Role' />
+      <TableColumnHeader column={column} title='Peran' />
     ),
     cell: ({ row }) => {
       const { role } = row.original

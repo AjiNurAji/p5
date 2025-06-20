@@ -19,12 +19,11 @@ export const TableToolbar = <TData,>({
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
         <Input
-          placeholder='Filter users...'
+          placeholder='Filter pengguna...'
           value={
             (table.getColumn('name')?.getFilterValue() as string) ?? ''
           }
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
+          onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)
           }
           className='h-8 w-[150px] lg:w-[250px]'
         />
@@ -32,7 +31,7 @@ export const TableToolbar = <TData,>({
           {table.getColumn('role') && (
             <FacetedFilter
               column={table.getColumn('role')}
-              title='Role'
+              title='Peran'
               options={userTypes.map((t) => ({ ...t }))}
             />
           )}

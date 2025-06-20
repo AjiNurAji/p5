@@ -26,11 +26,11 @@ export const ViewOptions = <TData,>({
           className='ml-auto hidden h-8 lg:flex'
         >
           <Settings2 className='mr-2 h-4 w-4' />
-          View
+          Atur Kolom
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-[150px]'>
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+      <DropdownMenuContent align='end' className='w-auto'>
+        <DropdownMenuLabel>Tampilkan/Sembunyikan Kolom</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -46,7 +46,7 @@ export const ViewOptions = <TData,>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {column.id === 'email' ? 'Alamat Email' : column.id === 'created_at' ? 'dibuat pada' : column.id === 'updated_at' ? 'diubah pada': column.id}
               </DropdownMenuCheckboxItem>
             )
           })}

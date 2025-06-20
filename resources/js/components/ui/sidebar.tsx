@@ -534,6 +534,7 @@ function SidebarMenuButton({
         side="right"
         align="center"
         hidden={state !== "collapsed" || isMobile}
+        className="capitalize"
         {...tooltip}
       />
     </Tooltip>

@@ -58,7 +58,7 @@ export const FacetedFilter = <TData, TValue,>({
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'
                   >
-                    {selectedValues.size} selected
+                    {selectedValues.size} terpilih
                   </Badge>
                 ) : (
                   options
@@ -82,7 +82,7 @@ export const FacetedFilter = <TData, TValue,>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>Tidak ada hasil yang ditemukan.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
@@ -132,7 +132,7 @@ export const FacetedFilter = <TData, TValue,>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className='justify-center text-center'
                   >
-                    Clear filters
+                    Hapus filter
                   </CommandItem>
                 </CommandGroup>
               </>

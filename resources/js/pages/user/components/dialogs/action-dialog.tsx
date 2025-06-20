@@ -8,7 +8,7 @@ import { InputPassword } from "@/components/ui/input-password";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SharedData, User } from "@/types";
-import { usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 
 interface Props {
@@ -18,17 +18,29 @@ interface Props {
 }
 
 type UserForm = {
-  id_number: string;
+  id_number: number | string;
   password: string;
   name: string;
-  role: 'superadmin' | 'admin' | 'member';
-  email?: string;
+  role: string;
+  email: string;
 }
-
 
 export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
   const isEdit = !!currentRow;
-  const { auth: { user: { role } } } = usePage<SharedData>().props;
+  const { auth: { user } } = usePage<SharedData>().props;
+  const { data, setData, errors, processing } = useForm<Required<UserForm>>(isEdit ? {
+    id_number: currentRow.id_number as number,
+    name: currentRow.name,
+    email: currentRow.email,
+    role: currentRow.role,
+    password: "",
+  } : {
+    id_number: "",
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+  });
 
   const roles = [
     { value: 'superadmin', label: 'Super Admin', access: ['superadmin'] },
@@ -68,8 +80,8 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 id="id_number"
                 type="text"
                 name="id_number"
-                // value={data.password}
-                // onChange={(e) => setData('password', e.target.value)}
+                value={data.id_number}
+                onChange={(e) => setData('password', e.target.value)}
                 placeholder="4124xxxx"
                 autoComplete="nim"
               />
@@ -85,8 +97,8 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 id="name"
                 type="text"
                 name="name"
-                // value={data.password}
-                // onChange={(e) => setData('password', e.target.value)}
+                value={data.name}
+                onChange={(e) => setData('password', e.target.value)}
                 placeholder="Jhon doe"
                 autoComplete="name"
               />
@@ -102,8 +114,8 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 id="email"
                 type="email"
                 name="email"
-                // value={data.password}
-                // onChange={(e) => setData('password', e.target.value)}
+                value={data.email}
+                onChange={(e) => setData('password', e.target.value)}
                 placeholder="pioneers@example.com"
                 autoComplete="email"
               />
@@ -115,7 +127,7 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 Role
               </Label>
 
-              <Select>
+              <Select value={data.role} defaultValue={data.role}>
                 <SelectTrigger>
                   <SelectValue placeholder="Pilih role untuk pengguna" />
                 </SelectTrigger>
@@ -123,7 +135,7 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                   {roles.map((r) => (
                     r.access ?
                       r.access.map((a) => (
-                        a === role && (
+                        a === user.role && (
                           <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>
                         )
                       )) : (
@@ -141,8 +153,8 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
               <InputPassword
                 id="password"
                 name="password"
-                // value={data.password}
-                // onChange={(e) => setData('password', e.target.value)}
+                value={data.password}
+                onChange={(e) => setData('password', e.target.value)}
                 placeholder="Kata sandi"
                 autoComplete="current-password"
               />

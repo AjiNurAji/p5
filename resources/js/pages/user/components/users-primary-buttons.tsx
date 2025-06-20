@@ -7,7 +7,7 @@ export const UsersPrimaryButtons =() => {
   return (
     <div className='flex'>
       <Button className='space-x-1' onClick={() => setOpen('add')}>
-        <span>Add User</span> <UserRoundPlus className='size-5' />
+        <span>Tambah Pengguna</span> <UserRoundPlus className='size-5' />
       </Button>
     </div>
   )

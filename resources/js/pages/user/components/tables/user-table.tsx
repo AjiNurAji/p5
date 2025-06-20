@@ -84,9 +84,9 @@ export const UsersTable = ({ columns, data }: DataTableProps) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
@@ -120,7 +120,9 @@ export const UsersTable = ({ columns, data }: DataTableProps) => {
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  {
+                    !table.getRowModel().rows?.length && !columnFilters ? "Belum ada data." : "Tidak ada hasil ditemukan."
+                  }
                 </TableCell>
               </TableRow>
             )}

@@ -39,7 +39,7 @@ export const TableColumnHeader = <TData, TValue>({
             size='sm'
             className='data-[state=open]:bg-accent -ml-3 h-8'
           >
-            <span>{title}</span>
+            <span className='capitalize'>{title}</span>
             {column.getIsSorted() === 'desc' ? (
               <ArrowDown className='ml-2 h-4 w-4' />
             ) : column.getIsSorted() === 'asc' ? (
@@ -52,18 +52,18 @@ export const TableColumnHeader = <TData, TValue>({
         <DropdownMenuContent align='start'>
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUp className='text-muted-foreground/70 mr-2 h-3.5 w-3.5' />
-            Asc
+            Naik (A–Z)
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDown className='text-muted-foreground/70 mr-2 h-3.5 w-3.5' />
-            Desc
+            Turun (Z-A)
           </DropdownMenuItem>
           {column.getCanHide() && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
                 <EyeOff className='text-muted-foreground/70 mr-2 h-3.5 w-3.5' />
-                Hide
+                Sembunyikan
               </DropdownMenuItem>
             </>
           )}

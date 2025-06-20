@@ -15,10 +15,10 @@ class UserController extends Controller
    */
   public function index(): Response
   {
-    $users = User::all();
+    $users = User::orderBy('name', 'ASC')->get();
 
     return Inertia::render('user/users', [
-      'users' => $users
+      'users' => $users,
     ]);
   }
 
