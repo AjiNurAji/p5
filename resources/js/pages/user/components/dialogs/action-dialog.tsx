@@ -1,6 +1,5 @@
 'use client';
 
-import InputError from "@/components/input-error";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SharedData, User } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
+import toast from "react-hot-toast";
+import { useUsers } from "../../context/users-context";
 
 interface Props {
   open: boolean;
@@ -28,7 +29,8 @@ type UserForm = {
 export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
   const isEdit = !!currentRow;
   const { auth: { user } } = usePage<SharedData>().props;
-  const { data, setData, errors, processing } = useForm<Required<UserForm>>(isEdit ? {
+
+  const { data, setData, post, processing } = useForm<Required<UserForm>>(isEdit ? {
     id_number: currentRow.id_number as number,
     name: currentRow.name,
     email: currentRow.email,
@@ -50,10 +52,42 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault()
+    const loading = toast.loading('Menyimpan data...');
+
+    post(isEdit ? route('user.edit', currentRow.id_number as string) : route('register'), {
+      onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
+      onError: (e) => {
+        if (e?.id_number) {
+          return toast.error(e?.id_number, { id: loading });
+        } else if (e?.name) {
+          return toast.error(e?.name, { id: loading });
+        } else if (e?.email) {
+          return toast.error(e?.email, { id: loading });
+        } else if (e?.password) {
+          return toast.error(e?.password, { id: loading });
+        } else if (e?.role) {
+          return toast.error(e?.role, { id: loading });
+        }
+
+        return toast.error('Terjadi kesalahan, silahkan coba lagi!');
+      },
+      onFinish: () => {
+        setData({
+          ...data,
+          password: "",
+        })
+      },
+    });
   }
 
   const handleResetForm = () => {
-    return;
+    setData({
+      id_number: "",
+      name: "",
+      email: "",
+      password: "",
+      role: "",
+    })
   }
 
   return (
@@ -81,12 +115,10 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 type="text"
                 name="id_number"
                 value={data.id_number}
-                onChange={(e) => setData('password', e.target.value)}
+                onChange={(e) => setData('id_number', e.target.value)}
                 placeholder="4124xxxx"
                 autoComplete="nim"
               />
-
-              {/* <InputError message={errors.password} /> */}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="name">
@@ -98,12 +130,10 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 type="text"
                 name="name"
                 value={data.name}
-                onChange={(e) => setData('password', e.target.value)}
+                onChange={(e) => setData('name', e.target.value)}
                 placeholder="Jhon doe"
                 autoComplete="name"
               />
-
-              {/* <InputError message={errors.password} /> */}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">
@@ -115,19 +145,17 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 type="email"
                 name="email"
                 value={data.email}
-                onChange={(e) => setData('password', e.target.value)}
+                onChange={(e) => setData('email', e.target.value)}
                 placeholder="pioneers@example.com"
                 autoComplete="email"
               />
-
-              {/* <InputError message={errors.password} /> */}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">
                 Role
               </Label>
 
-              <Select value={data.role} defaultValue={data.role}>
+              <Select value={data.role} defaultValue={data.role} onValueChange={(e) => setData('role', e)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Pilih role untuk pengguna" />
                 </SelectTrigger>
@@ -158,13 +186,11 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
                 placeholder="Kata sandi"
                 autoComplete="current-password"
               />
-
-              {/* <InputError message={errors.password} /> */}
             </div>
           </form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='user-form'>
+          <Button type='submit' form='user-form' disabled={processing}>
             Simpan
           </Button>
         </DialogFooter>

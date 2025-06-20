@@ -73,7 +73,18 @@ export const columns: ColumnDef<User>[] = [
       <TableColumnHeader column={column} title='Alamat Email' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('email')}</div>
+      <div className='w-fit text-nowrap'>{row.getValue('email') || '-'}</div>
+    ),
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'email_verified_at',
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title='Diverifikasi pada' />
+    ),
+    cell: ({ row }) => (
+      <div className='w-fit text-nowrap'>{row.getValue<Date>('email_verified_at')?.toLocaleString() || '-'}</div>
     ),
     enableSorting: true,
     enableHiding: true,

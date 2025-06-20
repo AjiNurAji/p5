@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -49,9 +51,31 @@ class UserController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id)
+  public function edit(Request $request, string $id)
   {
-    //
+    if ($request->user()->role === 'member') return $this->throwError([
+      'role' => 'Kamu tidak memiliki akses!',
+    ]);
+
+    $user = User::find($id);
+
+    if ($request->input('password')) {
+      $request->validate([
+        'password' => 'required|min:8|max:255',
+      ]);
+
+      $user->password = Hash::make($request->input('password'));
+    }
+
+    $user->save();
+
+    $user->update([
+      'name' => $request->input('name'),
+      'email' => $request->input('email'),
+      'role' => $request->input('role'),
+    ]);
+
+    return back()->with('success', ['message' => 'Berhasil mengubah data.']);
   }
 
   /**

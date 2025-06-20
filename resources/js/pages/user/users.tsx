@@ -22,8 +22,6 @@ const UsersPage = () => {
 
   const userList = userListSchema.parse(users);
 
-  // console.log(userList[0].);
-
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Pengguna" />

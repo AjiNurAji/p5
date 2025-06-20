@@ -46,7 +46,7 @@ export const ViewOptions = <TData,>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id === 'email' ? 'Alamat Email' : column.id === 'created_at' ? 'dibuat pada' : column.id === 'updated_at' ? 'diubah pada': column.id}
+                {column.id === 'email' ? 'Alamat Email' : column.id === 'created_at' ? 'dibuat pada' : column.id === 'updated_at' ? 'diubah pada': column.id === 'email_verified_at' ? 'diverifikasi pada': column.id}
               </DropdownMenuCheckboxItem>
             )
           })}
