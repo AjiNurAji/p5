@@ -63,7 +63,15 @@ class UserController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(Request $request, string $id)
+  public function edit(string $id)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, string $id)
   {
     if ($request->user()->role === 'member') return $this->throwError([
       'role' => 'Kamu tidak memiliki akses!',
@@ -91,18 +99,26 @@ class UserController extends Controller
   }
 
   /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, string $id)
-  {
-    //
-  }
-
-  /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(string $id, Request $request)
   {
-    //
+    if ($request->user()->role === 'member') return $this->throwError([
+      'role' => 'Kamu tidak memiliki akses!',
+    ]);
+
+    $user = User::find($id);
+
+    if ($request->user()->role === 'admin' && $user->role === 'superadmin') throw $this->throwError([
+      'role' => 'Kamu tidak memiliki akses untuk mennghapus superadmin!',
+    ]);
+
+    if ($user->id_number === intval(env('AUTHOR_ID'))) throw $this->throwError([
+      'role' => 'Pengguna ini tidak dapat dihapus!',
+    ]);
+
+    $user->delete();
+
+    return back()->with('success', ['message' => 'Berhasil menghapus pengguna.']);
   }
 }

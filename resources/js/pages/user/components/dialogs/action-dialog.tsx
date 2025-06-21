@@ -54,7 +54,7 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
     e.preventDefault()
     const loading = toast.loading('Menyimpan data...');
 
-    post(isEdit ? route('user.edit', currentRow.id_number as string) : route('register'), {
+    post(isEdit ? route('user.update', currentRow.id_number as string) : route('register'), {
       onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
       onError: (e) => {
         if (e?.id_number) {
