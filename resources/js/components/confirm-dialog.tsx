@@ -18,7 +18,7 @@ interface Props {
     disabled?: boolean;
     desc: React.JSX.Element | string;
     cancelBtnText?: string;
-    confirmBtnText?: string;
+    confirmBtnText?: React.ReactNode;
     destructive?: boolean;
     handleConfirm: () => void;
     isLoading?: boolean;
@@ -28,8 +28,6 @@ interface Props {
 
 export const ConfirmDialog = (props: Props) => {
     const {
-        open,
-        onOpenChange,
         title,
         desc,
         cancelBtnText = 'Batal',

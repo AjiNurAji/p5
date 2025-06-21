@@ -1,9 +1,8 @@
 import useDialogState from "@/hooks/use-dialog";
 import { User } from "@/types";
 import React, { useState } from "react";
-import { ZodArray } from "zod";
 
-type UsersDialogType = 'invite' | 'add' | 'edit' | 'delete';
+type UsersDialogType = 'add' | 'edit' | 'delete';
 
 interface UsersContextType {
   open: UsersDialogType | null;
