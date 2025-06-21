@@ -15,8 +15,7 @@ class Matkul extends Model
     'id_matkul',
     'name',
     'lecturer',
-    'semester',
-    'deadline'
+    'semester'
   ];
 
   // matkul func

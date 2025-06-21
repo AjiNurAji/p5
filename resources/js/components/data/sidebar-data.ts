@@ -40,7 +40,7 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: 'matkul',
-          href: '/matkul',
+          href: route('matkul.index'),
           icon: BookOpen
         }
       ]
