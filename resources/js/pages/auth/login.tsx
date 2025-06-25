@@ -34,7 +34,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     post(route('login'), {
       onSuccess: () => toast.success('Berhasil masuk!', { id: loading }),
-      onError: () => toast.error('Email atau kata sandi yang Anda masukkan tidak sesuai.', { id: loading }),
+      onError: () => toast.error('NIM atau kata sandi yang Anda masukkan tidak sesuai.', { id: loading }),
       onFinish: () => reset('password'),
     });
   };

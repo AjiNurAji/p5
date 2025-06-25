@@ -1,18 +1,26 @@
-import { Forbidden } from "@/components/errors/forbidden";
+import { ErrorPage } from "@/components/errors/error-page";
 import AppLayout from "@/layouts/app-layout"
-import { SharedData } from "@/types";
+import { BreadcrumbItem, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
+
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'mata kuliah',
+    href: route('matkul.index'),
+  },
+];
 
 const Matkuls = () => {
   const { auth: { user } } = usePage<SharedData>().props;
   return (
-    <AppLayout>
+    <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Mata Kuliah" />
-        {user.role === 'member' ?
-          <Forbidden />
-          :
-          <h1>MENDAPATKAN AKSES</h1>
-        }
+      {user.role === 'member' ?
+        <ErrorPage code={403} error="Akses Dibatasi!" message="Upss! Anda tidak memiliki izin <br />
+          untuk melihat halaman ini." />
+        :
+        <h1>MENDAPATKAN AKSES</h1>
+      }
     </AppLayout>
   )
 }

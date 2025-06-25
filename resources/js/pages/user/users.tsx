@@ -1,4 +1,4 @@
-import { Forbidden } from "@/components/errors/forbidden";
+import { ErrorPage } from "@/components/errors/error-page";
 import Heading from "@/components/heading";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, SharedData } from "@/types";
@@ -27,7 +27,8 @@ const UsersPage = () => {
       <Head title="Pengguna" />
       <UsersProvider>
         {user.role === 'member' ?
-          <Forbidden />
+          <ErrorPage code={403} error="Akses Dibatasi!" message="Upss! Anda tidak memiliki izin <br />
+                    untuk melihat halaman ini." />
           :
           (
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
