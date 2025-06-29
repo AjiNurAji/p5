@@ -24,7 +24,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { auth: {user: { id_number, role }} } = usePage<SharedData>().props
 
   return (
-    row.original.id_number === id_number || role !== 'superadmin' && row.original.role === 'superadmin' || row.original.id_number === Number(import.meta.env.VITE_AUTHOR_ID) ? "" :
+    row.original.id_number === id_number || role !== 'superadmin' && row.original.role === 'superadmin' || row.original.id_number === import.meta.env.VITE_AUTHOR_ID ? "" :
       <DropdownMenu modal={false}>
         <Tooltip>
           <TooltipTrigger asChild>
