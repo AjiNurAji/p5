@@ -47,7 +47,7 @@ export interface SharedData {
 }
 
 export interface User {
-	id: number;
+	id_number: string;
 	name: string;
 	email: string;
 	role: string;
@@ -56,4 +56,11 @@ export interface User {
 	created_at: string;
 	updated_at: string;
 	[key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Matkul {
+  id_matkuls: string;
+  name: string;
+  semester: number;
+  lecturer: string;
 }

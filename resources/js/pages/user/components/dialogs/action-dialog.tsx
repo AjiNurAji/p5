@@ -10,7 +10,6 @@ import { SharedData, User } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
-import { useUsers } from "../../context/users-context";
 
 interface Props {
   open: boolean;
@@ -19,19 +18,19 @@ interface Props {
 }
 
 type UserForm = {
-  id_number: number | string;
+  id_number: string;
   password: string;
   name: string;
   role: string;
   email: string;
 }
 
-export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
+export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
   const isEdit = !!currentRow;
   const { auth: { user } } = usePage<SharedData>().props;
 
   const { data, setData, post, processing } = useForm<Required<UserForm>>(isEdit ? {
-    id_number: currentRow.id_number as number,
+    id_number: currentRow.id_number,
     name: currentRow.name,
     email: currentRow.email,
     role: currentRow.role,
@@ -100,7 +99,7 @@ export const ActionDIalog = ({ currentRow, open, onOpenChange }: Props) => {
           <DialogTitle>{isEdit ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}</DialogTitle>
           <DialogDescription>
             {isEdit ? 'Edit informasi pengguna melalui formulir di bawah ini. ' : 'Isi data di bawah untuk menambahkan pengguna baru. '}
-            Tekan Simpan untuk menyimpan perubahan.
+            Tekan <b>Simpan</b> untuk menyimpan perubahan.
           </DialogDescription>
         </DialogHeader>
         <div className="-mr-4 w-full overflow-y-auto py-1 pr-4">

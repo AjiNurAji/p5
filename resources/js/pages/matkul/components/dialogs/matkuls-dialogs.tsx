@@ -1,22 +1,21 @@
-import { useUsers } from "../context/users-context";
-import { ActionDialog } from "./dialogs/action-dialog";
-import { DeleteDialog } from "./dialogs/delete-dialog";
+import { useMatkuls } from "../../context/matkuls-context"
+import { MatkulsActionDialog } from "./matkul-action-dialog";
+import { MatkulDeleteDialog } from "./matkul-delete-dialog";
 
-export const UserDialogs = () => {
-  const { open, setOpen, currentRow, setCurrentRow } = useUsers();
+export const MatkulsDialogs = () => {
+  const { open, setOpen, currentRow, setCurrentRow } = useMatkuls();
 
   return (
     <>
-      <ActionDialog
-        key='user-add'
+      <MatkulsActionDialog
+        key='matkul-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
       />
-
       {currentRow && (
         <>
-          <ActionDialog
-            key={`user-edit-${currentRow.id_number}`}
+          <MatkulsActionDialog
+            key={`matkul-edit-${currentRow.id_matkuls}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -26,9 +25,8 @@ export const UserDialogs = () => {
             }}
             currentRow={currentRow}
           />
-
-          <DeleteDialog
-            key={`user-delete-${currentRow.id_number}`}
+          <MatkulDeleteDialog
+            key={`matkul-delete-${currentRow.id_matkuls}`}
             open={open === 'delete'}
             onOpenChange={() => {
               setOpen('delete')

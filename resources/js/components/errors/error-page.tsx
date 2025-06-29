@@ -6,7 +6,7 @@ import React from "react";
 export const ErrorPage = ({
   code = 500,
   error = "Wah! Ada yang salah nih.",
-  message = "Kami mohon maaf atas ketidaknyamanan ini. <br /> Silakan coba lagi nanti.",
+  message,
   className
 }: {
   code?: number;
@@ -21,7 +21,7 @@ export const ErrorPage = ({
         <h1 className='text-[7rem] leading-tight font-bold'>{code}</h1>
         <span className='font-medium'>{error}</span>
         <p className='text-muted-foreground text-center'>
-          {message}
+          {message ?? <>Kami mohon maaf atas ketidaknyamanan ini. <br /> Silakan coba lagi nanti.</>}
         </p>
         {code !== 503 && (
           (<div className='mt-6 flex gap-4'>

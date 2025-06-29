@@ -9,6 +9,8 @@ class Matkul extends Model
 {
   protected $primaryKey = 'id_matkul';
 
+  protected $keyType = 'string';
+
   protected $table = 'matkuls';
 
   protected $fillable = [
