@@ -17,7 +17,7 @@ export const MatkulDeleteDialog = ({ open, onOpenChange, currentRow }: Props) =>
   const handleDelete = () => {
     const loading = toast.loading('Memproses...');
 
-    destroy(route('matkuls.delete', currentRow.id_matkuls), {
+    destroy(route('matkul.destroy', currentRow.id_matkul), {
       onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
       onError: (e) => toast.error('Terjadi kesalahan, silahkan coba lagi!', { id: loading }),
       onFinish: () => onOpenChange(false),

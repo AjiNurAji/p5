@@ -59,7 +59,7 @@ export interface User {
 }
 
 export interface Matkul {
-  id_matkuls: string;
+  id_matkul: string;
   name: string;
   semester: number;
   lecturer: string;

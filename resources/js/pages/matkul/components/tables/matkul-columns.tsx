@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { TableColumnHeader } from "@/components/custom/table-column-header";
 import { LongText } from "@/components/long-text";
+import { TableRowActions } from "@/components/custom/table-row-actions";
+import { useMatkuls } from "../../context/matkuls-context";
 
 export const columns: ColumnDef<Matkul>[] = [
   {
@@ -76,4 +78,11 @@ export const columns: ColumnDef<Matkul>[] = [
     enableSorting: false,
     enableHiding: true,
   },
+  {
+      id: 'actions',
+      cell: ({row}) => {
+        const { setCurrentRow, setOpen } = useMatkuls();
+        return <TableRowActions row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />
+      },
+    },
 ]

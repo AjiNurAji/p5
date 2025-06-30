@@ -20,12 +20,12 @@ export const MatkulsActionDialog = ({ currentRow, open, onOpenChange }: Props) =
   const isEdit = !!currentRow;
 
   const { data, setData, post, processing } = useForm<Required<MatkulsForm>>(isEdit ? {
-    id_matkuls: currentRow.id_matkuls,
+    id_matkul: currentRow.id_matkul,
     name: currentRow.name,
     lecturer: currentRow.lecturer,
     semester: currentRow.semester,
   } : {
-    id_matkuls: "",
+    id_matkul: "",
     name: "",
     lecturer: "",
     semester: 0,
@@ -35,11 +35,18 @@ export const MatkulsActionDialog = ({ currentRow, open, onOpenChange }: Props) =
     e.preventDefault()
     const loading = toast.loading('Menyimpan data...');
 
-    post(isEdit ? route('matkul.update', currentRow.id_matkuls as string) : route('matkul.store'), {
-      onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
+    post(isEdit ? route('matkul.update', currentRow.id_matkul) : route('matkul.store'), {
+      onSuccess: (e) => {
+        toast.success(e.props.success.message, { id: loading })
+        handleResetForm();
+      },
       onError: (e) => {
-        if (e?.id_matkuls) {
-          return toast.error(e?.id_matkuls, { id: loading });
+        if (e?.message) {
+          return toast.error(e.message, { id: loading });
+        } else if (e?.role) {
+          return toast.error(e?.role, { id: loading });
+        } else if (e?.id_matkuls) {
+          return toast.error(e?.id_matkul, { id: loading });
         } else if (e?.name) {
           return toast.error(e?.name, { id: loading });
         } else if (e?.lecturer) {
@@ -50,13 +57,13 @@ export const MatkulsActionDialog = ({ currentRow, open, onOpenChange }: Props) =
 
         return toast.error('Terjadi kesalahan, silahkan coba lagi!');
       },
-      onFinish: () => handleResetForm(),
+      onFinish: () => onOpenChange(false),
     });
   }
 
   const handleResetForm = () => {
     setData({
-      id_matkuls: "",
+      id_matkul: "",
       name: "",
       lecturer: "",
       semester: 0,
@@ -108,6 +115,8 @@ export const MatkulsActionDialog = ({ currentRow, open, onOpenChange }: Props) =
             value={data.semester}
             onChange={(e) => setData('semester', Number(e.target.value))}
             placeholder="3"
+            min={1}
+            max={8}
             autoComplete="semester"
           />
         </div>

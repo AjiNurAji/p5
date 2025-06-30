@@ -86,16 +86,65 @@ class MatkulController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, string $id_matkul)
   {
-    //
+
+    // validate request
+    $request->validate([
+      'name' => 'required|string',
+      'lecturer' => 'required|string',
+      'semester' => 'required'
+    ]);
+
+    // validate user
+    $user = $request->user();
+
+    if (!$user) {
+      return redirect()->route('login');
+    }
+
+    if ($user->role === 'member') return $this->throwError([
+      'role' => 'Kamu tidak memiliki akses!',
+    ]);
+
+    $matkul = Matkul::find($id_matkul);
+
+    if (!$matkul) return $this->throwError([
+      'message' => 'Data tidak ditemukan!',
+    ]);
+
+    $matkul->update($request->all());
+
+    return back()->with('success', [
+      'message' => 'Data berhasil diperbarui!'
+    ]);
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(string $id_matkul)
   {
-    //
+    $user = Auth::user();
+
+    if (!$user) {
+      return redirect()->route('login');
+    }
+
+    if ($user->role === 'member') return $this->throwError([
+      'role' => 'Kamu tidak memiliki akses!',
+    ]);
+
+    $matkul = Matkul::find($id_matkul);
+
+    if (!$matkul) return $this->throwError([
+      'message' => 'Data tidak ditemukan!',
+    ]);
+
+    $matkul->delete();
+
+    return back()->with('success', [
+      'message' => 'Data berhasil dihapus!'
+    ]);
   }
 }
