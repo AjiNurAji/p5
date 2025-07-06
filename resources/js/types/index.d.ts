@@ -64,3 +64,10 @@ export interface Matkul {
   semester: number;
   lecturer: string;
 }
+
+export interface Task {
+  id_task: string;
+  task: string;
+  id_matkul: string;
+  deadline: Date;
+}

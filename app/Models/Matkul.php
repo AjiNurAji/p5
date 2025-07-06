@@ -23,6 +23,6 @@ class Matkul extends Model
   // matkul func
   public function task(): HasMany
   {
-    return $this->hasMany(Task::class, 'id_matkul');
+    return $this->hasMany(Task::class, 'id_task');
   }
 }

@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Matkul } from '@/types';
+import { Matkul, Task } from '@/types';
+import { Loader } from 'lucide-react';
 import React from 'react';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow?: Matkul;
+  currentRow?: Matkul | Task;
   formName: string;
   handleResetForm: () => void;
   processing: boolean;
@@ -41,6 +42,7 @@ export const ActionsDialog = ({ handleResetForm, processing, children, currentRo
         <div className="-mr-4 w-full overflow-y-auto py-1 pr-4">{children}</div>
         <DialogFooter>
           <Button type="submit" form={formName} disabled={processing}>
+            {processing && <Loader className="h-4 w-4 animate-spin" />}
             Simpan
           </Button>
         </DialogFooter>

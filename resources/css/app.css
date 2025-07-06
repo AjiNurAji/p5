@@ -151,8 +151,8 @@
 @layer base {
     * {
         @apply border-border outline-ring/50;
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-border) transparent;
+        scrollbar-width: thin !important;
+        scrollbar-color: var(--color-border) transparent !important;
     }
 
     html {
@@ -168,11 +168,15 @@
     }
 
     .go2072408551 {
-        @apply !bg-background border-border dark:!text-foreground border px-2.5 py-1.5 text-xs;
+        @apply border border-border !bg-background px-2.5 py-1.5 text-xs dark:!text-foreground;
     }
 
     button:disabled {
-      @apply cursor-not-allowed !pointer-events-auto;
+        @apply !pointer-events-auto cursor-not-allowed;
+    }
+
+    input, button[role="combobox"] {
+      @apply !bg-transparent dark:!bg-input/30;
     }
 }
 

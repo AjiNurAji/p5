@@ -23,7 +23,7 @@ export const ErrorPage = ({
         <p className='text-muted-foreground text-center'>
           {message ?? <>Kami mohon maaf atas ketidaknyamanan ini. <br /> Silakan coba lagi nanti.</>}
         </p>
-        {code !== 503 && (
+        {code !== 503 && code !== 500 && (
           (<div className='mt-6 flex gap-4'>
             <Button variant='outline' onClick={() => history.go(-1)}>
               Kembali
