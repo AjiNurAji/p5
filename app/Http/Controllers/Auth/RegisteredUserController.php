@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -57,6 +56,10 @@ class RegisteredUserController extends Controller
       'password' => Hash::make($request->password),
       'role' => $request->role,
     ]);
+
+    if ($request->input("email")) {
+      $user->sendEmailVerificationNotification();
+    }
 
     event(new Registered($user));
 
