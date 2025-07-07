@@ -9,17 +9,24 @@ class ExecutionTask extends Model
 {
     protected $primaryKey = 'id_execution';
 
-    protected $table = 'tasks';
+    protected $table = 'execution_tasks';
+
+    protected $keyType = 'string';
 
     protected $fillable = [
       'id_execution',
       'id_task',
-      'id_matkul',
-      'deadline'
+      'id_number',
+      'status'
     ];
 
-    // matkul func
+    // task func
     public function task(): BelongsTo {
       return $this->belongsTo(Task::class, 'id_task');
+    }
+
+    // user func
+    public function user(): BelongsTo {
+      return $this->belongsTo(User::class, 'id_number');
     }
 }
