@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id_matkul')->primary()->unique();
             $table->string('name', 50);
             $table->string('lecturer', 30);
+            $table->integer('semester', false, true);
             $table->timestamps();
         });
     }

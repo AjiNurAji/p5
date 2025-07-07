@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->uuid("id_task")->primary()->unique();
             $table->string("task");
-            $table->foreignId("id_matkul")->index();
+            $table->foreignUuid("id_matkul")->index();
             $table->dateTime("deadline");
             $table->timestamps();
         });
