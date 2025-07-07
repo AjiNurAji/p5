@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { TaskForm } from '@/pages/tasks/components/dialogs/task-action-dialog';
 import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { id } from 'react-day-picker/locale';
@@ -10,7 +9,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 interface Props {
   withTime?: boolean;
-  value: Required<TaskForm>;
+  keyName: string;
+  value: Date;
   setValue: (key: string, date: any) => void;
 }
 
@@ -43,20 +43,20 @@ const isValidDate = (date: Date | undefined) => {
   return !isNaN(date.getTime());
 };
 
-export const DatePicker = ({ withTime, value, setValue }: Props) => {
+export const DatePicker = ({ withTime, value, setValue, keyName }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [time, setTime] = useState<string>(
-    `${value.deadline.getHours().toString().padStart(2, '0')}:${value.deadline.getMinutes().toString().padStart(2, '0')}:${value.deadline.getSeconds().toString().padStart(2, '0')}`,
+    `${value.getHours().toString().padStart(2, '0')}:${value.getMinutes().toString().padStart(2, '0')}:${value.getSeconds().toString().padStart(2, '0')}`,
   );
-  const [month, setMonth] = useState<Date | undefined>(value.deadline);
-  const [date, setDate] = useState<string>(formatDate(value.deadline));
+  const [month, setMonth] = useState<Date | undefined>(value);
+  const [date, setDate] = useState<string>(formatDate(value));
 
   return (
     <div className="relative flex-col sm:flex-row flex gap-2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button id="date-picker" variant="outline" className={cn('w-full font-normal bg-transparent dark:bg-input/30', !value.deadline && 'text-muted-foreground')}>
-            {value.deadline ? date : <span className="sr-only">Pilih tanggal</span>}
+          <Button id="date-picker" variant="outline" className={cn('w-full font-normal bg-transparent dark:bg-input/30', !value && 'text-muted-foreground')}>
+            {value ? date : <span className="sr-only">Pilih tanggal</span>}
             <CalendarIcon className="ml-auto size-4" />
           </Button>
         </PopoverTrigger>
@@ -64,7 +64,7 @@ export const DatePicker = ({ withTime, value, setValue }: Props) => {
           <div>
             <Calendar
               mode="single"
-              selected={value.deadline}
+              selected={value}
               captionLayout="dropdown"
               locale={id}
               month={month}
@@ -76,7 +76,7 @@ export const DatePicker = ({ withTime, value, setValue }: Props) => {
                 const [hours, minutes] = time.split(':');
                 date?.setHours(parseInt(hours), parseInt(minutes));
                 setDate(formatDate(date));
-                setValue('deadline', date);
+                setValue(keyName, date);
                 setOpen(false);
               }}
             />
@@ -91,9 +91,9 @@ export const DatePicker = ({ withTime, value, setValue }: Props) => {
           defaultValue={time}
           onChange={(e) => {
             const [hour, minute, second] = e.target.value.split(':');
-            const newDate = new Date(value.deadline);
+            const newDate = new Date(value);
             newDate.setHours(parseInt(hour), parseInt(minute), parseInt(second));
-            setValue('deadline', newDate);
+            setValue(keyName, newDate);
             setDate(formatDate(newDate));
             setTime(e.target.value);
           }}

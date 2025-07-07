@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { DatePicker } from '@/components/custom/date-picker';
-import { ActionsDialog } from '@/components/custom/dialogs/actions-dialog';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Matkul } from '@/pages/matkul/components/data/schema';
-import { SharedData, Task } from '@/types';
-import { useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
-import toast from 'react-hot-toast';
+import { DatePicker } from "@/components/custom/date-picker";
+import { ActionsDialog } from "@/components/custom/dialogs/actions-dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Matkul } from "@/pages/matkul/components/data/schema";
+import { SharedData, TaskType } from "@/types";
+import { useForm, usePage } from "@inertiajs/react";
+import { FormEventHandler } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow?: Task;
+  currentRow?: TaskType | null;
   matkuls: Matkul[] | null;
 }
 
-export type TaskForm = {
+type TaskForm = {
   task: string;
   id_matkul: string;
   deadline: Date;
@@ -34,21 +34,21 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
     isEdit
       ? {
         task: currentRow.task,
-        id_matkul: currentRow.id_matkul,
+        id_matkul: currentRow.matkul.id_matkul,
         deadline: currentRow.deadline,
       }
       : {
-        task: '',
-        id_matkul: '',
+        task: "",
+        id_matkul: "",
         deadline: new Date(),
       },
   );
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-    const loading = toast.loading('Menyimpan data...');
+    const loading = toast.loading("Menyimpan data...");
 
-    post(isEdit ? route('user.update', currentRow.id_task) : route('tasks.store'), {
+    post(isEdit ? route("tasks.update", currentRow.id_task) : route("tasks.store"), {
       onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
       onError: (e) => {
         if (e?.message) {
@@ -63,7 +63,7 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
           return toast.error(e?.role, { id: loading });
         }
 
-        return toast.error('Terjadi kesalahan, silahkan coba lagi!');
+        return toast.error("Terjadi kesalahan, silahkan coba lagi!");
       },
       onFinish: () => {
         onOpenChange(false);
@@ -74,8 +74,8 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
 
   const handleResetForm = () => {
     setData({
-      task: '',
-      id_matkul: '',
+      task: "",
+      id_matkul: "",
       deadline: new Date(),
     });
   };
@@ -100,13 +100,13 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
             id="task"
             name="task"
             value={data.task}
-            onChange={(e) => setData('task', e.target.value)}
+            onChange={(e) => setData("task", e.target.value)}
           />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="role">Mata Kuliah</Label>
 
-          <Select value={data.id_matkul} defaultValue={data.id_matkul} onValueChange={(e) => setData('id_matkul', e)}>
+          <Select value={data.id_matkul} defaultValue={currentRow?.matkul.id_matkul} onValueChange={(e) => setData("id_matkul", e)}>
             <SelectTrigger>
               <SelectValue placeholder="Pilih mata kuliah" />
             </SelectTrigger>
@@ -121,7 +121,7 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
         </div>
         <div className="grid gap-2">
           <Label htmlFor="deadline">Deadline</Label>
-          <DatePicker withTime value={data} setValue={setData} />
+          <DatePicker withTime value={new Date(data.deadline)} keyName="deadline" setValue={setData} />
         </div>
       </form>
     </ActionsDialog>

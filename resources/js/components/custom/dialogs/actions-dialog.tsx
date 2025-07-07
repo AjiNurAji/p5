@@ -2,14 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Matkul, Task } from '@/types';
+import { Matkul, TaskType } from '@/types';
 import { Loader } from 'lucide-react';
 import React from 'react';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow?: Matkul | Task;
+  currentRow?: Matkul | TaskType | null;
   formName: string;
   handleResetForm: () => void;
   processing: boolean;

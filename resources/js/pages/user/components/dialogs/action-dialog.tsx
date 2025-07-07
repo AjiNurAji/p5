@@ -69,7 +69,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
           return toast.error(e?.role, { id: loading });
         }
 
-        return toast.error('Terjadi kesalahan, silahkan coba lagi!');
+        return toast.error('Terjadi kesalahan, silahkan coba lagi!', { id: loading });
       },
       onFinish: () => {
         setData({

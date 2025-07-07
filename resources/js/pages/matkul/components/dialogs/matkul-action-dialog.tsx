@@ -55,7 +55,7 @@ export const MatkulsActionDialog = ({ currentRow, open, onOpenChange }: Props) =
           return toast.error(e?.semester, { id: loading });
         }
 
-        return toast.error('Terjadi kesalahan, silahkan coba lagi!');
+        return toast.error('Terjadi kesalahan, silahkan coba lagi!', { id: loading });
       },
       onFinish: () => onOpenChange(false),
     });

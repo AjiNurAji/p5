@@ -71,3 +71,10 @@ export interface Task {
   id_matkul: string;
   deadline: Date;
 }
+
+export type TaskType = {
+  id_task: string;
+  task: string;
+  deadline: Date;
+  matkul: Matkul;
+}

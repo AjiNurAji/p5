@@ -14,10 +14,10 @@ export const TaskDialogs = () => {
         matkuls={matkuls}
       />
       
-      {/* {currentRow && (
+      {currentRow && (
         <>
-          <MatkulsActionDialog
-            key={`matkul-edit-${currentRow.id_matkuls}`}
+          <TaskActionDialog
+            key={`task-edit-${currentRow.id_task}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -26,8 +26,9 @@ export const TaskDialogs = () => {
               }, 500)
             }}
             currentRow={currentRow}
+            matkuls={matkuls}
           />
-          <MatkulDeleteDialog
+          {/* <MatkulDeleteDialog
             key={`matkul-delete-${currentRow.id_matkuls}`}
             open={open === 'delete'}
             onOpenChange={() => {
@@ -37,9 +38,9 @@ export const TaskDialogs = () => {
               }, 500)
             }}
             currentRow={currentRow}
-          />
+          /> */}
         </>
-      )} */}
+      )}
     </>
   )
 }
