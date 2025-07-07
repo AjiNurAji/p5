@@ -18,7 +18,7 @@ class UserController extends Controller
     {
       $user = User::all();
       $task = Task::all();
-      $execute_task = Auth::user()->execution_task;
+      $execute_task = Auth::user()->execute_task;
 
       return Inertia::render("dashboard", [
         "user_card" => [
@@ -31,7 +31,7 @@ class UserController extends Controller
         ],
         "execution_task_card" => [
           "title" => "tugas terselesaikan",
-          "count" => $execute_task ? $execute_task->count() : 0,
+          "count" => $execute_task->where("status", "finished")->count(),
         ]
       ]);
     }
