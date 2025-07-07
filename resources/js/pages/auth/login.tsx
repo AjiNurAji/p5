@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -91,7 +91,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
           </div>
 
           <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+            {processing && <Loader className="h-4 w-4 animate-spin" />}
             Masuk
           </Button>
         </div>

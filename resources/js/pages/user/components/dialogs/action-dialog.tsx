@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SharedData, User } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
+import { Loader } from "lucide-react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
@@ -190,6 +191,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
         </div>
         <DialogFooter>
           <Button type='submit' form='user-form' disabled={processing}>
+            {processing && <Loader className="h-4 w-4 animate-spin" />}
             Simpan
           </Button>
         </DialogFooter>
