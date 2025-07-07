@@ -30,7 +30,7 @@ export const TablePagination = <TData,>({
         {table.getFilteredSelectedRowModel().rows.length} dari{' '}
         {table.getFilteredRowModel().rows.length} baris terpilih.
       </div>
-      <div className='flex items-center sm:space-x-6 lg:space-x-8'>
+      <div className='flex items-center space-x-2 sm:space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
           <p className='hidden text-sm font-medium sm:block'>Baris per halaman</p>
           <Select
@@ -51,8 +51,8 @@ export const TablePagination = <TData,>({
             </SelectContent>
           </Select>
         </div>
-        <div className='flex w-[100px] items-center justify-center text-sm font-medium'>
-          Halalan {table.getState().pagination.pageIndex + 1} dari{' '}
+        <div className='flex w-fit items-center justify-center text-sm font-medium'>
+          Halaman {table.getState().pagination.pageIndex + 1} dari{' '}
           {table.getPageCount()}
         </div>
         <div className='flex items-center space-x-2'>

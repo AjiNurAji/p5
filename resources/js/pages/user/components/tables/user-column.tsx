@@ -39,12 +39,12 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'id_number',
     header: ({ column }) => (
-      <TableColumnHeader column={column} title='Nama Lengkap' />
+      <TableColumnHeader column={column} title='NIM' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-36'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-36'>{row.getValue('id_number')}</LongText>
     ),
     meta: {
       className: cn(
@@ -57,12 +57,12 @@ export const columns: ColumnDef<User>[] = [
     sortDescFirst: false,
   },
   {
-    accessorKey: 'id_number',
+    accessorKey: 'name',
     header: ({ column }) => (
-      <TableColumnHeader column={column} title='NIM' />
+      <TableColumnHeader column={column} title='Nama Lengkap' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('id_number')}</div>
+      <div className='w-fit text-nowrap'>{row.getValue('name')}</div>
     ),
     enableHiding: false,
     enableSorting: false
