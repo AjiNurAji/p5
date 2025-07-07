@@ -15,7 +15,7 @@ export const MatkulsDialogs = () => {
       {currentRow && (
         <>
           <MatkulsActionDialog
-            key={`matkul-edit-${currentRow.id_matkuls}`}
+            key={`matkul-edit-${currentRow.id_matkul}`}
             open={open === 'edit'}
             onOpenChange={() => {
               setOpen('edit')
@@ -26,7 +26,7 @@ export const MatkulsDialogs = () => {
             currentRow={currentRow}
           />
           <MatkulDeleteDialog
-            key={`matkul-delete-${currentRow.id_matkuls}`}
+            key={`matkul-delete-${currentRow.id_matkul}`}
             open={open === 'delete'}
             onOpenChange={() => {
               setOpen('delete')
