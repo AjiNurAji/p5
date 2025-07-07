@@ -76,6 +76,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
           ...data,
           password: "",
         })
+        onOpenChange(false);
       },
     });
   }
