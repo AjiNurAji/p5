@@ -76,12 +76,14 @@ export const TaskCard = ({ props }: TaskCardProps) => {
     <Card className="gap-0 overflow-hidden p-0">
       <CardContent className="overflow-hidden p-3 wrap-break-word">
         <p className="text-2xl">{props.task}</p>
-        <div className="mt-4 flex items-center">
+      </CardContent>
+      <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
+        <div className="flex w-full items-center">
           <div className="flex w-fit items-center gap-1">
             <NotebookTabs className="size-4" />
             <h2 className="text-sm font-medium">{props.matkul.name}</h2>
           </div>
-          <Badge className="ml-auto text-xs bg-yellow-500/20 text-yellow-500">Semester {props.matkul.semester}</Badge>
+          <Badge className="ml-auto bg-yellow-500/20 text-xs text-yellow-500">Semester {props.matkul.semester}</Badge>
           <Badge
             className={cn("ml-2 text-xs capitalize", {
               "bg-red-500/20 text-red-500": !execution_data || execution_data?.status === "pending",
@@ -89,11 +91,13 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               "bg-green-500/20 text-green-500": execution_data?.status === "finished",
             })}
           >
-            {!execution_data || execution_data?.status === "pending" ? "Belum dikerjakan" : execution_data?.status === "finished" ? "Sudah dikerjakan" : execution_data?.status}
+            {!execution_data || execution_data?.status === "pending"
+              ? "Belum dikerjakan"
+              : execution_data?.status === "finished"
+                ? "Sudah dikerjakan"
+                : execution_data?.status}
           </Badge>
         </div>
-      </CardContent>
-      <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
         <Separator />
         <div className="mt-2 flex w-full items-center gap-2">
           <div className="flex items-center gap-1 text-muted-foreground">
@@ -111,7 +115,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               {processing && <Loader className="h-4 w-4 animate-spin" />}
               {!execution_data ? "Kerjakan" : "Selesaikan"}
             </Button>
-          ): (
+          ) : (
             <p className="text-sm">{props.execution?.length} Telah mengerjakan.</p>
           )}
           {user.role !== "member" && (
