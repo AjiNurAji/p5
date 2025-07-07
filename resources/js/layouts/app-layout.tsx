@@ -1,10 +1,13 @@
 import { useLayout } from '@/hooks/use-layout';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
+import { LayoutContext } from '@/lib/contexts/layout-context';
 import type { BreadcrumbItem } from '@/types';
 import { type ReactNode } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import AppHeaderLayout from './app/app-header-layout';
-import { LayoutContext } from '@/lib/contexts/layout-context';
-import  { Toaster } from 'react-hot-toast';
+import LoadingPage from '@/components/loading-page';
+import { WhenVisible } from "@inertiajs/react";
+import { Loader } from 'lucide-react';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -16,16 +19,26 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
 
   return (
     <LayoutContext.Provider value={{ layout, setLayout }}>
-      <Toaster position='top-center' />
-      {layout === 'sidebar' ? (
-        <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
-          {children}
-        </AppLayoutTemplate>
-      ) : (
-        <AppHeaderLayout breadcrumbs={breadcrumbs} {...props}>
-          {children}
-        </AppHeaderLayout>
-      )}
+      <WhenVisible data="props" fallback={<LoadingPage />}>
+        <>
+          <Toaster position="top-center" toastOptions={
+            {
+              loading: {
+                icon: <Loader className="size-4 animate-spin" />
+              }
+            }
+          } />
+          {layout === 'sidebar' ? (
+            <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
+              {children}
+            </AppLayoutTemplate>
+          ) : (
+            <AppHeaderLayout breadcrumbs={breadcrumbs} {...props}>
+              {children}
+            </AppHeaderLayout>
+          )}
+        </>
+      </WhenVisible>
     </LayoutContext.Provider>
   );
 };
