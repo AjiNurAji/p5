@@ -41,7 +41,6 @@ class ExecutionTaskController extends Controller
     // validate request
     $request->validate([
       "id_task" => "required|string",
-      "status" => "required|string",
       "id_number" => "required|string",
     ]);
 
@@ -58,7 +57,7 @@ class ExecutionTaskController extends Controller
       "id_execution" => Str::uuid(),
       "id_task" => $request->input("id_task"),
       "id_number" => $request->input("id_number"),
-      "status" => $request->input("status"),
+      "status" => "progress",
     ]);
 
     return back()->with("success", ["message" => "Berhasil memproses data."]);
@@ -105,7 +104,7 @@ class ExecutionTaskController extends Controller
     if ($execution->status === "finished") $this->throwError(["message" => "Tugas telah diselesaikan!"]);
 
     $execution->update([
-      "status" => $request->input("status"),
+      "status" => "finished",
     ]);
 
     return back()->with("success", ["message" => "Berhasil menyelesaikan tugas."]);

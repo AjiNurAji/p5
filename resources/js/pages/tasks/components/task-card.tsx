@@ -22,7 +22,6 @@ interface TaskCardProps {
     execution: {
       id_task: string;
       id_number: string;
-      user: User;
       status: string;
     }[];
   };
@@ -31,7 +30,6 @@ interface TaskCardProps {
 type ExecutionTaskForm = {
   id_task: string;
   id_number: string;
-  status: string;
 };
 
 export const TaskCard = ({ props }: TaskCardProps) => {
@@ -42,13 +40,12 @@ export const TaskCard = ({ props }: TaskCardProps) => {
 
   const execution_data = props.execution?.filter(({ id_number }) => user.id_number === id_number)[0] || null;
 
-  const { post, data, processing } = useForm<Required<ExecutionTaskForm>>({
+  const { post, data, setData, processing } = useForm<Required<ExecutionTaskForm>>({
     id_task: props.id_task,
     id_number: user.id_number,
-    status: !execution_data ? "progress" : "finished",
   });
 
-  const handleTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, status: string) => {
+  const handleTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const loading = toast.loading("Memproses data...");
 
@@ -111,7 +108,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
         </div>
         <div className="flex w-full flex-wrap items-center justify-between gap-2">
           {execution_data?.status !== "finished" ? (
-            <Button size="sm" className="text-xs" onClick={(e) => handleTask(e, data.status)} disabled={processing}>
+            <Button size="sm" className="text-xs" onClick={(e) => handleTask(e)} disabled={processing}>
               {processing && <Loader className="h-4 w-4 animate-spin" />}
               {!execution_data ? "Kerjakan" : "Selesaikan"}
             </Button>

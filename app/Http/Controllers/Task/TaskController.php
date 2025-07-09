@@ -10,15 +10,17 @@ use App\Models\Task;
 use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
+
   /**
    * Display a listing of the resource.
    */
   public function index(): Response
   {
-    $tasks = Task::with(["matkul", "execution.user"])->orderBy("updated_at", "DESC")->get();
+    $tasks = Task::with(["matkul", "execution"])->orderBy("updated_at", "DESC")->get();
     $matkuls = Matkul::all();
 
     return Inertia::render("tasks/tasks", [
