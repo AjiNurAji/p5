@@ -1,126 +1,134 @@
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { type BreadcrumbItem, type SharedData } from "@/types";
+import { Transition } from "@headlessui/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 
-import DeleteUser from '@/components/delete-user';
-import HeadingSmall from '@/components/heading-small';
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
+import DeleteUser from "@/components/delete-user";
+import HeadingSmall from "@/components/heading-small";
+import InputError from "@/components/input-error";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import AppLayout from "@/layouts/app-layout";
+import SettingsLayout from "@/layouts/settings/layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
-	{
-		title: 'Pengelolaan Profil',
-		href: '/settings/profile',
-	},
+  {
+    title: "Pengelolaan Profil",
+    href: "/settings/profile",
+  },
 ];
 
 type ProfileForm = {
-	name: string;
-	email: string;
+  name: string;
+  email: string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-	const { auth } = usePage<SharedData>().props;
+  const { auth } = usePage<SharedData>().props;
 
-	const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-		name: auth.user.name,
-		email: auth.user.email,
-	});
+  const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+    name: auth.user.name,
+    email: auth.user.email,
+  });
 
-	const submit: FormEventHandler = (e) => {
-		e.preventDefault();
+  const submit: FormEventHandler = (e) => {
+    e.preventDefault();
 
-		patch(route('profile.update'), {
-			preserveScroll: true,
-		});
-	};
+    patch(route("profile.update"), {
+      preserveScroll: true,
+    });
+  };
 
-	return (
-		<AppLayout breadcrumbs={breadcrumbs}>
-			<Head title="Pengelolaan Profil" />
+  return (
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Pengelolaan Profil" />
 
-			<SettingsLayout>
-				<div className="space-y-6">
-					<HeadingSmall title="Informasi Profil" description="Perbarui nama dan alamat email Anda di sini." />
+      <SettingsLayout>
+        <div className="space-y-6">
+          <HeadingSmall title="Informasi Profil" description="Perbarui nama dan alamat email Anda di sini." />
 
-					<form onSubmit={submit} className="space-y-6">
-						<div className="grid gap-2">
-							<Label htmlFor="name">Nama Lengkap</Label>
+          <form onSubmit={submit} className="space-y-6">
+            <div className="grid gap-2">
+              <Label htmlFor="id_number">NIM</Label>
 
-							<Input
-								id="name"
-								className="mt-1 block w-full"
-								value={data.name}
-								onChange={(e) => setData('name', e.target.value)}
-								required
-								autoComplete="name"
-								placeholder="Nama lengkap"
-							/>
+              <Input id="id_number" className="mt-1 block w-full" value={auth.user.id_number} disabled placeholder="id_number" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="role">Peran</Label>
 
-							<InputError className="mt-2" message={errors.name} />
-						</div>
+              <Input id="role" className="mt-1 block w-full capitalize" value={auth.user.role} disabled placeholder="role" />
+            </div>
 
-						<div className="grid gap-2">
-							<Label htmlFor="email">Alamat Email (opsional)</Label>
+            <div className="grid gap-2">
+              <Label htmlFor="name">Nama Lengkap</Label>
 
-							<Input
-								id="email"
-								type="email"
-								className="mt-1 block w-full"
-								value={data.email}
-								onChange={(e) => setData('email', e.target.value)}
-								autoComplete="email"
-								placeholder="Alamat email"
-							/>
+              <Input
+                id="name"
+                className="mt-1 block w-full"
+                value={data.name}
+                onChange={(e) => setData("name", e.target.value)}
+                required
+                autoComplete="name"
+                placeholder="Nama lengkap"
+              />
 
-							<InputError className="mt-2" message={errors.email} />
-						</div>
+              <InputError className="mt-2" message={errors.name} />
+            </div>
 
-						{!mustVerifyEmail && auth.user.email && auth.user.email_verified_at === null && (
-							<div>
-								<p className="-mt-4 text-sm text-muted-foreground">
-									Alamat email Anda belum terverifikasi.{' '}
-									<Link
-										href={route('verification.send')}
-										method="post"
-										as="button"
-										className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-									>
-										Klik di sini untuk mengirim ulang email verifikasi.
-									</Link>
-								</p>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Alamat Email (Opsional) <span className="font-normal text-muted-foreground">({!mustVerifyEmail && auth.user.email && auth.user.email_verified_at === null ? "Belum terverifikasi" : "Terverifikasi"})</span></Label>
 
-								{status === 'verification-link-sent' && (
-									<div className="mt-2 text-sm font-medium text-green-600">
-										Tautan verifikasi baru telah dikirim ke alamat email Anda.
-									</div>
-								)}
-							</div>
-						)}
+              <Input
+                id="email"
+                type="email"
+                className="mt-1 block w-full"
+                value={data.email}
+                onChange={(e) => setData("email", e.target.value)}
+                autoComplete="email"
+                placeholder="Alamat email"
+              />
 
-						<div className="flex items-center gap-4">
-							<Button disabled={processing}>Simpan</Button>
+              <InputError className="mt-2" message={errors.email} />
+              {!mustVerifyEmail && auth.user.email && auth.user.email_verified_at === null && (
+                <div>
+                  <p className="-mt-4 text-sm text-muted-foreground">
+                    Alamat email Anda belum terverifikasi.{" "}
+                    <Link
+                      href={route("verification.send")}
+                      method="post"
+                      as="button"
+                      className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                    >
+                      Klik di sini untuk mengirim ulang email verifikasi.
+                    </Link>
+                  </p>
 
-							<Transition
-								show={recentlySuccessful}
-								enter="transition ease-in-out"
-								enterFrom="opacity-0"
-								leave="transition ease-in-out"
-								leaveTo="opacity-0"
-							>
-								<p className="text-sm text-neutral-600">Tersimpan</p>
-							</Transition>
-						</div>
-					</form>
-				</div>
+                  {status === "verification-link-sent" && (
+                    <div className="mt-2 text-sm font-medium text-green-600">Tautan verifikasi baru telah dikirim ke alamat email Anda.</div>
+                  )}
+                </div>
+              )}
+            </div>
 
-				<DeleteUser />
-			</SettingsLayout>
-		</AppLayout>
-	);
+            <div className="flex items-center gap-4">
+              <Button disabled={processing}>Simpan</Button>
+
+              <Transition
+                show={recentlySuccessful}
+                enter="transition ease-in-out"
+                enterFrom="opacity-0"
+                leave="transition ease-in-out"
+                leaveTo="opacity-0"
+              >
+                <p className="text-sm text-neutral-600">Tersimpan</p>
+              </Transition>
+            </div>
+          </form>
+        </div>
+
+        <DeleteUser />
+      </SettingsLayout>
+    </AppLayout>
+  );
 }
