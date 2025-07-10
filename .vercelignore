@@ -1,3 +1,10 @@
-vendor
-database/database.sqlite
-.env
+/vendor
+/database/database.sqlite
+/.env
+/node_modules
+/public/build
+/.prettierignore
+/.prettierrrc
+/README.md
+/storage
+/tests
