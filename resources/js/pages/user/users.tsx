@@ -29,7 +29,7 @@ const UsersPage = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Pengguna" />
       <UsersProvider>
-        {user.role === "superadmin" ? (
+        {user.role === "member" ? (
           <ErrorPage
             withDashBtn
             code={403}
