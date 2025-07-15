@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ConfirmDialog } from '@/components/confirm-dialog';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle } from 'lucide-react';
+import { ConfirmDialog } from "@/components/confirm-dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -10,10 +10,17 @@ interface Props {
   handleDelete: () => void;
   processing: boolean;
   data: string;
+  title: string;
 }
 
-export const DeleteDialog = ({ open, onOpenChange, handleDelete, processing, data }: Props) => {
-
+export const DeleteDialog = ({
+  open,
+  onOpenChange,
+  handleDelete,
+  processing,
+  data,
+  title,
+}: Props) => {
   return (
     <ConfirmDialog
       open={open}
@@ -21,22 +28,28 @@ export const DeleteDialog = ({ open, onOpenChange, handleDelete, processing, dat
       onOpenChange={onOpenChange}
       disabled={processing}
       title={
-        <span className="text-red-500 flex justify-start items-center">
-          <AlertTriangle className="inline-block mr-1 size-5 stroke-redtext-red-500" /> Hapus Pengguna
+        <span className="flex capitalize items-center justify-start text-red-500">
+          <AlertTriangle className="stroke-redtext-red-500 mr-1 inline-block size-5" />{" "}
+          Hapus {title}
         </span>
       }
       desc={
         <div className="space-y-4">
           <p className="mb-2">
-            Apakah Anda yakin ingin menghapus data <span className="font-bold capitalize">{data}</span>?
+            Apakah Anda yakin ingin menghapus data{" "}
+            <span className="font-bold capitalize">{data}</span>?
             <br />
-            Tindakan ini akan secara permanen menghapus data{' '}
-            <span className="font-bold">{data.toLocaleUpperCase()}</span> dari sistem. Tindakan ini tidak dapat dibatalkan.
+            Tindakan ini akan secara permanen menghapus data{" "}
+            <span className="font-bold">{data.toLocaleUpperCase()}</span> dari
+            sistem. Tindakan ini tidak dapat dibatalkan.
           </p>
 
           <Alert variant="destructive">
             <AlertTitle>Peringatan!</AlertTitle>
-            <AlertDescription>Mohon berhati-hati, tindakan ini bersifat permanen dan tidak dapat dibatalkan.</AlertDescription>
+            <AlertDescription>
+              Mohon berhati-hati, tindakan ini bersifat permanen dan tidak dapat
+              dibatalkan.
+            </AlertDescription>
           </Alert>
         </div>
       }

@@ -106,7 +106,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
             Semester {props.matkul.semester}
           </Badge>
         </div>
-        <div className="flex w-full justify-start items-start">
+        <div className="flex w-full items-start justify-start">
           <Badge
             className={cn("text-xs capitalize", {
               "bg-red-500/20 text-red-500":
@@ -169,7 +169,10 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               </Button>
               <Button
                 size="icon"
-                onClick={() => setOpen("delete")}
+                onClick={() => {
+                  setOpen("delete");
+                  setCurrentRow(props);
+                }}
                 variant="outline"
                 className="bg-destructive/15 text-destructive hover:bg-destructive/25 hover:text-red-500"
               >

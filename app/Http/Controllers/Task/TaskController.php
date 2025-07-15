@@ -125,8 +125,28 @@ class TaskController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(Request $request, string $id_task)
   {
-    //
+    // validate user
+    $user = $request->user();
+
+    if (!$user) {
+      redirect()->route("login");
+      return $this->throwError(["message" => "Anda belum login!"]);
+    };
+
+    if ($user->role === "member") return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
+
+    $task = Task::find($id_task);
+
+    if (!$task) return $this->throwError([
+      'message' => 'Tugas tidak ditemukan!',
+    ]);
+
+    $task->delete();
+
+    return back()->with('success', [
+      'message' => 'Berhasil menghapus tugas.'
+    ]);
   }
 }

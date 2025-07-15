@@ -8,6 +8,7 @@ Route::middleware("auth")->group(function () {
   Route::get("/tasks", [TaskController::class, "index"])->name("tasks.index");
   Route::post("/tasks", [TaskController::class, "store"])->name("tasks.store");
   Route::post("/tasks/{id_task}", [TaskController::class, "update"])->name("tasks.update");
+  Route::delete("/tasks/{id_task}", [TaskController::class, "destroy"])->name("tasks.destroy");
 
   // execution task
   Route::post("/execution-task", [ExecutionTaskController::class, "store"])->name("execution.store");

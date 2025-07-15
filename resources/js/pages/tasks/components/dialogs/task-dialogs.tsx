@@ -1,6 +1,6 @@
 import { useTasks } from "../../context/tasks-context";
 import { TaskActionDialog } from "./task-action-dialog";
-
+import { TaskDeleteDialog } from "./task-delete-dialog";
 
 export const TaskDialogs = () => {
   const { open, setOpen, currentRow, setCurrentRow, matkuls } = useTasks();
@@ -8,39 +8,39 @@ export const TaskDialogs = () => {
   return (
     <>
       <TaskActionDialog
-        key='task-add'
-        open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
+        key="task-add"
+        open={open === "add"}
+        onOpenChange={() => setOpen("add")}
         matkuls={matkuls}
       />
-      
+
       {currentRow && (
         <>
           <TaskActionDialog
             key={`task-edit-${currentRow.id_task}`}
-            open={open === 'edit'}
+            open={open === "edit"}
             onOpenChange={() => {
-              setOpen('edit')
+              setOpen("edit");
               setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+                setCurrentRow(null);
+              }, 500);
             }}
             currentRow={currentRow}
             matkuls={matkuls}
           />
-          {/* <MatkulDeleteDialog
-            key={`matkul-delete-${currentRow.id_matkuls}`}
-            open={open === 'delete'}
+          <TaskDeleteDialog
+            key={`task-delete-${currentRow.id_task}`}
+            open={open === "delete"}
             onOpenChange={() => {
-              setOpen('delete')
+              setOpen("delete");
               setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+                setCurrentRow(null);
+              }, 500);
             }}
             currentRow={currentRow}
-          /> */}
+          />
         </>
       )}
     </>
-  )
-}
+  );
+};
