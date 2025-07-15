@@ -39,7 +39,7 @@ export const ActionsDialog = ({ handleResetForm, processing, children, currentRo
               Tekan <b>Simpan</b> untuk menyimpan perubahan.
           </DialogDescription>
         </DialogHeader>
-        <div className="-mr-4 w-full overflow-y-auto py-1 pr-4">{children}</div>
+        <div className="-mr-4 w-full overflow-y-auto py-1">{children}</div>
         <DialogFooter>
           <Button type="submit" form={formName} disabled={processing}>
             {processing && <Loader className="h-4 w-4 animate-spin" />}

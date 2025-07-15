@@ -104,7 +104,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
             Tekan <b>Simpan</b> untuk menyimpan perubahan.
           </DialogDescription>
         </DialogHeader>
-        <div className="-mr-4 w-full overflow-y-auto py-1 pr-4">
+        <div className="-mr-4 w-full overflow-y-auto py-1">
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
             <div className="grid gap-2">
               <Label htmlFor="id_number">
