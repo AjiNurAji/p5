@@ -25,7 +25,7 @@ export const ErrorPage = ({
         <div className="text-center text-muted-foreground">
           {message ?? (
             <p>
-              Kami mohon maaf atas ketidaknyamanan ini. <br /> Silakan coba lagi
+              Kami mohon maaf atas ketidak nyamanan ini. <br /> Silakan coba lagi
               nanti.
             </p>
           )}
