@@ -77,7 +77,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="email">Alamat Email (Opsional) <span className="font-normal text-muted-foreground">({!mustVerifyEmail && auth.user.email && auth.user.email_verified_at === null ? "Belum terverifikasi" : "Terverifikasi"})</span></Label>
+              <Label htmlFor="email">Alamat Email (Opsional) <span className="font-normal text-muted-foreground">({ !auth.user.email ? "Tidak ada email"  : !mustVerifyEmail && auth.user.email_verified_at === null ? "Belum terverifikasi" : "Terverifikasi"})</span></Label>
 
               <Input
                 id="email"
@@ -92,7 +92,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
               <InputError className="mt-2" message={errors.email} />
               {!mustVerifyEmail && auth.user.email && auth.user.email_verified_at === null && (
                 <div>
-                  <p className="-mt-4 text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Alamat email Anda belum terverifikasi.{" "}
                     <Link
                       href={route("verification.send")}
