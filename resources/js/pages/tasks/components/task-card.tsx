@@ -1,22 +1,28 @@
 import { formatDate } from "@/components/custom/date-picker";
+import { TableRowActions } from "@/components/custom/table-row-actions";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useInitials } from "@/hooks/use-initials";
 import { cn } from "@/lib/utils";
 import { Matkul } from "@/pages/matkul/components/data/schema";
-import { SharedData } from "@/types";
+import { SharedData, User } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
-import {
-  CalendarCheck,
-  Edit3,
-  Loader,
-  NotebookTabs,
-  Trash2,
-} from "lucide-react";
+import { CalendarCheck, Ellipsis, Loader } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
-import { PiChalkboardTeacherLight } from "react-icons/pi";
 import { useTasks } from "../context/tasks-context";
 
 interface TaskCardProps {
@@ -29,6 +35,8 @@ interface TaskCardProps {
       id_task: string;
       id_number: string;
       status: string;
+      updated_at: string;
+      user: User;
     }[];
   };
 }
@@ -55,6 +63,9 @@ export const TaskCard = ({ props }: TaskCardProps) => {
     id_task: props.id_task,
     id_number: user.id_number,
   });
+
+  const deadline = formatDate(new Date(props.deadline));
+  const getInitials = useInitials();
 
   const handleTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -93,51 +104,47 @@ export const TaskCard = ({ props }: TaskCardProps) => {
 
   return (
     <Card className="gap-0 overflow-hidden p-0">
+      <CardHeader className="px-3 py-2">
+        <div className="flex w-full items-center">
+          <div className="flex w-fit flex-col items-start gap-0.5">
+            <h2 className="text-sm font-medium">{props.matkul.name}</h2>
+            <p className="text-[10px] font-normal text-muted-foreground">
+              {props.matkul.lecturer}
+            </p>
+          </div>
+          <div className="ml-auto space-x-1">
+            <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
+              Semester {props.matkul.semester}
+            </Badge>
+            <Badge
+              className={cn("text-[10px] capitalize", {
+                "bg-red-500/20 text-red-500":
+                  !execution_data || execution_data?.status === "pending",
+                "bg-blue-500/20 text-blue-500":
+                  execution_data?.status === "progress",
+                "bg-green-500/20 text-green-500":
+                  execution_data?.status === "finished",
+              })}
+            >
+              {!execution_data || execution_data?.status === "pending"
+                ? "Belum dikerjakan"
+                : execution_data?.status === "finished"
+                  ? "Sudah dikerjakan"
+                  : execution_data?.status}
+            </Badge>
+          </div>
+        </div>
+      </CardHeader>
       <CardContent className="overflow-hidden p-3 wrap-break-word">
         <p className="text-2xl">{props.task}</p>
       </CardContent>
       <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
-        <div className="flex w-full items-center">
-          <div className="flex w-fit items-center gap-1">
-            <NotebookTabs className="size-4" />
-            <h2 className="text-sm font-medium">{props.matkul.name}</h2>
-          </div>
-          <Badge className="ml-auto bg-yellow-500/20 text-xs text-yellow-500">
-            Semester {props.matkul.semester}
-          </Badge>
-        </div>
-        <div className="flex w-full items-start justify-start">
-          <Badge
-            className={cn("text-xs capitalize", {
-              "bg-red-500/20 text-red-500":
-                !execution_data || execution_data?.status === "pending",
-              "bg-blue-500/20 text-blue-500":
-                execution_data?.status === "progress",
-              "bg-green-500/20 text-green-500":
-                execution_data?.status === "finished",
-            })}
-          >
-            {!execution_data || execution_data?.status === "pending"
-              ? "Belum dikerjakan"
-              : execution_data?.status === "finished"
-                ? "Sudah dikerjakan"
-                : execution_data?.status}
-          </Badge>
-        </div>
         <Separator />
         <div className="mt-2 flex w-full items-center gap-2">
-          <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="flex items-center gap-2 text-muted-foreground">
             <CalendarCheck className="size-3 sm:size-4" />
-            <span className="text-[10px] sm:text-xs">
-              {formatDate(new Date(props.deadline))}
-            </span>
+            <span className="text-[10px] sm:text-xs">{deadline}</span>
           </div>
-          <Badge className="ml-auto" variant="secondary">
-            <PiChalkboardTeacherLight className="size-7" />
-            <span className="text-[10px] font-medium sm:text-xs">
-              {props.matkul.lecturer}
-            </span>
-          </Badge>
         </div>
         <div className="flex w-full flex-wrap items-center justify-between gap-2">
           {execution_data?.status !== "finished" ? (
@@ -151,34 +158,45 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               {!execution_data ? "Kerjakan" : "Selesaikan"}
             </Button>
           ) : (
-            <p className="text-sm">
-              {props.execution?.length} Telah mengerjakan.
-            </p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex cursor-pointer -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+                  {props.execution
+                    ?.sort(
+                      (a, b) =>
+                        new Date(b.updated_at).getTime() -
+                        new Date(a.updated_at).getTime(),
+                    )
+                    .slice(0, 3)
+                    .map(({ user }) => (
+                      <Avatar className="size-6">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
+                          {getInitials(user.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                  {props.execution.length > 4 && (
+                    <Avatar className="size-6">
+                      <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
+                        <Ellipsis className="size-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="capitalize">sudah mengerjakan</p>
+              </TooltipContent>
+            </Tooltip>
           )}
           {user.role !== "member" && (
-            <div className="space-x-2">
-              <Button
-                size="icon"
-                onClick={() => {
-                  setOpen("edit");
-                  setCurrentRow(props);
-                }}
-                variant="outline"
-              >
-                <Edit3 className="size-4" />
-              </Button>
-              <Button
-                size="icon"
-                onClick={() => {
-                  setOpen("delete");
-                  setCurrentRow(props);
-                }}
-                variant="outline"
-                className="bg-destructive/15 text-destructive hover:bg-destructive/25 hover:text-red-500"
-              >
-                <Trash2 className="size-4" />
-              </Button>
-            </div>
+            <TableRowActions
+              table={false}
+              row={props}
+              setCurrentRow={setCurrentRow}
+              setOpen={setOpen}
+            />
           )}
         </div>
       </CardFooter>
