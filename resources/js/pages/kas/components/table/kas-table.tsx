@@ -10,10 +10,12 @@ import { Kas } from "../../data/schema";
 interface DataTableProps {
   columns: ColumnDef<Kas>[];
   data: Kas[];
+  all: boolean;
+  setAll: (value: boolean) => void;
 }
 
 
-export const KasTable = ({ columns, data }: DataTableProps) => {
+export const KasTable = ({ columns, data, all, setAll }: DataTableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -42,7 +44,7 @@ export const KasTable = ({ columns, data }: DataTableProps) => {
 
   return (
     <div className="space-y-4">
-      <KasTableToolbar table={table} />
+      <KasTableToolbar all={all} setAll={setAll} table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

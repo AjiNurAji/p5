@@ -34,9 +34,7 @@ const KasPage = ({ kaslist, users, userKasList, auth: { user } }: Props) => {
   const kasList = kasListSchema.parse(
     user.role === "member" ? userKasList.list : all ? kaslist : userKasList.list,
   );
-
-  console.log(kasList)
-
+  
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <KasProvider>
@@ -50,7 +48,7 @@ const KasPage = ({ kaslist, users, userKasList, auth: { user } }: Props) => {
             {user.role !== "member" && <KasButton />}
           </div>
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-            <KasTable data={kasList} columns={columns} />
+            <KasTable data={kasList} columns={columns} all={all} setAll={setAll} />
           </div>
         </div>
 

@@ -9,7 +9,7 @@ const kasSchema = z.object({
   id_number: z.string(),
   user: User,
   payment_on: z.coerce.date(),
-  nominal: z.string(),
+  nominal: z.number(),
   method: z.string()
 });
 

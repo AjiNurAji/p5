@@ -41,15 +41,12 @@ export const columns: ColumnDef<Kas>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "user",
+    accessorFn: (row) => row.user.name,
+    id: "user",
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Nama Mahasiswa" />
     ),
-    cell: ({ row }) => {
-      const { name } = row.getValue("user") as { name: string };
-
-      return <LongText className="max-w-36">{name}</LongText>;
-    },
+    cell: ({ getValue }) => (<LongText className="max-w-36">{getValue() as string}</LongText>),
     meta: {
       className: cn(
         "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] lg:drop-shadow-none dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]",
@@ -59,6 +56,7 @@ export const columns: ColumnDef<Kas>[] = [
     },
     enableHiding: false,
     sortDescFirst: false,
+    filterFn: "includesString"
   },
   {
     accessorKey: "method",
