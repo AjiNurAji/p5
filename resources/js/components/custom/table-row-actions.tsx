@@ -18,7 +18,7 @@ interface DataTableRowActionsProps {
   row: any;
   setCurrentRow: (c: any) => void;
   setOpen: (open: any) => void;
-  table: boolean;
+  table?: boolean;
 }
 
 export function TableRowActions({
@@ -33,7 +33,7 @@ export function TableRowActions({
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
             <Button
-              variant={table ? "ghost" : "outline"}
+              variant="ghost"
               className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
             >
               {table ? (

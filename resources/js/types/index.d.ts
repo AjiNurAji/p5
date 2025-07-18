@@ -78,3 +78,12 @@ export type TaskType = {
   deadline: Date;
   matkul: Matkul;
 }
+
+export interface Kas {
+  id_kas: string;
+  id_number: string;
+  user: User;
+  nominal: number;
+  payment_on: Date;
+  method: "cash" | "cashless";
+}

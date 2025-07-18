@@ -61,4 +61,10 @@ class User extends Authenticatable
   {
     return $this->hasMany(ExecutionTask::class, 'id_number');
   }
+
+  // get execure task
+  public function kas(): HasMany
+  {
+    return $this->hasMany(Kas::class, 'id_number');
+  }
 }
