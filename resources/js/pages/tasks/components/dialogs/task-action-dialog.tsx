@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Matkul } from "@/pages/matkul/components/data/schema";
-import { SharedData, TaskType } from "@/types";
-import { useForm, usePage } from "@inertiajs/react";
+import { TaskType } from "@/types";
+import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
@@ -26,9 +26,6 @@ type TaskForm = {
 
 export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Props) => {
   const isEdit = !!currentRow;
-  const {
-    auth: { user },
-  } = usePage<SharedData>().props;
 
   const { data, setData, post, processing } = useForm<Required<TaskForm>>(
     isEdit

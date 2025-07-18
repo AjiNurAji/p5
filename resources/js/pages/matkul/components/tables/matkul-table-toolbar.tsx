@@ -25,15 +25,6 @@ export const MatkulTableToolbar = <TData,>({
           }
           className='h-8 w-[150px] lg:w-[250px]'
         />
-        {/* <div className='flex gap-x-2'>
-          {table.getColumn('role') && (
-            <FacetedFilter
-              column={table.getColumn('role')}
-              title='Peran'
-              options={userTypes.map((t) => ({ ...t }))}
-            />
-          )}
-        </div> */}
         {isFiltered && (
           <Button
             variant='ghost'

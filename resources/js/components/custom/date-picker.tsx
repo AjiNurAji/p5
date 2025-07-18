@@ -52,10 +52,10 @@ export const DatePicker = ({ withTime, value, setValue, keyName }: Props) => {
   const [date, setDate] = useState<string>(formatDate(value));
 
   return (
-    <div className="relative flex-col sm:flex-row flex gap-2">
+    <div className="relative w-full gap-2 grid grid-cols-1 sm:grid-cols-2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button id="date-picker" variant="outline" className={cn('w-full font-normal bg-transparent dark:bg-input/30', !value && 'text-muted-foreground')}>
+          <Button id={keyName} variant="outline" className={cn('w-full font-normal bg-transparent dark:bg-input/30', !value && 'text-muted-foreground')}>
             {value ? date : <span className="sr-only">Pilih tanggal</span>}
             <CalendarIcon className="ml-auto size-4" />
           </Button>
@@ -97,7 +97,7 @@ export const DatePicker = ({ withTime, value, setValue, keyName }: Props) => {
             setDate(formatDate(newDate));
             setTime(e.target.value);
           }}
-          className="w-full sm:w-46 text-sm appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+          className="!w-full inline-block sm:w-46 text-sm appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       )}
     </div>

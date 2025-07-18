@@ -28,6 +28,7 @@ interface TasksProps {
     id_number: string;
     user: User;
     status: string;
+    updated_at: string;
   }[];
 }
 
