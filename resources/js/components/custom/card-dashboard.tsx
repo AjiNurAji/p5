@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Separator } from "../ui/separator";
+import { cn } from "@/lib/utils";
 
 export interface CardDashboardProps {
   title: string;
@@ -10,16 +11,17 @@ export interface CardDashboardProps {
 
 export const CardDashboard = ({ title, icon: Icon, value }: CardDashboardProps) => {
   return (
-    <Card className="gap-2 px-3 py-2">
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 p-0'>
-        <CardTitle className='text-sm font-medium capitalize p-0'>
-          {title}
-        </CardTitle>
-        <Icon className='text-muted-foreground size-4.5' />
-      </CardHeader>
-      <Separator />
-      <CardContent className="p-0">
-        <div className='text-2xl font-bold text-center'>{value}</div>
+    <Card className="pt-0">
+      <CardContent className="px-6 flex flex-wrap gap-2 justify-between pt-6">
+        <div>
+          <p className="text-muted-foreground text-xs tracking-wide uppercase">{title}</p>
+          <div className="mt-1">
+            <h3 className="text-xl font-medium">{value}</h3>
+          </div>
+        </div>
+        <div className="bg-primary/10 flex h-[46px] w-[46px] items-center justify-center rounded-lg">
+          <Icon className="text-primary h-5 w-5" />
+        </div>
       </CardContent>
     </Card>
   )

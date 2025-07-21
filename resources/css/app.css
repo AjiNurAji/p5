@@ -4,6 +4,10 @@
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.tsx';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -184,7 +188,7 @@
     @apply !pointer-events-auto cursor-not-allowed;
   }
 
-  input[type="time"], button[role="combobox"] {
+  input, input[type="time"], button[role="combobox"] {
     @apply dark:!bg-input/30;
   }
 }

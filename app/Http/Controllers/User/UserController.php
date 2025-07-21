@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kas;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,10 +20,11 @@ class UserController extends Controller
       $user = User::all();
       $task = Task::all();
       $execute_task = Auth::user()->execute_task;
+      $kas = Kas::all()->sum("nominal");
 
       return Inertia::render("dashboard", [
         "user_card" => [
-          "title" => "total pengguna",
+          "title" => "total mahasiswa",
           "count" => $user->count(),
         ],
         "task_card" => [
@@ -32,6 +34,10 @@ class UserController extends Controller
         "execution_task_card" => [
           "title" => "tugas terselesaikan",
           "count" => $execute_task->where("status", "finished")->count(),
+        ],
+        "kas_card" => [
+          "title" => "total kas",
+          "count" => $kas,
         ]
       ]);
     }
