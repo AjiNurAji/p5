@@ -62,7 +62,7 @@ export const columns: ColumnDef<User>[] = [
       <TableColumnHeader column={column} title='Nama Lengkap' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('name')}</div>
+      <div className='w-fit text-nowrap capitalize'>{row.getValue('name')}</div>
     ),
     enableHiding: false,
     enableSorting: false
@@ -73,7 +73,7 @@ export const columns: ColumnDef<User>[] = [
       <TableColumnHeader column={column} title='Alamat Email' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('email') || '-'}</div>
+      <div className='w-fit text-nowrap lowercase'>{row.getValue('email') || '-'}</div>
     ),
     enableSorting: true,
     enableHiding: true,

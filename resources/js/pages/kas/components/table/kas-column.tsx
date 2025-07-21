@@ -46,7 +46,7 @@ export const columns: ColumnDef<Kas>[] = [
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Nama Mahasiswa" />
     ),
-    cell: ({ getValue }) => (<LongText className="max-w-36">{getValue() as string}</LongText>),
+    cell: ({ getValue }) => (<LongText className="max-w-36 capitalize">{getValue() as string}</LongText>),
     meta: {
       className: cn(
         "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] lg:drop-shadow-none dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]",
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Metode" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{row.getValue("method") == "cash" ? "Tunai" : "Transfer"}</div>
+      <div className="w-fit text-nowrap capitalize">{row.getValue("method") == "cash" ? "Tunai" : "Transfer"}</div>
     ),
     enableSorting: false,
     enableHiding: true,

@@ -44,7 +44,7 @@ export const columns: ColumnDef<Matkul>[] = [
       <TableColumnHeader column={column} title='Mata Kuliah' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-36'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-36 capitalize'>{row.getValue('name')}</LongText>
     ),
     meta: {
       className: cn(
@@ -62,7 +62,7 @@ export const columns: ColumnDef<Matkul>[] = [
       <TableColumnHeader column={column} title='Dosen Pengampu' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('lecturer')}</div>
+      <div className='w-fit text-nowrap capitalize'>{row.getValue('lecturer')}</div>
     ),
     enableSorting: false,
     enableHiding: true,
