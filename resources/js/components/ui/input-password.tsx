@@ -4,15 +4,16 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils";
 import { Eye, EyeClosed } from "lucide-react";
 
-type propsInput = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'>;
+type propsInput = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & { ref?: any };
 
-export const InputPassword = ({ className, disabled, ...props }: propsInput) => {
+export const InputPassword = ({ className, disabled, ref, ...props }: propsInput) => {
   const [showPassword, setShowPassword] = React.useState(false)
   return (
     <div className={cn('relative rounded-md', className)}>
         <Input
           type={showPassword ? 'text' : 'password'}
           disabled={disabled}
+          ref={ref}
           {...props}
         />
         <Button
