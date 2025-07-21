@@ -61,7 +61,7 @@ export interface User {
 export interface Matkul {
   id_matkul: string;
   name: string;
-  semester: number;
+  semester?: any;
   lecturer: string;
 }
 
@@ -83,7 +83,7 @@ export interface Kas {
   id_kas: string;
   id_number: string;
   user: User;
-  nominal: number;
+  nominal: any;
   payment_on: Date;
   method: "cash" | "cashless";
 }

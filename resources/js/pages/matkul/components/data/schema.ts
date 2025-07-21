@@ -4,7 +4,7 @@ const matkulSchema = z.object({
   id_matkul: z.string(),
   name: z.string(),
   lecturer: z.string(),
-  semester: z.number(),
+  semester: z.any(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
 });
