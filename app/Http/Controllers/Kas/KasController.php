@@ -21,15 +21,10 @@ class KasController extends Controller
   {
     $users = User::all();
     $kas = Kas::with("user")->orderBy("updated_at", "DESC")->get();
-    $userKas = Auth::user()->kas;
 
     return Inertia::render("kas/kas", [
       "users" => $users,
       "kaslist" => $kas,
-      "userKasList" => [
-        "list" => $userKas,
-        "cash" => $userKas->sum("nominal"),
-      ]
     ]);
   }
 

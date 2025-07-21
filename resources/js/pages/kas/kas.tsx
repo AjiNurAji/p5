@@ -3,12 +3,12 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, Kas, SharedData, User } from "@/types";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
+import { KasDialogs } from "./components/dialogs/kas-dialogs";
 import { KasButton } from "./components/kas-button";
+import { columns } from "./components/table/kas-column";
+import { KasTable } from "./components/table/kas-table";
 import KasProvider from "./context/kas-context";
 import { kasListSchema } from "./data/schema";
-import { KasDialogs } from "./components/dialogs/kas-dialogs";
-import { KasTable } from "./components/table/kas-table";
-import { columns } from "./components/table/kas-column";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -17,24 +17,19 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-interface KasListProps {
-  list: Kas[];
-  cash: number;
-  cashless: number;
-}
-
 interface Props extends SharedData {
   kaslist: Kas[];
-  userKasList: KasListProps;
   users: User[] | null;
 }
 
-const KasPage = ({ kaslist, users, userKasList, auth: { user } }: Props) => {
+const KasPage = ({ kaslist, users, auth: { user } }: Props) => {
   const [all, setAll] = useState<boolean>(true);
   const kasList = kasListSchema.parse(
-    user.role === "member" ? userKasList.list : all ? kaslist : userKasList.list,
+    all
+      ? kaslist
+      : kaslist.filter(({ id_number }) => id_number === user.id_number),
   );
-  
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <KasProvider>
@@ -48,7 +43,12 @@ const KasPage = ({ kaslist, users, userKasList, auth: { user } }: Props) => {
             {user.role !== "member" && <KasButton />}
           </div>
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-            <KasTable data={kasList} columns={columns} all={all} setAll={setAll} />
+            <KasTable
+              data={kasList}
+              columns={columns}
+              all={all}
+              setAll={setAll}
+            />
           </div>
         </div>
 
