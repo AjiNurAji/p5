@@ -14,46 +14,46 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
   /**
-   * Show the user's profile settings page.
+   * Show the user"s profile settings page.
    */
   public function edit(Request $request): Response
   {
-    return Inertia::render('settings/profile', [
-      'mustVerifyEmail' => $request->user()->hasVerifiedEmail(),
-      'status' => $request->session()->get('status'),
+    return Inertia::render("settings/profile", [
+      "mustVerifyEmail" => $request->user()->hasVerifiedEmail(),
+      "status" => $request->session()->get("status"),
     ]);
   }
 
   /**
-   * Update the user's profile settings.
+   * Update the user"s profile settings.
    */
   public function update(ProfileUpdateRequest $request): RedirectResponse
   {
-    
+
     $request->user()->fill($request->validated());
 
-    if ($request->user()->isDirty('email')) {
+    if ($request->user()->isDirty("email")) {
       $request->user()->email_verified_at = null;
     }
 
     $request->user()->save();
 
-    return to_route('profile.edit');
+    return to_route("profile.edit");
   }
 
   /**
-   * Delete the user's account.
+   * Delete the user"s account.
    */
   public function destroy(Request $request): RedirectResponse
   {
     $request->validate([
-      'password' => ['required', 'current_password'],
+      "password" => ["required", "current_password"],
     ]);
 
     $user = $request->user();
 
-    if ($user->role === "superadmin") {
-      return back()->withErrors('error', 'superadmin can\'t deleted');
+    if ($user->role === "superadmin" && $user->id_number === env("AUTHOR_ID")) {
+      $this->throwError(["message" => "Pengguna ini tidak dapat dihapus!"]);
     }
 
     Auth::logout();
@@ -63,6 +63,6 @@ class ProfileController extends Controller
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect('/');
+    return redirect("/");
   }
 }

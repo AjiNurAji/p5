@@ -131,7 +131,7 @@ class UserController extends Controller
       "role" => "Kamu tidak memiliki akses untuk mennghapus superadmin!",
     ]);
 
-    if ($user->id_number === intval(env("AUTHOR_ID"))) throw $this->throwError([
+    if ($user->id_number === env("AUTHOR_ID")) throw $this->throwError([
       "role" => "Pengguna ini tidak dapat dihapus!",
     ]);
 
