@@ -14,33 +14,33 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-  
-  public function dashboard()
-    {
-      $user = User::all();
-      $task = Task::all();
-      $execute_task = Auth::user()->execute_task;
-      $kas = Kas::all()->sum("nominal");
 
-      return Inertia::render("dashboard", [
-        "user_card" => [
-          "title" => "total mahasiswa",
-          "count" => $user->count(),
-        ],
-        "task_card" => [
-          "title" => "total tugas",
-          "count" => $task->count(),
-        ],
-        "execution_task_card" => [
-          "title" => "tugas terselesaikan",
-          "count" => $execute_task->where("status", "finished")->count(),
-        ],
-        "kas_card" => [
-          "title" => "total kas",
-          "count" => $kas,
-        ]
-      ]);
-    }
+  public function dashboard()
+  {
+    $user = User::all();
+    $task = Task::all();
+    $execute_task = Auth::user()->execute_task;
+    $kas = Kas::all()->sum("nominal");
+
+    return Inertia::render("dashboard", [
+      "user_card" => [
+        "title" => "total mahasiswa",
+        "count" => $user->count(),
+      ],
+      "task_card" => [
+        "title" => "total tugas",
+        "count" => $task->count(),
+      ],
+      "execution_task_card" => [
+        "title" => "tugas terselesaikan",
+        "count" => $execute_task->where("status", "finished")->count(),
+      ],
+      "kas_card" => [
+        "title" => "total kas",
+        "count" => $kas,
+      ]
+    ]);
+  }
 
   /**
    * Display a listing of the resource.
@@ -103,6 +103,10 @@ class UserController extends Controller
       ]);
 
       $user->password = Hash::make($request->input("password"));
+    }
+
+    if ($request->input("email") && !$user->email_verified_at) {
+      $user->sendEmailVerificationNotification();
     }
 
     $user->save();
