@@ -103,7 +103,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
   };
 
   return (
-    <Card className="gap-0 overflow-hidden p-0">
+    <Card className="gap-0 overflow-hidden p-0 h-auto">
       <CardHeader className="px-3 py-2">
         <div className="flex w-full items-center">
           <div className="flex w-fit flex-col items-start gap-0.5">

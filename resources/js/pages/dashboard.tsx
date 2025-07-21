@@ -1,6 +1,7 @@
 import { CardDashboard } from '@/components/custom/card-dashboard';
 import { RecentSales } from '@/components/custom/recent-sales';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import useCurrency from '@/hooks/use-currency';
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -17,27 +18,22 @@ interface CardProps {
   title: string;
   count: number;
 }
-
 interface Props extends SharedData {
   user_card: CardProps;
   task_card: CardProps;
   execution_task_card: CardProps;
+  kas_card: CardProps;
 }
 
 export default function Dashboard() {
-  const { user_card, task_card, execution_task_card } = usePage<Props>().props;
+  const { user_card, task_card, execution_task_card, kas_card } = usePage<Props>().props;
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Dasbor" />
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
         <div className="grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <CardDashboard title={user_card.title} icon={UserRound} value={user_card.count} />
-          <CardDashboard title='Total Kas' icon={DollarSign} value={
-            Intl.NumberFormat("en-ID", {
-              style: 'currency',
-              currency: 'IDR',
-            }).format(150000)
-          } />
+          <CardDashboard title={kas_card.title} icon={DollarSign} value={useCurrency(kas_card.count)} />
           <CardDashboard title={task_card.title} icon={ListTodo} value={task_card.count} />
           <CardDashboard title={execution_task_card.title} icon={ListCheck} value={execution_task_card.count} />
         </div>
