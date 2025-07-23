@@ -108,13 +108,12 @@ const TaskPage = () => {
             setStatusType={setStatusType}
           />
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-            <WhenVisible data={tasks.toString()} fallback={<TaskSkeleton />}>
               {tasks.length && filteredTasks.length ? (
                 <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
                   {filteredTasks.map((task) => (
                     <WhenVisible
                       data={task.toString()}
-                      fallback={<TaskSkeleton isSingle />}
+                      fallback={<TaskSkeleton />}
                     >
                       <TaskCard key={task.id_task} props={task} />
                     </WhenVisible>
@@ -131,7 +130,6 @@ const TaskPage = () => {
                   </CardContent>
                 </Card>
               )}
-            </WhenVisible>
           </div>
         </div>
 
