@@ -2,13 +2,14 @@ import Heading from "@/components/heading";
 import { Card, CardContent } from "@/components/ui/card";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, SharedData, User } from "@/types";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, usePage, WhenVisible } from "@inertiajs/react";
 import { useState } from "react";
 import { Matkul } from "../matkul/components/data/schema";
 import { TaskDialogs } from "./components/dialogs/task-dialogs";
 import { TaskButton } from "./components/task-buttons";
 import { TaskCard } from "./components/task-card";
 import { TaskFilters } from "./components/task-filters";
+import { TaskSkeleton } from "./components/task-skeleton";
 import TasksProvider from "./context/tasks-context";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -107,23 +108,30 @@ const TaskPage = () => {
             setStatusType={setStatusType}
           />
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-            {tasks.length && filteredTasks.length ? (
-              <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
-                {filteredTasks.map((task) => (
-                  <TaskCard key={task.id_task} props={task} />
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent>
-                  <p className="w-full text-center">
-                    {!tasks.length && !filteredTasks.length
-                      ? "Belum ada tugas yang ditambahkan."
-                      : "Tugas tidak ditemukan."}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+            <WhenVisible data={tasks.toString()} fallback={<TaskSkeleton />}>
+              {tasks.length && filteredTasks.length ? (
+                <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
+                  {filteredTasks.map((task) => (
+                    <WhenVisible
+                      data={task.toString()}
+                      fallback={<TaskSkeleton isSingle />}
+                    >
+                      <TaskCard key={task.id_task} props={task} />
+                    </WhenVisible>
+                  ))}
+                </div>
+              ) : (
+                <Card>
+                  <CardContent>
+                    <p className="w-full text-center">
+                      {!tasks.length && !filteredTasks.length
+                        ? "Belum ada tugas yang ditambahkan."
+                        : "Tugas tidak ditemukan."}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </WhenVisible>
           </div>
         </div>
 
