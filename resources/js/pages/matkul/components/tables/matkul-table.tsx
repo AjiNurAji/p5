@@ -63,7 +63,7 @@ export const MatkulTable = ({ columns, data }: DataTableProps) => {
     <div className="space-y-4">
       <MatkulTableToolbar table={table} />
       <WhenVisible
-        data={data.toString()}
+        data="matkuls"
         fallback={<Skeleton className="h-20 w-full rounded-xl" />}
       >
         <div className="rounded-md border">

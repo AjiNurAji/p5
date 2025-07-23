@@ -1,5 +1,18 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton"
 
-export const TaskSkeleton = () => {
-  return <Skeleton className="h-50 w-full rounded-xl" />;
-};
+interface Props {
+  isSingle?: boolean;
+}
+
+export const TaskSkeleton = ({ isSingle = false }: Props) => {
+  
+  if (isSingle) return <Skeleton className="rounded-xl w-full h-50" />
+
+  return (
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
+      <Skeleton className="rounded-xl w-full h-50" />
+      <Skeleton className="rounded-xl w-full h-50" />
+      <Skeleton className="rounded-xl w-full h-50" />
+    </div>
+  )
+}

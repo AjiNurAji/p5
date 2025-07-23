@@ -23,21 +23,23 @@ class UserController extends Controller
     $kas = Kas::all()->sum("nominal");
 
     return Inertia::render("dashboard", [
-      "user_card" => [
-        "title" => "total mahasiswa",
-        "count" => $user->count(),
-      ],
-      "task_card" => [
-        "title" => "total tugas",
-        "count" => $task->count(),
-      ],
-      "execution_task_card" => [
-        "title" => "tugas terselesaikan",
-        "count" => $execute_task->where("status", "finished")->count(),
-      ],
-      "kas_card" => [
-        "title" => "total kas",
-        "count" => $kas,
+      "cards" => [
+        "user_card" => [
+          "title" => "total mahasiswa",
+          "count" => $user->count(),
+        ],
+        "task_card" => [
+          "title" => "total tugas",
+          "count" => $task->count(),
+        ],
+        "execution_task_card" => [
+          "title" => "tugas terselesaikan",
+          "count" => $execute_task->where("status", "finished")->count(),
+        ],
+        "kas_card" => [
+          "title" => "total kas",
+          "count" => $kas,
+        ]
       ]
     ]);
   }

@@ -72,7 +72,7 @@ export const UsersTable = ({ columns, data }: DataTableProps) => {
     <div className="space-y-4">
       <TableToolbar table={table} />
       <WhenVisible
-        data={data.toString()}
+        data="users"
         fallback={<Skeleton className="h-20 w-full rounded-xl" />}
       >
         <div className="rounded-md border">
