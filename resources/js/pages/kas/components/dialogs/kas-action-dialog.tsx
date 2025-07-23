@@ -50,6 +50,8 @@ export const KasActionDialog = ({
         },
   );
 
+  console.log(data)
+
   const methodType = [
     { value: "cash", label: "Tunai" },
     { value: "cashless", label: "Transfer" },
@@ -106,13 +108,11 @@ export const KasActionDialog = ({
     >
       <form id="kas-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
         <div className="grid gap-2">
-          <Label htmlFor="task">Nama Mahasiswa</Label>
+          <Label htmlFor="student">Nama Mahasiswa</Label>
 
           <KasUserFilter
-            title="Mahasiswa"
             users={users}
             value={data.id_number}
-            defaultValue={currentRow?.user.id_number}
             setData={setData}
           />
         </div>

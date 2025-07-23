@@ -93,16 +93,58 @@ class KasController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, string $id_kas)
   {
-    //
+    // validate request
+    $request->validate([
+      "id_number" => "required",
+      "method" => "required|string",
+      "nominal" => "required",
+      "payment_on" => "required"
+    ]);
+
+    // validate user
+    $user = $request->user();
+
+    if (!$user) {
+      return redirect()->route("login");
+    }
+
+    if ($user->role === "member") return $this->throwError([
+      "role" => "Kamu tidak memiliki akses!",
+    ]);
+
+    $data = Kas::find($id_kas);
+
+    if (!$data) $this->throwError(["message" => "Data tidak ditemukan!"]);
+
+    $data->update($request->all());
+
+    return back()->with("success", ["message" => "Berhasil mengedit data."]);
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(string $id_kas, Request $request)
   {
-    //
+    // validate user
+    $user = $request->user();
+
+    if (!$user) {
+      return redirect()->route("login");
+    }
+
+    if ($user->role === "member") return $this->throwError([
+      "role" => "Kamu tidak memiliki akses!",
+    ]);
+
+    $data = Kas::find($id_kas);
+
+    if (!$data) $this->throwError(["message" => "Data tidak ditemukan!"]);
+
+    $data->delete();
+
+    return back()->with("success", ["message" => "Berhasil menghapus data."]);
   }
 }

@@ -8,6 +8,8 @@ import { useKas } from "../../context/kas-context";
 import { Kas } from "../../data/schema";
 import { formatDate } from "@/components/custom/date-picker";
 import useCurrency from "@/hooks/use-currency";
+import { usePage } from "@inertiajs/react";
+import { SharedData } from "@/types";
 
 export const columns: ColumnDef<Kas>[] = [
   {
@@ -94,6 +96,10 @@ export const columns: ColumnDef<Kas>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const { auth: { user } } = usePage<SharedData>().props;
+
+      if (user.role === "member") return;
+
       const { setCurrentRow, setOpen } = useKas();
       return (
         <TableRowActions
