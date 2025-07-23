@@ -20,7 +20,7 @@ class KasController extends Controller
   public function index(): Response
   {
     $users = User::all();
-    $kas = Kas::with(["user" => fn ($u) => $U->withTrashed()])->orderBy("updated_at", "DESC")->get();
+    $kas = Kas::with(["user" => fn ($u) => $u->withTrashed()])->orderBy("updated_at", "DESC")->get();
 
     return Inertia::render("kas/kas", [
       "users" => $users,
