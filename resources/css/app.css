@@ -191,6 +191,10 @@
   input, input[type="time"], button[role="combobox"] {
     @apply dark:!bg-input/30;
   }
+  
+  input[role="combobox"] {
+    @apply dark:!bg-transparent;
+  }
 }
 
 .CollapsibleContent {

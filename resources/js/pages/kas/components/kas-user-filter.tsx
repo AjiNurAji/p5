@@ -19,17 +19,13 @@ import { useState } from "react";
 
 interface Props {
   users: User[] | null;
-  title: string;
   value: string;
-  defaultValue?: string;
   setData: (key: string, value: string) => void;
 }
 
 export const KasUserFilter = ({
   users,
-  title,
   value,
-  defaultValue,
   setData,
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -40,6 +36,7 @@ export const KasUserFilter = ({
         <Button
           variant="outline"
           role="combobox"
+          id="student"
           aria-expanded={open}
           className="w-full justify-between"
         >
