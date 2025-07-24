@@ -47,7 +47,7 @@ export const KasTable = ({ columns, data, all, setAll }: DataTableProps) => {
   return (
     <div className="space-y-4">
       <KasTableToolbar all={all} setAll={setAll} table={table} />
-      <WhenVisible data={data.toString()} fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
+      <WhenVisible data="kaslist" fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
         <div className="rounded-md border">
           <Table>
             <TableHeader>

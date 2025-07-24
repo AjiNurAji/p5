@@ -4,8 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kas;
+use App\Models\Matkul;
+use App\Models\Semester;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -17,31 +20,88 @@ class UserController extends Controller
 
   public function dashboard()
   {
-    $user = User::all();
+    $auth = Auth::user();
     $task = Task::all();
-    $execute_task = Auth::user()->execute_task;
-    $kas = Kas::all()->sum("nominal");
+    $execute_task = $auth->execute_task;
+    $kas = Kas::with("user")->orderBy("payment_on", "DESC")->get();
+    $semester = Semester::where("is_active", true)->first();
+    $matkul = Matkul::where("id_semester", $semester->id_semester)->get();
 
-    return Inertia::render("dashboard", [
-      "cards" => [
-        "user_card" => [
-          "title" => "total mahasiswa",
-          "count" => $user->count(),
+    if ($auth->role === "member") {
+      return Inertia::render("dashboard", [
+        "cards" => [
+          "mykas" => [
+            "title" => "total kas saya",
+            "count" => $kas->where("id_number", $auth->id_number)->sum("nominal"),
+          ],
+          "task_card" => [
+            "title" => "total tugas",
+            "count" => $task->count(),
+          ],
+          "execution_task_card" => [
+            "title" => "tugas terselesaikan",
+            "count" => $execute_task->where("status", "finished")->count(),
+          ],
+          "kas_card" => [
+            "title" => "total kas",
+            "count" => $kas->sum("nominal"),
+          ],
+          "matkul_card" => [
+            "title" => "total mata kuliah",
+            "count" => $matkul->count(),
+          ],
+          "semester_card" => [
+            "title" => "semester aktif",
+            "count" => $semester->semester,
+          ]
         ],
-        "task_card" => [
-          "title" => "total tugas",
-          "count" => $task->count(),
-        ],
-        "execution_task_card" => [
-          "title" => "tugas terselesaikan",
-          "count" => $execute_task->where("status", "finished")->count(),
-        ],
-        "kas_card" => [
-          "title" => "total kas",
-          "count" => $kas,
+        "payment_kas" => [
+          "title" => "pembayaran kas",
+          "transaction_per_month" => $kas->whereBetween("payment_on", [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count(),
+          "data" => $kas->take(5),
         ]
-      ]
-    ]);
+      ]);
+    } else {
+      $user = User::all();
+
+      return Inertia::render("dashboard", [
+        "cards" => [
+          "user_card" => [
+            "title" => "total mahasiswa",
+            "count" => $user->count(),
+          ],
+          "task_card" => [
+            "title" => "total tugas",
+            "count" => $task->count(),
+          ],
+          "execution_task_card" => [
+            "title" => "tugas terselesaikan",
+            "count" => $execute_task->where("status", "finished")->count(),
+          ],
+          "kas_card" => [
+            "title" => "total kas",
+            "count" => $kas->sum("nominal"),
+          ],
+          "mykas" => [
+            "title" => "total kas saya",
+            "count" => $kas->where("id_number", $auth->id_number)->sum("nominal"),
+          ],
+          "matkul_card" => [
+            "title" => "total mata kuliah",
+            "count" => $matkul->count(),
+          ],
+          "semester_card" => [
+            "title" => "semester aktif",
+            "count" => $semester->semester,
+          ]
+        ],
+        "payment_kas" => [
+          "title" => "pembayaran kas",
+          "transaction_per_month" => $kas->whereBetween("payment_on", [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count(),
+          "data" => $kas->take(5),
+        ]
+      ]);
+    }
   }
 
   /**
