@@ -7,6 +7,7 @@ import {
   ReceiptText,
   UsersRound,
 } from "lucide-react";
+import { PiStudent } from "react-icons/pi";
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -35,7 +36,7 @@ export const sidebarData: SidebarData = {
       access: "superadmin,admin",
       items: [
         {
-          title: "pengguna",
+          title: "mahasiswa",
           icon: UsersRound,
           href: route("users.index"),
         },
@@ -49,6 +50,11 @@ export const sidebarData: SidebarData = {
           title: "matkul",
           href: route("matkul.index"),
           icon: BookOpen,
+        },
+        {
+          title: "semester",
+          href: route("semester.index"),
+          icon: PiStudent,
         },
       ],
     },
