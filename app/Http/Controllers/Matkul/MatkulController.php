@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Matkul;
 
 use App\Http\Controllers\Controller;
 use App\Models\Matkul;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -18,10 +19,12 @@ class MatkulController extends Controller
   public function index(): Response
   {
 
-    $matkuls = Matkul::all();
+    $matkuls = Matkul::with("semester")->get();
+    $semester = Semester::where("is_active", true)->first();
 
     return Inertia::render('matkul/matkuls', [
       'matkuls' => $matkuls,
+      'semester' => $semester,
     ]);
   }
 
@@ -54,14 +57,14 @@ class MatkulController extends Controller
     $request->validate([
       'name' => 'required|string',
       'lecturer' => 'required|string',
-      'semester' => 'required|min:1|max:8',
+      'id_semester' => 'required|string',
     ]);
 
     Matkul::create([
       'id_matkul' => Str::uuid(),
       'name' => $request->name,
       'lecturer' => $request->lecturer,
-      'semester' => $request->semester,
+      'id_semester' => $request->id_semester,
     ]);
 
     return back()->with('success', ['message' => 'Data berhasil ditambahkan']);
@@ -93,7 +96,7 @@ class MatkulController extends Controller
     $request->validate([
       'name' => 'required|string',
       'lecturer' => 'required|string',
-      'semester' => 'required'
+      'id_semester' => 'required'
     ]);
 
     // validate user

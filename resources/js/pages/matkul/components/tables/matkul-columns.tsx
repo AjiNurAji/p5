@@ -68,12 +68,13 @@ export const columns: ColumnDef<Matkul>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: 'semester',
+    accessorFn: (row) => row.semester.semester,
+    id: "semester",
     header: ({ column }) => (
       <TableColumnHeader column={column} title='Semester' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('semester')}</div>
+    cell: ({ getValue }) => (
+      <div className='w-fit text-nowrap'>{getValue() as string}</div>
     ),
     enableSorting: false,
     enableHiding: true,

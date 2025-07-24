@@ -1,17 +1,15 @@
 import { CardDashboard } from "@/components/custom/card-dashboard";
-import { RecentSales } from "@/components/custom/recent-sales";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { PaymentListCard } from "@/components/custom/payment-list-card";
+import { SkeletonCardDashboard } from "@/components/custom/skeleton-card-dashboard";
+import { SkeletonDashboardList } from "@/components/custom/skeleton-dashboard-list";
 import useCurrency from "@/hooks/use-currency";
 import AppLayout from "@/layouts/app-layout";
 import { SharedData, type BreadcrumbItem } from "@/types";
-import { Head, usePage } from "@inertiajs/react";
-import { DollarSign, ListCheck, ListTodo, UserRound } from "lucide-react";
+import { Head, usePage, WhenVisible } from "@inertiajs/react";
+import { BookOpen, DollarSign, ListCheck, ListTodo, UserRound } from "lucide-react";
+import { TbMoneybag } from "react-icons/tb";
+import { PiStudent } from "react-icons/pi";
+import { cn } from "@/lib/utils";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -30,61 +28,81 @@ interface Props extends SharedData {
     task_card: CardProps;
     execution_task_card: CardProps;
     kas_card: CardProps;
+    mykas: CardProps;
+    matkul_card: CardProps; 
+    semester_card: CardProps;
   };
 }
 
 export default function Dashboard() {
-  const { cards } = usePage<Props>().props;
+  const {
+    cards,
+    auth: { user },
+  } = usePage<Props>().props;
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Dasbor" />
       <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-        <div className="grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <CardDashboard
-            title={cards.user_card.title}
-            icon={UserRound}
-            value={cards.user_card.count}
-          />
-          <CardDashboard
-            title={cards.kas_card.title}
-            icon={DollarSign}
-            value={useCurrency(cards.kas_card.count)}
-          />
-          <CardDashboard
-            title={cards.task_card.title}
-            icon={ListTodo}
-            value={cards.task_card.count}
-          />
-          <CardDashboard
-            title={cards.execution_task_card.title}
-            icon={ListCheck}
-            value={cards.execution_task_card.count}
-          />
-        </div>
-        <div className="relative grid min-h-[100vh] flex-1 grid-cols-1 gap-4 overflow-hidden rounded-xl md:min-h-min lg:grid-cols-7">
-          <Card className="col-span-1 lg:col-span-4">
-            <CardHeader>
-              <CardTitle>Pembayaran Kas</CardTitle>
-              <CardDescription>
-                Total 24 transaksi kas bulan ini.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RecentSales />
-            </CardContent>
-          </Card>
-          <Card className="col-span-1 lg:col-span-3">
-            <CardHeader>
-              <CardTitle>Pembayaran Kas</CardTitle>
-              <CardDescription>
-                Total 24 transaksi kas bulan ini.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RecentSales />
-            </CardContent>
-          </Card>
-        </div>
+        <WhenVisible data="cards" fallback={<SkeletonCardDashboard />}>
+          <div className="grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {user.role !== "member" && (
+              <CardDashboard
+                className="col-span-1 sm:col-span-2"
+                title={cards.user_card.title}
+                icon={UserRound}
+                value={cards.user_card.count}
+                />
+              )}
+            <CardDashboard
+              className={cn("col-span-1",
+                user.role === "member" && "sm:col-span-2"
+              )}
+              title={cards.matkul_card.title}
+              icon={BookOpen}
+              value={cards.matkul_card.count}
+            />
+            <CardDashboard
+              className={cn("col-span-1",
+                user.role === "member" && "sm:col-span-2"
+              )}
+              title={cards.semester_card.title}
+              icon={PiStudent}
+              value={cards.semester_card.count}
+            />
+            <CardDashboard
+              title={cards.kas_card.title}
+              icon={DollarSign}
+              value={useCurrency(cards.kas_card.count)}
+            />
+            <CardDashboard
+              title={cards.mykas.title}
+              icon={TbMoneybag}
+              value={useCurrency(cards.mykas.count)}
+            />
+            <CardDashboard
+              title={cards.task_card.title}
+              icon={ListTodo}
+              value={cards.task_card.count}
+            />
+            <CardDashboard
+              title={cards.execution_task_card.title}
+              icon={ListCheck}
+              value={cards.execution_task_card.count}
+            />
+          </div>
+        </WhenVisible>
+        <WhenVisible
+          data="payment_kas"
+          fallback={
+            <div className="relative grid h-auto min-h-80 flex-1 grid-cols-1 gap-4 overflow-hidden rounded-xl lg:grid-cols-7">
+              <SkeletonDashboardList className="col-span-1 lg:col-span-7" />
+            </div>
+          }
+        >
+          <div className="relative grid h-auto min-h-80 flex-1 grid-cols-1 gap-4 overflow-hidden rounded-xl lg:grid-cols-7">
+            <PaymentListCard />
+          </div>
+        </WhenVisible>
       </div>
     </AppLayout>
   );

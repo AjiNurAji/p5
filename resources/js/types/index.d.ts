@@ -1,3 +1,4 @@
+import { IconType } from 'react-icons/lib';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
@@ -11,7 +12,7 @@ export interface BreadcrumbItem {
 
 interface BaseNavItem {
 	title: string;
-	icon?: LucideIcon | null;
+	icon?: LucideIcon | IconType | null;
   access?: string;
 }
 
@@ -61,7 +62,8 @@ export interface User {
 export interface Matkul {
   id_matkul: string;
   name: string;
-  semester?: any;
+  id_semester: string;
+  semester: Semester;
   lecturer: string;
 }
 
@@ -86,4 +88,10 @@ export interface Kas {
   nominal: any;
   payment_on: Date;
   method: "cash" | "cashless";
+}
+
+export interface Semester {
+  id_semester: string;
+  semester: number | null;
+  is_active: boolean;
 }

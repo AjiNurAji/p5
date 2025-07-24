@@ -1,10 +1,15 @@
-import { z } from 'zod';
+import { z } from "zod";
+
+const SemesterObject = z.object({
+  semester: z.any(),
+});
 
 const matkulSchema = z.object({
   id_matkul: z.string(),
   name: z.string(),
   lecturer: z.string(),
-  semester: z.any(),
+  id_semester: z.string(),
+  semester: SemesterObject,
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
 });
