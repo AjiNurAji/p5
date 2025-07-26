@@ -25,7 +25,7 @@ class UserController extends Controller
     $execute_task = $auth->execute_task;
     $kas = Kas::with("user")->orderBy("payment_on", "DESC")->get();
     $semester = Semester::where("is_active", true)->first();
-    $matkul = Matkul::where("id_semester", $semester->id_semester)->get();
+    $matkul = $semester ? Matkul::where("id_semester", $semester->id_semester)->get() : [];
 
     if ($auth->role === "member") {
       return Inertia::render("dashboard", [

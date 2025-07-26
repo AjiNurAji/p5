@@ -87,7 +87,7 @@ export const MatkulsActionDialog = ({
       id_matkul: "",
       name: "",
       lecturer: "",
-      id_semester: "",
+      id_semester: semester.id_semester,
     });
   };
 

@@ -114,7 +114,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
           </div>
           <div className="ml-auto space-x-1">
             <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
-              Semester {props.matkul.semester}
+              Semester {props.matkul.semester.semester}
             </Badge>
             <Badge
               className={cn("text-[10px] capitalize", {

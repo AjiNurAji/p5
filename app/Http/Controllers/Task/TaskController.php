@@ -20,7 +20,7 @@ class TaskController extends Controller
    */
   public function index(): Response
   {
-    $tasks = Task::with(["matkul", "execution.user"])->orderBy("updated_at", "DESC")->get();
+    $tasks = Task::with(["matkul.semester", "execution.user"])->orderBy("updated_at", "DESC")->get();
     $matkuls = Matkul::all();
 
     return Inertia::render("tasks/tasks", [
