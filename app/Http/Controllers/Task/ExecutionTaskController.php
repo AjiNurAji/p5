@@ -4,17 +4,28 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExecutionTask;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ExecutionTaskController extends Controller
 {
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(string $id_task): Response
   {
-    //
+    $tasks = Task::with([
+      "matkul.semester",
+      "execution.user" => fn($e) => $e->withTrashed()->orderBy("updated_at", "ASC")
+    ])->find($id_task);
+
+
+    return Inertia::render("tasks/executions/index", [
+      "tasks" => $tasks
+    ]);
   }
 
   /**
