@@ -25,9 +25,13 @@ class UserController extends Controller
     $execute_task = $auth->execute_task;
     $kas = Kas::with("user")->orderBy("payment_on", "DESC")->get();
     $semester = Semester::where("is_active", true)->first();
-    $matkul = $semester ? Matkul::where("id_semester", $semester->id_semester)->get() : [];
+    $matkul = Matkul::where("id_semester", $semester?->id_semester)->get();
 
-    if ($auth->role === "member") {
+    if (
+      $auth->role !== "superadmin" &&
+      $auth->role !== "kosma" &&
+      $auth->role !== "wakosma"
+    ) {
       return Inertia::render("dashboard", [
         "cards" => [
           "mykas" => [
@@ -52,7 +56,7 @@ class UserController extends Controller
           ],
           "semester_card" => [
             "title" => "semester aktif",
-            "count" => $semester->semester,
+            "count" => $semester?->semester,
           ]
         ],
         "payment_kas" => [
@@ -92,7 +96,7 @@ class UserController extends Controller
           ],
           "semester_card" => [
             "title" => "semester aktif",
-            "count" => $semester->semester,
+            "count" => $semester?->semester,
           ]
         ],
         "payment_kas" => [
@@ -153,7 +157,11 @@ class UserController extends Controller
    */
   public function update(Request $request, string $id)
   {
-    if ($request->user()->role === "member") return $this->throwError([
+    if (
+      $request->user()->role !== "superadmin" &&
+      $request->user()->role !== "kosma" &&
+      $request->user()->role !== "wakosma"
+    ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
 
@@ -187,22 +195,37 @@ class UserController extends Controller
    */
   public function destroy(string $id, Request $request)
   {
-    if ($request->user()->role === "member") return $this->throwError([
+    if (
+      $request->user()->role !== "superadmin" &&
+      $request->user()->role !== "kosma" &&
+      $request->user()->role !== "wakosma"
+    ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
 
     $user = User::find($id);
 
-    if ($request->user()->role === "admin" && $user->role === "superadmin") throw $this->throwError([
-      "role" => "Kamu tidak memiliki akses untuk mennghapus superadmin!",
+    if (
+      ($request->user()->role === "kosma" ||
+        $request->user()->role === "wakosma") &&
+      $user->role === "superadmin"
+    ) throw $this->throwError([
+      "role" => "Kamu tidak memiliki akses untuk menghapus superadmin!",
+    ]);
+
+    if (
+      $request->user()->role === "wakosma" &&
+      $user->role === "kosma"
+    ) throw $this->throwError([
+      "role" => "Kamu tidak memiliki akses untuk menghapus kosma!",
     ]);
 
     if ($user->id_number === env("AUTHOR_ID")) throw $this->throwError([
-      "role" => "Pengguna ini tidak dapat dihapus!",
+      "role" => "Mahasiswa ini tidak dapat dihapus!",
     ]);
 
     $user->delete();
 
-    return back()->with("success", ["message" => "Berhasil menghapus pengguna."]);
+    return back()->with("success", ["message" => "Berhasil menghapus data."]);
   }
 }

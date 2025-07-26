@@ -1,10 +1,13 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 const userRoleSchema = z.union([
-  z.literal('superadmin'),
-  z.literal('admin'),
-  z.literal('member'),
-])
+  z.literal("superadmin"),
+  z.literal("kosma"),
+  z.literal("wakosma"),
+  z.literal("sekertaris"),
+  z.literal("bendahara"),
+  z.literal("member"),
+]);
 
 const userSchema = z.object({
   id_number: z.string(),
@@ -14,7 +17,7 @@ const userSchema = z.object({
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
   email_verified_at: z.nullable(z.coerce.date()),
-})
-export type User = z.infer<typeof userSchema>
+});
+export type User = z.infer<typeof userSchema>;
 
-export const userListSchema = z.array(userSchema)
+export const userListSchema = z.array(userSchema);

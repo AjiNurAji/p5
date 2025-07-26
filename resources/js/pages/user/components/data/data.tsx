@@ -1,4 +1,4 @@
-import { Shield, UserRound, UserSquare } from "lucide-react";
+import { Shield, UserRound, UserRoundCog, UserRoundPen, UserSquare, UsersRound } from "lucide-react";
 
 
 export const userTypes = [
@@ -8,9 +8,24 @@ export const userTypes = [
     icon: Shield,
   },
   {
-    label: 'Admin',
-    value: 'admin',
+    label: 'Kosma',
+    value: 'kosma',
     icon: UserSquare,
+  },
+  {
+    label: 'Wakil Kosma',
+    value: 'wakosma',
+    icon: UsersRound,
+  },
+  {
+    label: 'Bendahara',
+    value: 'bendahara',
+    icon: UserRoundCog,
+  },
+  {
+    label: 'Sekertaris',
+    value: 'sekertaris',
+    icon: UserRoundPen,
   },
   {
     label: 'Member',

@@ -9,6 +9,7 @@ import { columns } from "./components/table/kas-column";
 import { KasTable } from "./components/table/kas-table";
 import KasProvider from "./context/kas-context";
 import { kasListSchema } from "./data/schema";
+import { getAccess } from "@/layouts/authorized-layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -40,7 +41,7 @@ const KasPage = ({ kaslist, users, auth: { user } }: Props) => {
               title="Pembayaran Kas"
               description="Pembayaran kas kini lebih transparan dan terkontrol, pantau setiap transaksi dengan mudah!"
             />
-            {user.role !== "member" && <KasButton />}
+            {getAccess(user.role, ["superadmin", "bendahara", "kosma", "wakosma"]) && <KasButton />}
           </div>
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
             <KasTable

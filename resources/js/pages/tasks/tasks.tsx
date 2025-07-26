@@ -11,6 +11,7 @@ import { TaskCard } from "./components/task-card";
 import { TaskFilters } from "./components/task-filters";
 import { TaskSkeleton } from "./components/task-skeleton";
 import TasksProvider from "./context/tasks-context";
+import { getAccess } from "@/layouts/authorized-layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -96,7 +97,7 @@ const TaskPage = () => {
               title="Daftar Tugas"
               description="Kelola daftar tugas yang harus diselesaikan di halaman ini."
             />
-            {user.role !== "member" && <TaskButton />}
+            {getAccess(user.role, ["superadmin", "sekertaris", "kosma", "wakosma"]) && <TaskButton />}
           </div>
           <TaskFilters
             matkuls={matkuls}

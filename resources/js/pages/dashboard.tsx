@@ -10,6 +10,7 @@ import { BookOpen, DollarSign, ListCheck, ListTodo, UserRound } from "lucide-rea
 import { TbMoneybag } from "react-icons/tb";
 import { PiStudent } from "react-icons/pi";
 import { cn } from "@/lib/utils";
+import { getAccess } from "@/layouts/authorized-layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -45,7 +46,7 @@ export default function Dashboard() {
       <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
         <WhenVisible data="cards" fallback={<SkeletonCardDashboard />}>
           <div className="grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {user.role !== "member" && (
+            {getAccess(user.role, ["superadmin", "kosma", "wakosma"]) && (
               <CardDashboard
                 className="col-span-1 sm:col-span-2"
                 title={cards.user_card.title}
@@ -55,7 +56,7 @@ export default function Dashboard() {
               )}
             <CardDashboard
               className={cn("col-span-1",
-                user.role === "member" && "sm:col-span-2"
+                !getAccess(user.role, ["superadmin", "kosma", "wakosma"]) && "sm:col-span-2"
               )}
               title={cards.matkul_card.title}
               icon={BookOpen}
@@ -63,11 +64,11 @@ export default function Dashboard() {
             />
             <CardDashboard
               className={cn("col-span-1",
-                user.role === "member" && "sm:col-span-2"
+                !getAccess(user.role, ["superadmin", "kosma", "wakosma"]) && "sm:col-span-2"
               )}
               title={cards.semester_card.title}
               icon={PiStudent}
-              value={cards.semester_card.count}
+              value={cards.semester_card.count || "Belum ada."}
             />
             <CardDashboard
               title={cards.kas_card.title}

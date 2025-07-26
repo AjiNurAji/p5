@@ -6,6 +6,7 @@ import AppLogo from './app-logo';
 import { footerNavItems, sidebarData } from './data/sidebar-data';
 import { NavFooter } from './nav-footer';
 import { SharedData } from '@/types';
+import { getAccess } from '@/layouts/authorized-layout';
 
 export function AppSidebar() {
   const { auth } = usePage<SharedData>().props;
@@ -27,7 +28,7 @@ export function AppSidebar() {
       <SidebarContent>
         {sidebarData.navGroup.map((props) => (
           props.access ? 
-            props.access.split(',').includes(auth.user.role) && (
+            getAccess(auth.user.role, props.access) && (
               <NavMain key={props.title} {...props} />
             )
           : <NavMain key={props.title} {...props} />

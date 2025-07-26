@@ -28,11 +28,19 @@ class RegisteredUserController extends Controller
    */
   public function store(Request $request)
   {
-    if ($request->user()->role === 'member') return $this->throwError([
+    if (
+      $request->user()->role !== "superadmin" &&
+      $request->user()->role !== "kosma" &&
+      $request->user()->role !== "wakosma"
+    ) return $this->throwError([
       'role' => 'Kamu tidak memiliki akses!',
     ]);
 
-    if ($request->user()->role === 'admin' && $request->input('role') === 'superadmin') throw $this->throwError([
+    if (
+      ($request->user()->role !== "kosma" ||
+      $request->user()->role !== "wakosma") && 
+      $request->input('role') === 'superadmin'
+    ) throw $this->throwError([
       'role' => 'Kamu tidak memiliki akses untuk menambah superadmin!',
     ]);
 

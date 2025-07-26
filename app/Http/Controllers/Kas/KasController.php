@@ -20,7 +20,7 @@ class KasController extends Controller
   public function index(): Response
   {
     $users = User::all();
-    $kas = Kas::with(["user" => fn ($u) => $u->withTrashed()])->orderBy("updated_at", "DESC")->get();
+    $kas = Kas::with(["user" => fn($u) => $u->withTrashed()])->orderBy("updated_at", "DESC")->get();
 
     return Inertia::render("kas/kas", [
       "users" => $users,
@@ -56,7 +56,12 @@ class KasController extends Controller
       return redirect()->route("login");
     }
 
-    if ($user->role === "member") return $this->throwError([
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "bendahara"
+    ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
 
@@ -110,7 +115,12 @@ class KasController extends Controller
       return redirect()->route("login");
     }
 
-    if ($user->role === "member") return $this->throwError([
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "bendahara"
+    ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
 
@@ -135,7 +145,12 @@ class KasController extends Controller
       return redirect()->route("login");
     }
 
-    if ($user->role === "member") return $this->throwError([
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "bendahara"
+    ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
 

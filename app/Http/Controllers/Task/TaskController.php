@@ -50,7 +50,12 @@ class TaskController extends Controller
       return $this->throwError(["message" => "Anda belum login!"]);
     };
 
-    if ($user->role === "member") return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
 
     // validate request
     $request->validate([
@@ -135,7 +140,12 @@ class TaskController extends Controller
       return $this->throwError(["message" => "Anda belum login!"]);
     };
 
-    if ($user->role === "member") return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
 
     $task = Task::find($id_task);
 

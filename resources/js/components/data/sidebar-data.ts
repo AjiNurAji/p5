@@ -33,7 +33,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: "pengguna",
-      access: "superadmin,admin",
+      access: ["superadmin", "kosma", "wakosma"],
       items: [
         {
           title: "mahasiswa",
@@ -44,7 +44,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: "pendidikan",
-      access: "superadmin,admin",
+      access: ["superadmin", "kosma", "wakosma", "sekertaris"],
       items: [
         {
           title: "matkul",

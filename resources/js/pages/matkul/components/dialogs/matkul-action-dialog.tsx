@@ -41,7 +41,7 @@ export const MatkulsActionDialog = ({
           id_matkul: "",
           name: "",
           lecturer: "",
-          id_semester: semester.id_semester,
+          id_semester: semester?.id_semester,
         },
   );
 
@@ -87,7 +87,7 @@ export const MatkulsActionDialog = ({
       id_matkul: "",
       name: "",
       lecturer: "",
-      id_semester: semester.id_semester,
+      id_semester: semester?.id_semester,
     });
   };
 
@@ -135,7 +135,7 @@ export const MatkulsActionDialog = ({
           <Label htmlFor="semester">Semester</Label>
 
           <div className="pointer-events-none flex h-9 w-full min-w-0 items-center rounded-md border border-input bg-transparent px-3 py-1 text-base opacity-50 shadow-xs hover:cursor-not-allowed md:text-sm dark:bg-input/30">
-            {semester.semester}
+            {semester?.semester}
           </div>
         </div>
       </form>
