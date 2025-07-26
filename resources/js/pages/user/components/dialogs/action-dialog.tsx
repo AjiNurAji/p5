@@ -98,9 +98,9 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
     }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader className="text-left">
-          <DialogTitle>{isEdit ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Edit Mahasiswa' : 'Tambah Mahasiswa Baru'}</DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Edit informasi pengguna melalui formulir di bawah ini. ' : 'Isi data di bawah untuk menambahkan pengguna baru. '}
+            {isEdit ? 'Edit informasi mahasiswa melalui formulir di bawah ini. ' : 'Isi data di bawah untuk menambahkan mahasiswa baru. '}
             Tekan <b>Simpan</b> untuk menyimpan perubahan.
           </DialogDescription>
         </DialogHeader>
@@ -153,12 +153,12 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">
-                Role
+                Peran
               </Label>
 
               <Select value={data.role} defaultValue={data.role} onValueChange={(e) => setData('role', e)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Pilih role untuk pengguna" />
+                  <SelectValue placeholder="Pilih peran untuk mahasiswa" />
                 </SelectTrigger>
                 <SelectContent>
                   {roles.map((r) => (

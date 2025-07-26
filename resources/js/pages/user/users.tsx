@@ -27,7 +27,7 @@ const UsersPage = () => {
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Pengguna" />
+      <Head title="Mahasiswa" />
       <UsersProvider>
         {user.role === "member" ? (
           <ErrorPage
@@ -45,8 +45,8 @@ const UsersPage = () => {
           <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
               <Heading
-                title="Daftar Pengguna"
-                description="Atur pengguna dan hak akses mereka dengan mudah di halaman ini."
+                title="Daftar Mahasiswa"
+                description="Atur mahasiswa dan hak akses mereka dengan mudah di halaman ini."
               />
               <UsersPrimaryButtons />
             </div>
