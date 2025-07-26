@@ -15,6 +15,7 @@ import { Menu, } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { footerNavItems, sidebarData } from './data/sidebar-data';
+import AppearanceToggleDropdown from './appearance-dropdown';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
@@ -139,6 +140,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 ))}
               </div>
             </div>
+            <AppearanceToggleDropdown />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="size-10 rounded-full p-1">
