@@ -64,7 +64,7 @@ export const sidebarData: SidebarData = {
 export const footerNavItems: NavItem[] = [
   {
     title: "Pusat Data",
-    href: "/repository",
+    href: "https://drive.google.com/drive/folders/1IS39gpK2-QJoNEAaIdICrYeUCk2SuLP-?usp=sharing",
     icon: Folder,
   },
 ];
