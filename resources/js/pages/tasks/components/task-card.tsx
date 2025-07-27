@@ -19,7 +19,7 @@ import { useInitials } from "@/hooks/use-initials";
 import { cn } from "@/lib/utils";
 import { Matkul } from "@/pages/matkul/components/data/schema";
 import { SharedData, User } from "@/types";
-import { useForm, usePage } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { CalendarCheck, Ellipsis, Loader } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
@@ -103,7 +103,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
   };
 
   return (
-    <Card className="gap-0 overflow-hidden p-0 h-auto">
+    <Card className="h-auto gap-0 overflow-hidden p-0">
       <CardHeader className="px-3 py-2">
         <div className="flex w-full items-center">
           <div className="flex w-fit flex-col items-start gap-0.5">
@@ -114,7 +114,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
           </div>
           <div className="ml-auto space-x-1">
             <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
-              Semester {props.matkul.semester}
+              Semester {props.matkul.semester.semester}
             </Badge>
             <Badge
               className={cn("text-[10px] capitalize", {
@@ -160,30 +160,32 @@ export const TaskCard = ({ props }: TaskCardProps) => {
           ) : (
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="flex cursor-pointer -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
-                  {props.execution
-                    ?.sort(
-                      (a, b) =>
-                        new Date(b.updated_at).getTime() -
-                        new Date(a.updated_at).getTime(),
-                    )
-                    .slice(0, 3)
-                    .map(({ user }) => (
-                      <Avatar className="size-6" key={user.name}>
-                        <AvatarImage src={user.avatar} alt={user.name} />
+                <Link href={route("execution.index", props.id_task)}>
+                  <div className="flex cursor-pointer -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+                    {props.execution
+                      ?.sort(
+                        (a, b) =>
+                          new Date(b.updated_at).getTime() -
+                          new Date(a.updated_at).getTime(),
+                      )
+                      .slice(0, 3)
+                      .map(({ user }) => (
+                        <Avatar className="size-6" key={user.name}>
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
+                            {getInitials(user.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                      ))}
+                    {props.execution.length > 4 && (
+                      <Avatar className="size-6">
                         <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
-                          {getInitials(user.name)}
+                          <Ellipsis className="size-4" />
                         </AvatarFallback>
                       </Avatar>
-                    ))}
-                  {props.execution.length > 4 && (
-                    <Avatar className="size-6">
-                      <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
-                        <Ellipsis className="size-4" />
-                      </AvatarFallback>
-                    </Avatar>
-                  )}
-                </div>
+                    )}
+                  </div>
+                </Link>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="capitalize">sudah mengerjakan</p>

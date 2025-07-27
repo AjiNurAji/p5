@@ -10,6 +10,7 @@ import { formatDate } from "@/components/custom/date-picker";
 import useCurrency from "@/hooks/use-currency";
 import { usePage } from "@inertiajs/react";
 import { SharedData } from "@/types";
+import { getAccess } from "@/layouts/authorized-layout";
 
 export const columns: ColumnDef<Kas>[] = [
   {
@@ -98,7 +99,7 @@ export const columns: ColumnDef<Kas>[] = [
     cell: ({ row }) => {
       const { auth: { user } } = usePage<SharedData>().props;
 
-      if (user.role === "member") return;
+      if (!getAccess(user.role, ["superadmin", "bendahara"])) return;
 
       const { setCurrentRow, setOpen } = useKas();
       return (

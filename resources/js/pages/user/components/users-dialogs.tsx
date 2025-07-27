@@ -8,38 +8,38 @@ export const UserDialogs = () => {
   return (
     <>
       <ActionDialog
-        key='user-add'
-        open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
+        key="user-add"
+        open={open === "add"}
+        onOpenChange={() => setOpen("add")}
       />
 
       {currentRow && (
         <>
           <ActionDialog
             key={`user-edit-${currentRow.id_number}`}
-            open={open === 'edit'}
+            open={open === "edit"}
             onOpenChange={() => {
-              setOpen('edit')
+              setOpen("edit");
               setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+                setCurrentRow(null);
+              }, 500);
             }}
             currentRow={currentRow}
           />
 
           <DeleteDialog
             key={`user-delete-${currentRow.id_number}`}
-            open={open === 'delete'}
+            open={open === "delete"}
             onOpenChange={() => {
-              setOpen('delete')
+              setOpen("delete");
               setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+                setCurrentRow(null);
+              }, 500);
             }}
             currentRow={currentRow}
           />
         </>
       )}
     </>
-  )
-}
+  );
+};

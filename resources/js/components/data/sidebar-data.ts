@@ -33,7 +33,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: "pengguna",
-      access: "superadmin,admin",
+      access: ["superadmin", "kosma", "wakosma"],
       items: [
         {
           title: "mahasiswa",
@@ -44,7 +44,7 @@ export const sidebarData: SidebarData = {
     },
     {
       title: "pendidikan",
-      access: "superadmin,admin",
+      access: ["superadmin", "kosma", "wakosma", "sekertaris"],
       items: [
         {
           title: "matkul",
@@ -64,7 +64,7 @@ export const sidebarData: SidebarData = {
 export const footerNavItems: NavItem[] = [
   {
     title: "Pusat Data",
-    href: "/repository",
+    href: "https://drive.google.com/drive/folders/1IS39gpK2-QJoNEAaIdICrYeUCk2SuLP-?usp=sharing",
     icon: Folder,
   },
 ];

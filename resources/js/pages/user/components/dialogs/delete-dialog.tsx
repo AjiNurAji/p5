@@ -41,7 +41,7 @@ export const DeleteDialog = ({ open, onOpenChange, currentRow }: Props) => {
       disabled={value.trim() !== currentRow.name || processing}
       title={
         <span className="text-red-500 flex justify-start items-center">
-          <AlertTriangle className="inline-block mr-1 size-5 stroke-redtext-red-500" /> Hapus Pengguna
+          <AlertTriangle className="inline-block mr-1 size-5 stroke-redtext-red-500" /> Hapus Mahasiswa
         </span>
       }
       desc={
@@ -49,7 +49,7 @@ export const DeleteDialog = ({ open, onOpenChange, currentRow }: Props) => {
           <p className="mb-2">
             Apakah Anda yakin ingin menghapus <span className="font-bold">{currentRow.name}</span>?
             <br />
-            Tindakan ini akan secara permanen menghapus pengguna dengan peran{' '}
+            Tindakan ini akan secara permanen menghapus mahasiswa dengan peran{' '}
             <span className="font-bold">{currentRow.role.toLocaleUpperCase()}</span> dari sistem. Tindakan ini tidak dapat dibatalkan.
           </p>
 

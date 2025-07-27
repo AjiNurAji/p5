@@ -1,6 +1,6 @@
-import { ErrorPage } from "@/components/errors/error-page";
 import Heading from "@/components/heading";
 import AppLayout from "@/layouts/app-layout";
+import { AuthorizedLayout } from "@/layouts/authorized-layout";
 import { BreadcrumbItem, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
 import { userListSchema } from "./components/data/schema";
@@ -19,34 +19,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const UsersPage = () => {
   const {
-    users,
-    auth: { user },
+    users
   } = usePage<SharedData>().props;
 
   const userList = userListSchema.parse(users);
+  const accessRole = ["superadmin", "kosma", "wakosma"];
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Pengguna" />
+      <Head title="Mahasiswa" />
       <UsersProvider>
-        {user.role === "member" ? (
-          <ErrorPage
-            withDashBtn
-            code={403}
-            error="Akses Dibatasi!"
-            message={
-              <p>
-                Upss! Anda tidak memiliki izin <br />
-                untuk melihat halaman ini.
-              </p>
-            }
-          />
-        ) : (
+        <AuthorizedLayout canAccess={accessRole}>
           <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
               <Heading
-                title="Daftar Pengguna"
-                description="Atur pengguna dan hak akses mereka dengan mudah di halaman ini."
+                title="Daftar Mahasiswa"
+                description="Atur mahasiswa dan hak akses mereka dengan mudah di halaman ini."
               />
               <UsersPrimaryButtons />
             </div>
@@ -54,9 +42,9 @@ const UsersPage = () => {
               <UsersTable data={userList} columns={columns} />
             </div>
           </div>
-        )}
 
-        <UserDialogs />
+          <UserDialogs />
+        </AuthorizedLayout>
       </UsersProvider>
     </AppLayout>
   );

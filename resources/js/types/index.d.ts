@@ -30,7 +30,7 @@ export type NavItem = NavCollapsible | NavLink;
 
 export interface NavGroup {
 	title: string;
-  access?: string;
+  access?: Array<string>;
 	items: NavItem[],
 }
 
@@ -63,8 +63,11 @@ export interface Matkul {
   id_matkul: string;
   name: string;
   id_semester: string;
-  semester: Semester;
+  semester: {
+    semester?: any;
+  };
   lecturer: string;
+  [key:string]: any;
 }
 
 export interface Task {

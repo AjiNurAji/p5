@@ -48,7 +48,12 @@ class MatkulController extends Controller
       return redirect()->route('login');
     }
 
-    if ($user->role === 'member') {
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) {
       return $this->throwError([
         'role' => 'Kamu tidak memiliki akses!',
       ]);
@@ -106,7 +111,12 @@ class MatkulController extends Controller
       return redirect()->route('login');
     }
 
-    if ($user->role === 'member') return $this->throwError([
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) return $this->throwError([
       'role' => 'Kamu tidak memiliki akses!',
     ]);
 
@@ -134,7 +144,12 @@ class MatkulController extends Controller
       return redirect()->route('login');
     }
 
-    if ($user->role === 'member') return $this->throwError([
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) return $this->throwError([
       'role' => 'Kamu tidak memiliki akses!',
     ]);
 

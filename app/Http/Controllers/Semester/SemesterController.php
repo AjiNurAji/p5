@@ -43,7 +43,12 @@ class SemesterController extends Controller
       return back()->route("login");
     }
 
-    if ($user->role === "member") $this->throwError(["message" => "Kamu tidak memiliki akses!"]);
+    if (
+      $user->role !== "superadmin" &&
+      $user->role !== "kosma" &&
+      $user->role !== "wakosma" &&
+      $user->role !== "sekertaris"
+    ) $this->throwError(["message" => "Kamu tidak memiliki akses!"]);
 
     $request->validate([
       "semester" => "required",
@@ -64,7 +69,6 @@ class SemesterController extends Controller
           "is_active" => false,
         ]);
       };
-
     };
 
     $insert = Semester::create([
