@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\AvatarRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use Carbon\Carbon;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -68,5 +70,28 @@ class ProfileController extends Controller
     $request->session()->regenerateToken();
 
     return redirect("/");
+  }
+
+  public function updateAvatar(AvatarRequest $request)
+  {
+    // get auth
+    $user = $request->user();
+
+    // validation image
+    if ($request->hasFile("avatar")) {
+      $avatar = $request->file("avatar");
+
+      $filename = $user->id_number . "-" . Carbon::now()->timestamp . "." . $avatar->getClientOriginalExtension();
+
+      $path = "//storage/" . $avatar->storeAs("avatars", $filename, 'public');
+
+      $user->avatar = $path;
+
+      $user->save();
+
+      return back()->with("success", ["message" => "Berhasil menyimpan poto profil."]);
+    }
+
+    return $this->throwError(["message" => "Tolong masukkan gamber!"]);
   }
 }
