@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,4 +11,6 @@ Route::middleware('auth')->group(function () {
   Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.delete');
 
   Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
+
+  Route::post('/avatar-upload', [ProfileController::class, 'updateAvatar'])->name('user.update.avatar');
 });

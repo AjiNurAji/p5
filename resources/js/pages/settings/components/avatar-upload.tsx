@@ -48,15 +48,32 @@ export const AvatarUpload = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
+    const loading = toast.loading("Menyimpan gambar...");
+
+    post(route("user.update.avatar"), {
+      forceFormData: true,
+      onSuccess: (e) => {
+        toast.success(e.props.success.message, { id: loading });
+        setTempImage("");
+        setData({ avatar: undefined });
+      },
+      onError: (e) => {
+        if (e?.message) {
+          toast.error(e?.message, { id: loading });
+        } else if (e?.avatar) {
+          toast.error(e?.avatar, { id: loading });
+        }
+      },
+    });
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full justify-center items-center">
+    <div className="flex w-full flex-col items-center justify-center gap-2">
       <div className="relative size-40 rounded-full">
         <Avatar className="size-full">
           <AvatarImage
             className="h-auto w-full object-cover"
-            src={user.avatar || tempImage}
+            src={tempImage || user.avatar}
             alt={user.name}
           />
           <AvatarFallback className="text-3xl">
