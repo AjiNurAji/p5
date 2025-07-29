@@ -22,5 +22,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/database/seeders/DataSeeder.php
 
 .vercel

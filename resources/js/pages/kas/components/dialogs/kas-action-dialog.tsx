@@ -50,8 +50,6 @@ export const KasActionDialog = ({
         },
   );
 
-  console.log(data)
-
   const methodType = [
     { value: "cash", label: "Tunai" },
     { value: "cashless", label: "Transfer" },
@@ -141,8 +139,8 @@ export const KasActionDialog = ({
             onValueChange={(value) => setData("method", value)}
           >
             {methodType.map(({ value, label }) => (
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem key={value} value={value} id={value} />
+              <div className="flex items-center space-x-2" key={value}>
+                <RadioGroupItem  value={value} id={value} />
                 <Label htmlFor={value}>{label}</Label>
               </div>
             ))}

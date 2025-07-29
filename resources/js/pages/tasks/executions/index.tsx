@@ -22,7 +22,6 @@ interface Props extends SharedData {
 
 const ExecutionPage = () => {
   const { tasks } = usePage<Props>().props;
-  console.log(tasks);
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
