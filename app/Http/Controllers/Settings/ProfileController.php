@@ -83,7 +83,7 @@ class ProfileController extends Controller
 
       $filename = $user->id_number . "-" . Carbon::now()->timestamp . "." . $avatar->getClientOriginalExtension();
 
-      $path = "//storage/" . $avatar->storeAs("avatars", $filename, 'public');
+      $path = "/storage/" . $avatar->storeAs("avatars", $filename, 'public');
 
       $user->avatar = $path;
 
