@@ -73,7 +73,7 @@ export const AvatarUpload = () => {
         <Avatar className="size-full">
           <AvatarImage
             className="h-auto w-full object-cover"
-            src={tempImage || user.avatar}
+            src={tempImage || `/storage/${user.avatar}`}
             alt={user.name}
           />
           <AvatarFallback className="text-3xl">

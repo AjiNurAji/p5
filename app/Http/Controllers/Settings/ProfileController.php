@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -79,11 +80,15 @@ class ProfileController extends Controller
 
     // validation image
     if ($request->hasFile("avatar")) {
+      if ($user->avatar) {
+        Storage::disk("public")->delete($user->avatar);
+      }
+
       $avatar = $request->file("avatar");
 
       $filename = $user->id_number . "-" . Carbon::now()->timestamp . "." . $avatar->getClientOriginalExtension();
 
-      $path = "/storage/" . $avatar->storeAs("avatars", $filename, 'public');
+      $path = $avatar->storeAs("avatars", $filename, 'public');
 
       $user->avatar = $path;
 

@@ -191,7 +191,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 <Button variant="ghost" className="size-10 rounded-full p-1">
                   <Avatar className="size-8 overflow-hidden rounded-full">
                     <AvatarImage
-                      src={auth.user.avatar}
+                      src={`/storage/${auth.user.avatar}`}
                       className="h-auto w-full object-cover"
                       alt={auth.user.name}
                     />
