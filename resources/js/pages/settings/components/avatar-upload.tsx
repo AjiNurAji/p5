@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import { useInitials } from "@/hooks/use-initials";
 import { cn } from "@/lib/utils";
 import { SharedData } from "@/types";
@@ -17,7 +18,9 @@ export const AvatarUpload = () => {
   const [tempImage, setTempImage] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const { post, data, setData, progress } = useForm<{ avatar?: File }>({
+  const { post, data, setData, progress, processing } = useForm<{
+    avatar?: File;
+  }>({
     avatar: undefined,
   });
 
@@ -97,29 +100,42 @@ export const AvatarUpload = () => {
           </Label>
         )}
       </div>
-      {tempImage && (
-        <div className="flex gap-3">
-          <Button
-            className="w-max"
-            size="sm"
-            onClick={(e) => handleSaveImage(e)}
-          >
-            Simpan Foto Profil
-          </Button>
-          <Button
-            className="w-max"
-            variant="secondary"
-            size="sm"
-            onClick={(e) => {
-              e.preventDefault();
-              setData({ avatar: undefined });
-              setTempImage("");
-            }}
-          >
-            Reset
-          </Button>
-        </div>
-      )}
+      {tempImage &&
+        (processing ? (
+          <div className="grid w-60 gap-1">
+            <Progress value={progress?.percentage} />
+            <div className="flex flex-1 items-center">
+              <span className="text-[9px] italic">Menyimpan gambar...</span>
+              <span className="ml-auto text-[9px] italic">
+                {`${progress?.percentage}%`}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <Button
+              className="w-max"
+              size="sm"
+              disabled={processing}
+              onClick={(e) => handleSaveImage(e)}
+            >
+              Simpan Foto Profil
+            </Button>
+            <Button
+              className="w-max"
+              variant="secondary"
+              size="sm"
+              disabled={processing}
+              onClick={(e) => {
+                e.preventDefault();
+                setData({ avatar: undefined });
+                setTempImage("");
+              }}
+            >
+              Reset
+            </Button>
+          </div>
+        ))}
       <input
         type="file"
         accept=".jpg,.png,.webp,.jpeg,.gif"
