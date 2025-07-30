@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Kas;
 
+use App\Helpers\KasCacheHelper;
+use App\Helpers\UserCacheHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Kas;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,21 +19,13 @@ class KasController extends Controller
    */
   public function index(): Response
   {
-    $users = User::all();
-    $kas = Kas::with(["user" => fn($u) => $u->withTrashed()])->orderBy("updated_at", "DESC")->get();
+    $users = UserCacheHelper::getUserList();
+    $kas = KasCacheHelper::getAllKas();
 
     return Inertia::render("kas/kas", [
       "users" => $users,
       "kaslist" => $kas,
     ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
   }
 
   /**
@@ -77,22 +69,6 @@ class KasController extends Controller
     if (!$data) $this->throwError(["message" => "Gagal melakukan transaksi, silahkan coba lagi!"]);
 
     return back()->with("success", ["message" => "Berhasil melakukan transaksi."]);
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**

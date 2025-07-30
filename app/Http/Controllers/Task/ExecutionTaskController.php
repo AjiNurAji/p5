@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Helpers\TaskCacheHelper;
 use App\Http\Controllers\Controller;
 use App\Models\ExecutionTask;
 use App\Models\Task;
@@ -17,25 +18,13 @@ class ExecutionTaskController extends Controller
    */
   public function index(string $id_task): Response
   {
-    $tasks = Task::with([
-      "matkul.semester",
-      "execution.user" => fn($e) => $e->withTrashed()->orderBy("updated_at", "ASC")
-    ])->find($id_task);
-
+    $tasks = TaskCacheHelper::findExecutionTask($id_task);
 
     return Inertia::render("tasks/executions/index", [
       "tasks" => $tasks
     ]);
   }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
-  }
-
+  
   /**
    * Store a newly created resource in storage.
    */
@@ -59,7 +48,7 @@ class ExecutionTaskController extends Controller
     $execution = ExecutionTask::where([
       ["id_task", $request->input("id_task")],
       ["id_number", $request->input("id_number")]
-    ])->first();
+    ])->exists();
 
     if ($execution) $this->throwError(["message" => "Tugas sedang dikerjakan atau telah diselesaikan!"]);
 
@@ -72,22 +61,6 @@ class ExecutionTaskController extends Controller
     ]);
 
     return back()->with("success", ["message" => "Berhasil memproses data."]);
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**
@@ -119,13 +92,5 @@ class ExecutionTaskController extends Controller
     ]);
 
     return back()->with("success", ["message" => "Berhasil menyelesaikan tugas."]);
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(string $id)
-  {
-    //
   }
 }

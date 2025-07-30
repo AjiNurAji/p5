@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Matkul;
 
+use App\Helpers\MatkulCacheHelper;
+use App\Helpers\SemesterCacheHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Matkul;
-use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,21 +20,13 @@ class MatkulController extends Controller
   public function index(): Response
   {
 
-    $matkuls = Matkul::with("semester")->get();
-    $semester = Semester::where("is_active", true)->first();
+    $matkuls = MatkulCacheHelper::getAllMatkul();
+    $semester = SemesterCacheHelper::getActiveSemester();
 
     return Inertia::render('matkul/matkuls', [
       'matkuls' => $matkuls,
       'semester' => $semester,
     ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
   }
 
   /**
@@ -73,22 +66,6 @@ class MatkulController extends Controller
     ]);
 
     return back()->with('success', ['message' => 'Data berhasil ditambahkan']);
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**

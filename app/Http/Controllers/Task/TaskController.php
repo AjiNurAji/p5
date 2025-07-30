@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Helpers\MatkulCacheHelper;
+use App\Helpers\TaskCacheHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Matkul;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Task;
 use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
@@ -20,21 +20,13 @@ class TaskController extends Controller
    */
   public function index(): Response
   {
-    $tasks = Task::with(["matkul.semester", "execution.user"])->orderBy("updated_at", "DESC")->get();
-    $matkuls = Matkul::all();
+    $tasks = TaskCacheHelper::getTaskWithMatkulAndExecution();
+    $matkuls = MatkulCacheHelper::getAllMatkul();
 
     return Inertia::render("tasks/tasks", [
       "tasks" => $tasks,
       "matkuls" => $matkuls,
     ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
   }
 
   /**
@@ -73,22 +65,6 @@ class TaskController extends Controller
     ]);
 
     return back()->with("success", ["message" => "Berhasil menambahkan tugas."]);
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**

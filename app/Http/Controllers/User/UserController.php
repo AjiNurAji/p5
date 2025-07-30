@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\KasCacheHelper;
+use App\Helpers\MatkulCacheHelper;
+use App\Helpers\UserCacheHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Kas;
-use App\Models\Matkul;
-use App\Models\Semester;
-use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\SemesterCacheHelper;
+use App\Helpers\TaskCacheHelper;
 
 class UserController extends Controller
 {
@@ -21,11 +22,11 @@ class UserController extends Controller
   public function dashboard()
   {
     $auth = Auth::user();
-    $task = Task::all();
+    $task = TaskCacheHelper::getAllTask();
     $execute_task = $auth->execute_task;
-    $kas = Kas::with("user")->orderBy("payment_on", "DESC")->get();
-    $semester = Semester::where("is_active", true)->first();
-    $matkul = Matkul::where("id_semester", $semester?->id_semester)->get();
+    $kas = KasCacheHelper::getAllKas();
+    $semester = SemesterCacheHelper::getActiveSemester();
+    $matkul = MatkulCacheHelper::getMatkulOnlyActiveSemester();
 
     if (
       $auth->role !== "superadmin" &&
@@ -66,7 +67,7 @@ class UserController extends Controller
         ]
       ]);
     } else {
-      $user = User::all();
+      $user = UserCacheHelper::getUserList();
 
       return Inertia::render("dashboard", [
         "cards" => [
@@ -113,43 +114,11 @@ class UserController extends Controller
    */
   public function index(): Response
   {
-    $users = User::orderBy("name", "ASC")->get();
+    $users = UserCacheHelper::getUserList();
 
     return Inertia::render("user/users", [
       "users" => $users,
     ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   */
-  public function store(Request $request)
-  {
-    //
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**

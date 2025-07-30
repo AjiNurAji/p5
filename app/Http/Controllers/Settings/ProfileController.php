@@ -97,6 +97,6 @@ class ProfileController extends Controller
       return back()->with("success", ["message" => "Berhasil menyimpan poto profil."]);
     }
 
-    return $this->throwError(["message" => "Tolong masukkan gamber!"]);
+    return $this->throwError(["message" => "Tolong masukkan gambar!"]);
   }
 }

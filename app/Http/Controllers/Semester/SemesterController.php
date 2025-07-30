@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Semester;
 
+use App\Helpers\SemesterCacheHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Semester;
 use Illuminate\Http\Request;
@@ -16,19 +17,11 @@ class SemesterController extends Controller
    */
   public function index(): Response
   {
-    $semester = Semester::orderBy("created_at", "DESC")->get();
+    $semester = SemesterCacheHelper::getAllSemester();
 
     return Inertia::render("semester/semesters", [
       "data" => $semester
     ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    //
   }
 
   /**
@@ -80,22 +73,6 @@ class SemesterController extends Controller
     if (!$insert) $this->throwError(["message" => "Gagal menambah semester, silahkan coba lagi!"]);
 
     return back()->with("success", ["message" => "Berhasil menambah semester."]);
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(string $id)
-  {
-    //
   }
 
   /**
