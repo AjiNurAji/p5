@@ -1,62 +1,63 @@
-import { IconType } from 'react-icons/lib';
-import type { Config } from 'ziggy-js';
+import { LucideIcon } from "lucide-react";
+import { IconType } from "react-icons/lib";
+import type { Config } from "ziggy-js";
 
 export interface Auth {
-	user: User;
+  user: User;
 }
 
 export interface BreadcrumbItem {
-	title: string;
-	href: string;
+  title: string;
+  href: string;
 }
 
 interface BaseNavItem {
-	title: string;
-	icon?: LucideIcon | IconType | null;
-  access?: string;
+  title: string;
+  icon?: LucideIcon | IconType;
+  access?: Array<string>;
 }
 
 export type NavLink = BaseNavItem & {
-	href: string;
-	items?: never;
-}
+  href: string;
+  items?: never;
+};
 
 export type NavCollapsible = BaseNavItem & {
-	items: (BaseNavItem & { href: string })[];
+  items: (BaseNavItem & { href: string })[];
   href: string;
 };
 
 export type NavItem = NavCollapsible | NavLink;
 
 export interface NavGroup {
-	title: string;
+  title: string;
   access?: Array<string>;
-	items: NavItem[],
+  items: NavItem[];
 }
 
 export interface SidebarData {
-	navGroup: NavGroup[];
+  navGroup: NavGroup[];
 }
 
 export interface SharedData {
-	name: string;
-	quote: { message: string; author: string };
-	auth: Auth;
-	ziggy: Config & { location: string };
-	sidebarOpen: boolean;
-	[key: string]: unknown;
+  name: string;
+  quote: { message: string; author: string };
+  auth: Auth;
+  ziggy: Config & { location: string };
+  sidebarOpen: boolean;
+  [key: string]: unknown;
 }
 
 export interface User {
-	id_number: string;
-	name: string;
-	email: string;
-	role: string;
-	avatar?: string;
-	email_verified_at: string | null;
-	created_at: string;
-	updated_at: string;
-	[key: string]: unknown; // This allows for additional properties...
+  id_number: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+  [key: string]: unknown; // This allows for additional properties...
 }
 
 export interface Matkul {
@@ -67,7 +68,7 @@ export interface Matkul {
     semester?: any;
   };
   lecturer: string;
-  [key:string]: any;
+  [key: string]: any;
 }
 
 export interface Task {
@@ -82,7 +83,7 @@ export type TaskType = {
   task: string;
   deadline: Date;
   matkul: Matkul;
-}
+};
 
 export interface Kas {
   id_kas: string;

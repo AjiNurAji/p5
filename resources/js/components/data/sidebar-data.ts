@@ -7,7 +7,7 @@ import {
   ReceiptText,
   UsersRound,
 } from "lucide-react";
-import { PiStudent } from "react-icons/pi";
+import { PiInvoice, PiStudent } from "react-icons/pi";
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -28,6 +28,18 @@ export const sidebarData: SidebarData = {
           title: "kas",
           href: route("kas.index"),
           icon: ReceiptText,
+          items: [
+            {
+              title: "kas",
+              href: route("kas.index"),
+              icon: ReceiptText,
+            },
+            {
+              title: "Laporan Bulanan",
+              href: "/kas/report",
+              icon: PiInvoice
+            }
+          ]
         },
       ],
     },
