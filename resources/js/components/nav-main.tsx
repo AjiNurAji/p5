@@ -23,7 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { getAccess } from "@/layouts/authorized-layout";
-import { CheckIsActive } from "@/lib/check-is-active";
+import { checkIsActive } from "@/lib/check-is-active";
 import type {
   NavCollapsible,
   NavGroup,
@@ -48,37 +48,37 @@ export const NavMain = ({ items, title }: NavGroup) => {
       <SidebarMenu>
         {items.map((item) => {
           if (item.access) {
-              if (getAccess(user.role, item.access)) {
-                const key = `${item.title}-${item.access}`;
-                if (!item.items)
-                  return (
-                    <SidebarMenuLink
-                      key={key}
-                      item={item}
-                      url={url}
-                      user={user}
-                    />
-                  );
-
-                if (state === "collapsed")
-                  return (
-                    <SidebarMenuCollapsedDropdown
-                      key={key}
-                      item={item}
-                      url={url}
-                      user={user}
-                    />
-                  );
-
+            if (getAccess(user.role, item.access)) {
+              const key = `${item.title}-${item.access}`;
+              if (!item.items)
                 return (
-                  <SidebarMenuCollapsible
+                  <SidebarMenuLink
                     key={key}
                     item={item}
                     url={url}
                     user={user}
                   />
                 );
-              }
+
+              if (state === "collapsed")
+                return (
+                  <SidebarMenuCollapsedDropdown
+                    key={key}
+                    item={item}
+                    url={url}
+                    user={user}
+                  />
+                );
+
+              return (
+                <SidebarMenuCollapsible
+                  key={key}
+                  item={item}
+                  url={url}
+                  user={user}
+                />
+              );
+            }
           } else {
             const key = `${item.title}-${item.access}`;
             if (!item.items)
@@ -126,7 +126,7 @@ const SidebarMenuLink = ({
       <SidebarMenuItem>
         <SidebarMenuButton
           asChild
-          isActive={CheckIsActive(url, item.href)}
+          isActive={checkIsActive(url, item.href)}
           tooltip={{ children: item.title }}
         >
           <Link href={item.href} prefetch onClick={() => setOpenMobile(false)}>
@@ -140,7 +140,7 @@ const SidebarMenuLink = ({
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        isActive={CheckIsActive(url, item.href)}
+        isActive={checkIsActive(url, item.href)}
         tooltip={{ children: item.title }}
       >
         <Link href={item.href} prefetch onClick={() => setOpenMobile(false)}>
@@ -166,7 +166,7 @@ const SidebarMenuCollapsedDropdown = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <SidebarMenuButton
-            isActive={CheckIsActive(url, item.href)}
+            isActive={checkIsActive(url, item.href)}
             tooltip={{ children: item.title }}
           >
             {item.icon && <item.icon />}
@@ -182,7 +182,7 @@ const SidebarMenuCollapsedDropdown = ({
                 <DropdownMenuItem key={`${sub.title}-${sub.access}`}>
                   <SidebarMenuButton
                     asChild
-                    isActive={CheckIsActive(url, item.href)}
+                    isActive={checkIsActive(url, item.href)}
                     tooltip={{ children: sub.title }}
                   >
                     <Link href={sub.href} prefetch>
@@ -196,7 +196,7 @@ const SidebarMenuCollapsedDropdown = ({
               <DropdownMenuItem key={`${sub.title}-${sub.access}`}>
                 <SidebarMenuButton
                   asChild
-                  isActive={CheckIsActive(url, item.href)}
+                  isActive={checkIsActive(url, item.href)}
                   tooltip={{ children: sub.title }}
                 >
                   <Link href={sub.href} prefetch>
@@ -226,12 +226,12 @@ const SidebarMenuCollapsible = ({
   return (
     <Collapsible
       asChild
-      defaultOpen={CheckIsActive(url, item.href)}
+      defaultOpen={checkIsActive(url, item.href, true)}
       className="group/collapsible"
     >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title}>
+          <SidebarMenuButton tooltip={item.title} className="capitalize">
             {item.icon && <item.icon />}
             <span>{item.title}</span>
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -242,27 +242,27 @@ const SidebarMenuCollapsible = ({
             {item.items.map((subItem) =>
               subItem.access ? (
                 getAccess(user.role, subItem.access) && (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton
-                          asChild
-                          isActive={CheckIsActive(url, subItem.href)}
-                        >
-                          <Link
-                            href={subItem.href}
-                            prefetch
-                            onClick={() => setOpenMobile(false)}
-                          >
-                            {subItem.icon && <subItem.icon />}
-                            <span className="capitalize">{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    )
+                  <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubButton
+                      asChild
+                      isActive={checkIsActive(url, subItem.href)}
+                    >
+                      <Link
+                        href={subItem.href}
+                        prefetch
+                        onClick={() => setOpenMobile(false)}
+                      >
+                        {subItem.icon && <subItem.icon />}
+                        <span className="capitalize">{subItem.title}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                )
               ) : (
                 <SidebarMenuSubItem key={subItem.title}>
                   <SidebarMenuSubButton
                     asChild
-                    isActive={CheckIsActive(url, subItem.href)}
+                    isActive={checkIsActive(url, subItem.href)}
                   >
                     <Link
                       href={subItem.href}

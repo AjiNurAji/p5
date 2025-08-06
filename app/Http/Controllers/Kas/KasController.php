@@ -38,6 +38,7 @@ class KasController extends Controller
       "id_number" => "required",
       "method" => "required|string",
       "nominal" => "required",
+      "type" => "required|string",
       "payment_on" => "required"
     ]);
 
@@ -63,6 +64,8 @@ class KasController extends Controller
       "id_number" => $request->input("id_number"),
       "nominal" => $request->input("nominal"),
       "payment_on" => Carbon::parse($request->input("payment_on")),
+      "type" => $request->input("type"),
+      "note" => $request->input("note"),
       "method" => $request->input("method"),
     ]);
 
@@ -81,6 +84,8 @@ class KasController extends Controller
       "id_number" => "required",
       "method" => "required|string",
       "nominal" => "required",
+      "type" => "required|string",
+      "note" => "required|string",
       "payment_on" => "required"
     ]);
 
@@ -137,5 +142,26 @@ class KasController extends Controller
     $data->delete();
 
     return back()->with("success", ["message" => "Berhasil menghapus data."]);
+  }
+
+  /**
+   * show report kas payment
+   */
+  public function report(): Response
+  {
+    $kas = KasCacheHelper::getAllKas();
+
+    return Inertia::render("kas/report/index", [
+      "cards" => [
+        "cash" => [
+          "title" => "total transfer",
+          "count" => $kas->where("method", "cash")->sum("nominal"),
+        ],
+        "cashless" => [
+          "title" => "total tunai",
+          "count" => $kas->where("method", "cashless")->sum("nominal"),
+        ],
+      ]
+    ]);
   }
 }

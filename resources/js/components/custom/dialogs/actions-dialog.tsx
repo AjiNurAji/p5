@@ -1,10 +1,18 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Matkul, TaskType, Kas } from '@/types';
-import { Loader } from 'lucide-react';
-import React from 'react';
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Kas, Matkul, TaskType } from "@/types";
+import { Loader } from "lucide-react";
+import React from "react";
 
 interface Props {
   open: boolean;
@@ -17,7 +25,16 @@ interface Props {
   title: string;
 }
 
-export const ActionsDialog = ({ handleResetForm, processing, children, currentRow, formName, title, open, onOpenChange }: Props) => {
+export const ActionsDialog = ({
+  handleResetForm,
+  processing,
+  children,
+  currentRow,
+  formName,
+  title,
+  open,
+  onOpenChange,
+}: Props) => {
   const isEdit = !!currentRow;
 
   return (
@@ -30,16 +47,27 @@ export const ActionsDialog = ({ handleResetForm, processing, children, currentRo
     >
       <DialogContent className="sm:max-w-lg">
         <DialogHeader className="text-left">
-          <DialogTitle className="capitalize">{isEdit ? `Edit ${title}` : `Tambah ${title} Baru`}</DialogTitle>
+          <DialogTitle className="capitalize">
+            {isEdit ? `Edit ${title}` : `Tambah ${title} Baru`}
+          </DialogTitle>
           <DialogDescription>
-              {isEdit
-                ? <span>Edit informasi <span className="lowercase">{title}</span> melalui formulir di bawah ini.</span>
-                : <span>Isi data di bawah untuk menambahkan <span className="lowercase">{title}</span> baru.</span>
-              }{" "}
-              Tekan <b>Simpan</b> untuk menyimpan perubahan.
+            {isEdit ? (
+              <span>
+                Edit informasi <span className="lowercase">{title}</span>{" "}
+                melalui formulir di bawah ini.
+              </span>
+            ) : (
+              <span>
+                Isi data di bawah untuk menambahkan{" "}
+                <span className="lowercase">{title}</span> baru.
+              </span>
+            )}{" "}
+            Tekan <b>Simpan</b> untuk menyimpan perubahan.
           </DialogDescription>
         </DialogHeader>
-        <div className="-mr-4 w-full overflow-y-auto py-1">{children}</div>
+        <div className="-mr-4 w-full overflow-y-auto py-1">
+          <ScrollArea className="h-auto max-h-100">{children}</ScrollArea>
+        </div>
         <DialogFooter>
           <Button type="submit" form={formName} disabled={processing}>
             {processing && <Loader className="h-4 w-4 animate-spin" />}

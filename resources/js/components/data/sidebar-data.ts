@@ -8,6 +8,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { PiInvoice, PiStudent } from "react-icons/pi";
+import { IoWalletOutline } from "react-icons/io5";
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -27,7 +28,7 @@ export const sidebarData: SidebarData = {
         {
           title: "kas",
           href: route("kas.index"),
-          icon: ReceiptText,
+          icon: IoWalletOutline,
           items: [
             {
               title: "kas",
@@ -35,8 +36,9 @@ export const sidebarData: SidebarData = {
               icon: ReceiptText,
             },
             {
-              title: "Laporan Bulanan",
-              href: "/kas/report",
+              access: ["superadmin", "bendahara", "kosma"],
+              title: "Laporan Kas",
+              href: route("kas.report"),
               icon: PiInvoice
             }
           ]

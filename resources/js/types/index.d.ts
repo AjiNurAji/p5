@@ -91,11 +91,18 @@ export interface Kas {
   user: User;
   nominal: any;
   payment_on: Date;
+  note: string,
   method: "cash" | "cashless";
+  type: "income" | "expend";
 }
 
 export interface Semester {
   id_semester: string;
   semester: number | null;
   is_active: boolean;
+}
+
+export interface CardProps {
+  title: string;
+  count: number;
 }

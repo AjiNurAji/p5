@@ -32,7 +32,7 @@ import {
 import { UserMenuContent } from "@/components/user-menu-content";
 import { useInitials } from "@/hooks/use-initials";
 import { getAccess } from "@/layouts/authorized-layout";
-import { CheckIsActive } from "@/lib/check-is-active";
+import { checkIsActive } from "@/lib/check-is-active";
 import { cn } from "@/lib/utils";
 import { type BreadcrumbItem, type NavItem, type SharedData } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
@@ -202,7 +202,7 @@ const MenuItem = ({ item, url }: { item: NavItem; url: string }) =>
         href={item.href}
         className={cn(
           navigationMenuTriggerStyle(),
-          CheckIsActive(url, item.href) && activeItemStyles,
+          checkIsActive(url, item.href) && activeItemStyles,
           "h-9 cursor-pointer px-3 capitalize",
         )}
       >
@@ -239,7 +239,7 @@ const DropdownMenuItem = ({ item, url }: { item: NavItem; url: string }) => {
                       href={subItem.href}
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        CheckIsActive(url, subItem.href) && activeItemStyles,
+                        checkIsActive(url, subItem.href) && activeItemStyles,
                         "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
                       )}
                     >
@@ -256,7 +256,7 @@ const DropdownMenuItem = ({ item, url }: { item: NavItem; url: string }) => {
                     href={subItem.href}
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      CheckIsActive(url, subItem.href) && activeItemStyles,
+                      checkIsActive(url, subItem.href) && activeItemStyles,
                       "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
                     )}
                   >

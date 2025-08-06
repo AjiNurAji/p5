@@ -34,18 +34,18 @@ export const TableToolbar = <TData,>({
               options={userTypes.map((t) => ({ ...t }))}
             />
           )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <X className="ml-2 h-4 w-4" />
+            </Button>
+          )}
           <ViewOptions className="flex sm:hidden" table={table} />
         </div>
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <X className="ml-2 h-4 w-4" />
-          </Button>
-        )}
       </div>
       <ViewOptions table={table} />
     </div>

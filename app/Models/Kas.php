@@ -19,6 +19,8 @@ class Kas extends Model
     "nominal",
     "payment_on",
     "method",
+    "type",
+    "note"
   ];
 
   protected $casts = [
