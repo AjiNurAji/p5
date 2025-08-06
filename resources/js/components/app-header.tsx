@@ -1,5 +1,4 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { Icon } from "@/components/icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,13 +8,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -29,6 +32,7 @@ import {
 import { UserMenuContent } from "@/components/user-menu-content";
 import { useInitials } from "@/hooks/use-initials";
 import { getAccess } from "@/layouts/authorized-layout";
+import { checkIsActive } from "@/lib/check-is-active";
 import { cn } from "@/lib/utils";
 import { type BreadcrumbItem, type NavItem, type SharedData } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
@@ -37,9 +41,10 @@ import AppLogo from "./app-logo";
 import AppLogoIcon from "./app-logo-icon";
 import AppearanceToggleDropdown from "./appearance-dropdown";
 import { footerNavItems, sidebarData } from "./data/sidebar-data";
+import { NavMain } from "./nav-main";
+import { SidebarProvider } from "./ui/sidebar";
 
-const activeItemStyles =
-  "text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100";
+const activeItemStyles = "text-accent-foreground bg-accent";
 
 interface AppHeaderProps {
   breadcrumbs?: BreadcrumbItem[];
@@ -71,60 +76,29 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Navigation Menu
+                </SheetDescription>
                 <SheetHeader className="flex justify-start text-left">
                   <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
                 </SheetHeader>
-                <div className="flex h-full flex-1 flex-col space-y-4 p-4">
-                  <div className="flex h-full flex-col justify-between text-sm">
-                    <div className="flex flex-col space-y-4">
-                      {sidebarData.navGroup.map((item) =>
-                        item.access
-                          ? getAccess(auth.user.role, item.access) &&
-                            item.items.map((i) => (
-                              <Link
-                                key={i.title}
-                                href={i.href}
-                                className="flex items-center space-x-2 font-medium capitalize"
-                              >
-                                {i.icon && (
-                                  <Icon iconNode={i.icon} className="h-5 w-5" />
-                                )}
-                                <span>{i.title}</span>
-                              </Link>
-                            ))
-                          : item.items.map((i) => (
-                              <Link
-                                key={i.title}
-                                href={i.href}
-                                className="flex items-center space-x-2 font-medium capitalize"
-                              >
-                                {i.icon && (
-                                  <Icon iconNode={i.icon} className="h-5 w-5" />
-                                )}
-                                <span>{i.title}</span>
-                              </Link>
-                            )),
-                      )}
-                    </div>
-
-                    <div className="flex flex-col space-y-4">
-                      {footerNavItems.map((item) => (
-                        <a
-                          key={item.title}
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-2 font-medium"
-                        >
-                          {item.icon && (
-                            <Icon iconNode={item.icon} className="h-5 w-5" />
-                          )}
-                          <span>{item.title}</span>
-                        </a>
-                      ))}
+                <SidebarProvider>
+                  <div className="flex h-full flex-1 flex-col">
+                    <div className="flex h-full flex-col justify-between text-sm">
+                      <div className="flex flex-col space-y-4">
+                        {sidebarData.navGroup.map((props) =>
+                          props.access ? (
+                            getAccess(auth.user.role, props.access) && (
+                              <NavMain key={props.title} {...props} />
+                            )
+                          ) : (
+                            <NavMain key={props.title} {...props} />
+                          ),
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </SidebarProvider>
               </SheetContent>
             </Sheet>
           </div>
@@ -139,7 +113,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
 
           {/* Desktop Navigation */}
           <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
-            <NavigationMenu className="flex h-full items-stretch">
+            <NavigationMenu
+              className="flex h-full items-stretch"
+              viewport={false}
+            >
               <NavigationMenuList className="flex h-full items-stretch space-x-2">
                 {sidebarData.navGroup.map((nav) =>
                   nav.access
@@ -170,10 +147,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         >
                           <span className="sr-only">{item.title}</span>
                           {item.icon && (
-                            <Icon
-                              iconNode={item.icon}
-                              className="size-5 opacity-80 group-hover:opacity-100"
-                            />
+                            <item.icon className="size-5 opacity-80 group-hover:opacity-100" />
                           )}
                         </a>
                       </TooltipTrigger>
@@ -219,21 +193,82 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
   );
 }
 
-const MenuItem = ({ item, url }: { item: NavItem; url: string }) => (
-  <NavigationMenuItem className="relative flex h-full items-center">
-    <Link
-      href={item.href}
-      className={cn(
-        navigationMenuTriggerStyle(),
-        url === item.href && activeItemStyles,
-        "h-9 cursor-pointer px-3 capitalize",
-      )}
-    >
-      {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
-      {item.title}
-    </Link>
-    {url === item.href && (
-      <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-    )}
-  </NavigationMenuItem>
-);
+const MenuItem = ({ item, url }: { item: NavItem; url: string }) =>
+  item.items ? (
+    <DropdownMenuItem item={item} url={url} />
+  ) : (
+    <NavigationMenuItem className="relative flex h-full items-center">
+      <Link
+        href={item.href}
+        className={cn(
+          navigationMenuTriggerStyle(),
+          checkIsActive(url, item.href) && activeItemStyles,
+          "h-9 cursor-pointer px-3 capitalize",
+        )}
+      >
+        {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+        {item.title}
+      </Link>
+    </NavigationMenuItem>
+  );
+
+const DropdownMenuItem = ({ item, url }: { item: NavItem; url: string }) => {
+  const {
+    auth: { user },
+  } = usePage<SharedData>().props;
+
+  return (
+    <NavigationMenuItem className="relative flex h-full items-center">
+      <NavigationMenuTrigger
+        className={cn(
+          "capitalize",
+          item.href.includes(url) && activeItemStyles,
+        )}
+      >
+        {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+        {item.title}
+      </NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid w-[200px] gap-4">
+          <li className="grid gap-2">
+            {item.items?.map((subItem, _) =>
+              subItem.access ? (
+                getAccess(user.role, subItem.access) && (
+                  <NavigationMenuLink key={subItem.title} asChild>
+                    <Link
+                      href={subItem.href}
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        checkIsActive(url, subItem.href) && activeItemStyles,
+                        "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
+                      )}
+                    >
+                      {subItem.icon && (
+                        <subItem.icon className="mr-2 h-4 w-4" />
+                      )}
+                      {subItem.title}
+                    </Link>
+                  </NavigationMenuLink>
+                )
+              ) : (
+                <NavigationMenuLink asChild key={subItem.title}>
+                  <Link
+                    href={subItem.href}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      checkIsActive(url, subItem.href) && activeItemStyles,
+                      "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
+                    )}
+                  >
+                    {subItem.icon && <subItem.icon className="mr-2 h-4 w-4" />}
+                    {subItem.title}
+                  </Link>
+                </NavigationMenuLink>
+              ),
+            )}
+          </li>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};

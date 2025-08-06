@@ -1,84 +1,46 @@
-import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { User } from "@/types";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import React from "react";
 
 interface Props {
   users: User[] | null;
   value: string;
   setData: (key: string, value: string) => void;
+  [key: string]: any;
 }
 
-export const KasUserFilter = ({
-  users,
-  value,
-  setData,
-}: Props) => {
-  const [open, setOpen] = useState<boolean>(false);
+export const KasUserFilter = ({ users, value, setData, ...props}: Props) => {
+  const handleChange = React.useCallback((value: string) => {
+    setData("id_number", value);
+  }, []);
+
+  const selected = users?.find((user) => user.id_number === value);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          id="student"
-          aria-expanded={open}
-          className="w-full justify-between"
-        >
-          {value
-            ? users?.find((user) => user.id_number === value)?.name
-            : "Pilih mahasiswa"}
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
-        <Command>
-          <CommandInput placeholder="Cari mahasiswa..." className="h-9" />
-
-          <CommandList>
-            <CommandEmpty>Mahasiswa tidak ditemukan.</CommandEmpty>
-            <CommandGroup>
-              {users?.length ? (
-                users.map((user) => (
-                  <CommandItem
-                    key={user.name}
-                    value={user.name}
-                    onSelect={(v) => {
-                      setData("id_number", user.id_number);
-                      setOpen(false)
-                    }}
-                  >
-                    {user.name}
-                    <Check
-                      className={cn(
-                        "ml-auto",
-                        value === user.id_number ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                  </CommandItem>
-                ))
-              ) : (
-                <CommandItem disabled>Belum ada data.</CommandItem>
-              )}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <Select value={value} onValueChange={(value) => handleChange(value)}>
+      <SelectTrigger className="w-full" {...props}>
+        {selected ? (
+          <SelectValue>{selected?.name}</SelectValue>
+        ) : (
+          "Pilih mahasiswa"
+        )}
+      </SelectTrigger>
+      <SelectContent position="popper" align="end">
+        <ScrollArea className="h-auto max-h-50">
+          {users?.map((user) => (
+            <SelectItem key={user.id_number} value={user.id_number} id={user.id_number}>
+              {user.name}
+            </SelectItem>
+          ))}
+        </ScrollArea>
+      </SelectContent>
+    </Select>
   );
 };

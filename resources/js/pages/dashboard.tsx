@@ -4,7 +4,7 @@ import { SkeletonCardDashboard } from "@/components/custom/skeleton-card-dashboa
 import { SkeletonDashboardList } from "@/components/custom/skeleton-dashboard-list";
 import useCurrency from "@/hooks/use-currency";
 import AppLayout from "@/layouts/app-layout";
-import { SharedData, type BreadcrumbItem } from "@/types";
+import { CardProps, SharedData, type BreadcrumbItem } from "@/types";
 import { Head, usePage, WhenVisible } from "@inertiajs/react";
 import { BookOpen, DollarSign, ListCheck, ListTodo, UserRound } from "lucide-react";
 import { TbMoneybag } from "react-icons/tb";
@@ -19,10 +19,6 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-interface CardProps {
-  title: string;
-  count: number;
-}
 interface Props extends SharedData {
   cards: {
     user_card: CardProps;

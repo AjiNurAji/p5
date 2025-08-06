@@ -27,6 +27,7 @@ export const KasTableToolbar = <TData,>({
       <div className="flex w-full flex-1 items-center space-x-2">
         <Input
           placeholder="Cari transaksi mahasiswa..."
+          id="mhs"
           value={(table.getColumn("user")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("user")?.setFilterValue(event.target.value)

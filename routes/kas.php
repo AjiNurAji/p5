@@ -8,4 +8,6 @@ Route::middleware("auth")->group(function () {
   Route::post("/kas", [KasController::class, "store"])->name("kas.store");
   Route::post("/kas/{id_kas}", [KasController::class, "update"])->name("kas.update");
   Route::delete("/kas/{id_kas}", [KasController::class, "destroy"])->name("kas.destroy");
+
+  Route::get("/kas/report", [KasController::class, "report"])->name("kas.report");
 });
