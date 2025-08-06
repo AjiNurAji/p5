@@ -12,7 +12,6 @@ import { RecentPayment } from "./recent-payment";
 interface Props extends SharedData {
   payment_kas: {
     title: string;
-    transaction_per_month: number;
     data: Kas[];
   };
 }
@@ -25,9 +24,7 @@ export const PaymentListCard = () => {
       <CardHeader>
         <CardTitle className="capitalize">{payment_kas.title}</CardTitle>
         <CardDescription>
-          {payment_kas.transaction_per_month
-            ? `Total ${payment_kas.transaction_per_month} transaksi kas bulan ini.`
-            : "Belum ada transaksi bulan ini."}
+          Transaksi kas terbaru, Terakhir kali membayar.
         </CardDescription>
       </CardHeader>
       <CardContent>

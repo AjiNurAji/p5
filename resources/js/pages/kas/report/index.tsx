@@ -5,6 +5,8 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, CardProps, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
 import { TbCash, TbTransfer } from "react-icons/tb";
+import { FaRegPaperPlane } from "react-icons/fa";
+import { FaRupiahSign } from "react-icons/fa6";
 
 const breadcrumb: BreadcrumbItem[] = [
   {
@@ -21,13 +23,15 @@ type ReportProps = SharedData & {
   cards: {
     cash: CardProps;
     cashless: CardProps;
+    total: CardProps;
+    expand: CardProps;
   };
 };
 
 const Report = () => {
   const page = usePage<ReportProps>();
   const {
-    cards: { cash, cashless },
+    cards: { cash, cashless, total, expand },
   } = page.props;
   return (
     <AppLayout breadcrumbs={breadcrumb}>
@@ -47,6 +51,16 @@ const Report = () => {
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
           <div className="grid auto-rows-min gap-4 sm:grid-cols-2">
+            <CardDashboard
+              title={total.title}
+              value={useCurrency(total.count)}
+              icon={FaRupiahSign}
+            />
+            <CardDashboard
+              title={expand.title}
+              value={useCurrency(expand.count)}
+              icon={FaRegPaperPlane}
+            />
             <CardDashboard
               title={cash.title}
               value={useCurrency(cash.count)}

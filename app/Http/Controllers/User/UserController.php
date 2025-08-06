@@ -62,7 +62,6 @@ class UserController extends Controller
         ],
         "payment_kas" => [
           "title" => "pembayaran kas",
-          "transaction_per_month" => $kas->whereBetween("payment_on", [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count(),
           "data" => $kas->take(5),
         ]
       ]);

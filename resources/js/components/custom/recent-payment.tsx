@@ -14,7 +14,7 @@ export const RecentPayment = ({ data }: { data: Kas[] }) => {
       {data.map(({ id_kas, nominal, payment_on, method, user }) => (
         <div className="flex items-center gap-4" key={id_kas}>
           <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={`/storage/${user.avatar}`} className="w-full h-auto object-cover" alt={user.name} />
             <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
               {getInitials(user.name)}
             </AvatarFallback>

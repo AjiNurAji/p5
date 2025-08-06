@@ -238,7 +238,6 @@ const DropdownMenuItem = ({ item, url }: { item: NavItem; url: string }) => {
                     <Link
                       href={subItem.href}
                       className={cn(
-                        navigationMenuTriggerStyle(),
                         checkIsActive(url, subItem.href) && activeItemStyles,
                         "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
                       )}
@@ -255,7 +254,6 @@ const DropdownMenuItem = ({ item, url }: { item: NavItem; url: string }) => {
                   <Link
                     href={subItem.href}
                     className={cn(
-                      navigationMenuTriggerStyle(),
                       checkIsActive(url, subItem.href) && activeItemStyles,
                       "h-9 w-full cursor-pointer flex-row items-center justify-start px-3 capitalize",
                     )}
