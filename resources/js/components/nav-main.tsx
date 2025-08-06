@@ -174,7 +174,7 @@ const SidebarMenuCollapsedDropdown = ({
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" align="start" sideOffset={4}>
-          <DropdownMenuLabel>{item.title}</DropdownMenuLabel>
+          <DropdownMenuLabel className="capitalize">{item.title}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {item.items.map((sub) =>
             sub.access ? (
@@ -184,6 +184,7 @@ const SidebarMenuCollapsedDropdown = ({
                     asChild
                     isActive={checkIsActive(url, item.href)}
                     tooltip={{ children: sub.title }}
+                    className=""
                   >
                     <Link href={sub.href} prefetch>
                       {sub.icon && <sub.icon />}
@@ -231,9 +232,9 @@ const SidebarMenuCollapsible = ({
     >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title} className="capitalize">
+          <SidebarMenuButton tooltip={item.title}>
             {item.icon && <item.icon />}
-            <span>{item.title}</span>
+            <span className="capitalize">{item.title}</span>
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </CollapsibleTrigger>

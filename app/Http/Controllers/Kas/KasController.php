@@ -39,6 +39,7 @@ class KasController extends Controller
       "method" => "required|string",
       "nominal" => "required",
       "type" => "required|string",
+      "note" => "required|string",
       "payment_on" => "required"
     ]);
 
@@ -160,6 +161,14 @@ class KasController extends Controller
         "cashless" => [
           "title" => "total tunai",
           "count" => $kas->where("method", "cashless")->sum("nominal"),
+        ],
+        "total" => [
+          "title" => "total uang kas",
+          "count" => $kas->sum("nominal"),
+        ],
+        "expand" => [
+          "title" => "total pengeluaran",
+          "count" => $kas->where("type", "expand")->sum("nominal"),
         ],
       ]
     ]);
