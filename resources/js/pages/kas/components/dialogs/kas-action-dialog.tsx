@@ -37,7 +37,7 @@ export const KasActionDialog = ({
 }: Props) => {
   const isEdit = !!currentRow;
 
-  const { data, setData, post, processing } = useForm<Required<KasForm>>(
+  const { data, setData, post, processing, isDirty } = useForm<Required<KasForm>>(
     isEdit
       ? {
           id_number: currentRow.id_number,
@@ -141,6 +141,7 @@ export const KasActionDialog = ({
             <Input
               type="text"
               id="nominal"
+              required
               name="nominal"
               value={data.nominal}
               onChange={(e) => {
@@ -201,6 +202,7 @@ export const KasActionDialog = ({
           <Textarea
             id="note"
             name="note"
+            required
             value={data.note}
             onChange={(e) => setData("note", e.target.value)}
             placeholder="Cth. Pembayaran minggu ke 1"

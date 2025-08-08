@@ -112,6 +112,7 @@ export const MatkulsActionDialog = ({
             id="name"
             type="text"
             name="name"
+            required
             value={data.name}
             onChange={(e) => setData("name", e.target.value)}
             placeholder="cth. Kalkulus"
@@ -125,6 +126,7 @@ export const MatkulsActionDialog = ({
             id="lecturer"
             type="text"
             name="lecturer"
+            required
             value={data.lecturer}
             onChange={(e) => setData("lecturer", e.target.value)}
             placeholder="cth. Budi Susanto S.Kom"

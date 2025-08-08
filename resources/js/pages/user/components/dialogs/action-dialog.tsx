@@ -168,6 +168,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
               <Input
                 id="id_number"
                 type="text"
+                required
                 name="id_number"
                 value={data.id_number}
                 onChange={(e) => setData("id_number", e.target.value)}
@@ -182,6 +183,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
                 id="name"
                 type="text"
                 name="name"
+                required
                 value={data.name}
                 onChange={(e) => setData("name", e.target.value)}
                 placeholder="Jhon doe"
@@ -234,6 +236,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
 
               <InputPassword
                 id="password"
+                required
                 name="password"
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}

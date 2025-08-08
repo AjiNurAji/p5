@@ -13,4 +13,5 @@ Route::middleware(["auth"])->group(function () {
 
   Route::get("/semester", [SemesterController::class, "index"])->name("semester.index");
   Route::post("/semester", [SemesterController::class, "store"])->name("semester.store");
+  Route::delete("/semester/{id_semester}", [SemesterController::class, "destroy"])->name("semester.destroy");
 });

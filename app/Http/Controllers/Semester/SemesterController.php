@@ -49,7 +49,7 @@ class SemesterController extends Controller
     ]);
 
     // if semester is exist
-    $check = Semester::where("semester", $request->input("semester"))->first();
+    $check = Semester::where("semester", $request->input("semester"))->exist();
 
     if ($check) $this->throwError(["message" => "Semester " . $request->input("semester") . " sudah ada."]);
 
@@ -76,18 +76,31 @@ class SemesterController extends Controller
   }
 
   /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, string $id)
-  {
-    //
-  }
-
-  /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(string $id_semester, Request $request)
   {
-    //
+     // validating user
+    $user = $request->user();
+
+    if (!$user) {
+      return back()->route("login");
+    }
+
+    if (
+      $user->role !== "superadmin"
+    ) $this->throwError(["message" => "Kamu tidak memiliki akses!"]);
+
+    // if semester is exist
+    $check = Semester::find($id_semester);
+
+    if (!$check) return $this->throwError(["message" => "Data tidak ditemukan!"]);
+
+    // check if semester is active
+    if ($check->is_active) return $this->throwError(["message" => "Semester aktif tidak dapat dihapus!"]);
+
+    $check->delete();
+
+    return back()->with("success", ["message" => "Berhasil menghapus semester."]);
   }
 }

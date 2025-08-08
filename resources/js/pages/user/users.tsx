@@ -1,6 +1,6 @@
 import Heading from "@/components/heading";
 import AppLayout from "@/layouts/app-layout";
-import { AuthorizedLayout } from "@/layouts/authorized-layout";
+import { AuthorizedLayout, getAccess } from "@/layouts/authorized-layout";
 import { BreadcrumbItem, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
 import { userListSchema } from "./components/data/schema";
@@ -19,7 +19,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const UsersPage = () => {
   const {
-    users
+    users,
+    auth: { user },
   } = usePage<SharedData>().props;
 
   const userList = userListSchema.parse(users);
@@ -36,7 +37,7 @@ const UsersPage = () => {
                 title="Daftar Mahasiswa"
                 description="Atur mahasiswa dan hak akses mereka dengan mudah di halaman ini."
               />
-              <UsersPrimaryButtons />
+              {getAccess(user.role, ["superadmin"]) && <UsersPrimaryButtons />}
             </div>
             <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
               <UsersTable data={userList} columns={columns} />

@@ -1,12 +1,16 @@
 import { TableColumnHeader } from "@/components/custom/table-column-header";
-import { TableRowActions } from "@/components/custom/table-row-actions";
 import { LongText } from "@/components/long-text";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
+import { Trash2 } from "lucide-react";
 import { useSemester } from "../../context/semester-context";
 import { SemesterType } from "../data/schema";
+import { getAccess } from "@/layouts/authorized-layout";
 
 export const columns: ColumnDef<SemesterType>[] = [
   {
@@ -88,12 +92,23 @@ export const columns: ColumnDef<SemesterType>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { setCurrentRow, setOpen } = useSemester();
-      return (
-        <TableRowActions
-          row={row}
-          setOpen={setOpen}
-          setCurrentRow={setCurrentRow}
-        />
+      const {
+        auth: {
+          user: { role },
+        },
+      } = usePage<SharedData>().props;
+      getAccess(role, ["superadmin"]) && (
+        <Button
+          onClick={() => {
+            setCurrentRow(row.original);
+            setOpen("delete");
+          }}
+          variant="ghost"
+          size="icon"
+          className="hover:bg-destructive/20 dark:hover:bg-destructive/50!"
+        >
+          <Trash2 className="text-red-500" />
+        </Button>
       );
     },
   },
