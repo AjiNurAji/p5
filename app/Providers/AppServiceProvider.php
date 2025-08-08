@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Models\ExecutionTask;
 use App\Models\Kas;
+use App\Models\Matkul;
 use App\Models\Semester;
 use App\Models\Task;
 use App\Models\User;
 use App\Observers\ExecutionTaskObserver;
 use App\Observers\KasObserver;
+use App\Observers\MatkulObserver;
 use App\Observers\SemesterObserver;
 use App\Observers\TaskObserver;
 use App\Observers\UserObserver;
@@ -34,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
     Task::observe(TaskObserver::class);
     ExecutionTask::observe(ExecutionTaskObserver::class);
     Kas::observe(KasObserver::class);
+    Matkul::observe(MatkulObserver::class);
   }
 }
