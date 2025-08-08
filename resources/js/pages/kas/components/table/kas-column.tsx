@@ -62,6 +62,17 @@ export const columns: ColumnDef<Kas>[] = [
     filterFn: "includesString"
   },
   {
+    accessorKey: "type",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Jenis Transaksi" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-fit text-nowrap capitalize">{row.getValue("type") == "income" ? "Pemasukan" : "Pengeluaran"}</div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "method",
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Metode" />
@@ -70,7 +81,7 @@ export const columns: ColumnDef<Kas>[] = [
       <div className="w-fit text-nowrap capitalize">{row.getValue("method") == "cash" ? "Tunai" : "Transfer"}</div>
     ),
     enableSorting: false,
-    enableHiding: true,
+    enableHiding: false,
   },
   {
     accessorKey: "nominal",
@@ -89,7 +100,18 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Waktu" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{formatDate(row.getValue("payment_on"))}</div>
+      <div className="w-fit text-nowrap">{useCurrency(row.getValue("payment_on"))}</div>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "note",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Catatan" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-40 text-wrap">{formatDate(row.getValue("note"))}</div>
     ),
     enableSorting: false,
     enableHiding: true,

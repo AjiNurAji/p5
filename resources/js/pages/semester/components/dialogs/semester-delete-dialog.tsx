@@ -23,15 +23,18 @@ export const SemesterDeleteDialog = ({
 
     destroy(route("semester.destroy", currentRow.id_semester), {
       onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
-      onError: (e) =>
-        toast.error("Terjadi kesalahan, silahkan coba lagi!", { id: loading }),
+      onError: (e) => {
+        if(e?.message) return toast.error(e?.message, { id: loading});
+
+        return toast.error("Terjadi kesalahan, silahkan coba lagi!", { id: loading });
+      },
       onFinish: () => onOpenChange(false),
     });
   };
 
   return (
     <DeleteDialog
-      title="matkul"
+      title="semester"
       data={`semester ${currentRow.semester}`}
       handleDelete={handleDelete}
       open={open}

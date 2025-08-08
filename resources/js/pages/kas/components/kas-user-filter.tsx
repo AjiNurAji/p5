@@ -24,7 +24,7 @@ export const KasUserFilter = ({ users, value, setData, ...props}: Props) => {
   const selected = users?.find((user) => user.id_number === value);
 
   return (
-    <Select value={value} onValueChange={(value) => handleChange(value)}>
+    <Select required value={value} onValueChange={(value) => handleChange(value)}>
       <SelectTrigger className="w-full" {...props}>
         {selected ? (
           <SelectValue>{selected?.name}</SelectValue>

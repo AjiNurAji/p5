@@ -1,7 +1,6 @@
 "use client";
 
 import { ActionsDialog } from "@/components/custom/dialogs/actions-dialog";
-import InputError from "@/components/input-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -25,12 +24,7 @@ type SemestersForm = {
   is_active: boolean;
 };
 
-export const SemesterActionDialog = ({
-  open,
-  onOpenChange,
-}: Props) => {
-  const [error, setError] = useState<boolean>(false);
-
+export const SemesterActionDialog = ({ open, onOpenChange }: Props) => {
   const { setData, post, processing } = useForm<Required<SemestersForm>>({
     semester: null,
     is_active: false,
@@ -40,30 +34,28 @@ export const SemesterActionDialog = ({
     e.preventDefault();
     const loading = toast.loading("Menyimpan data...");
 
-    post(route("semester.store"),
-      {
-        onSuccess: (e) => {
-          toast.success(e.props.success.message, { id: loading });
-          handleResetForm();
-        },
-        onError: (e) => {
-          if (e?.message) {
-            return toast.error(e.message, { id: loading });
-          } else if (e?.role) {
-            return toast.error(e?.role, { id: loading });
-          } else if (e?.is_active) {
-            return toast.error(e?.is_active, { id: loading });
-          } else if (e?.semester) {
-            return toast.error(e?.semester, { id: loading });
-          }
-
-          return toast.error("Terjadi kesalahan, silahkan coba lagi!", {
-            id: loading,
-          });
-        },
-        onFinish: () => onOpenChange(false),
+    post(route("semester.store"), {
+      onSuccess: (e) => {
+        toast.success(e.props.success.message, { id: loading });
+        handleResetForm();
       },
-    );
+      onError: (e) => {
+        if (e?.message) {
+          return toast.error(e.message, { id: loading });
+        } else if (e?.role) {
+          return toast.error(e?.role, { id: loading });
+        } else if (e?.is_active) {
+          return toast.error(e?.is_active, { id: loading });
+        } else if (e?.semester) {
+          return toast.error(e?.semester, { id: loading });
+        }
+
+        return toast.error("Terjadi kesalahan, silahkan coba lagi!", {
+          id: loading,
+        });
+      },
+      onFinish: () => onOpenChange(false),
+    });
   };
 
   const handleResetForm = () => {
@@ -94,24 +86,22 @@ export const SemesterActionDialog = ({
             id="semester"
             type="text"
             name="semester"
+            required
             onChange={(e) => {
-              const regEx = /^\d+$/;
-              if (!regEx.test(e.target.value)) {
-                setError(true);
-              } else {
-                setError(false);
-              }
+              const regEx = /[^0-9]/g;
+              if (regEx.test(e.target.value))
+                return toast.error("Hanya boleh mengisikan angka!");
+
               setData("semester", Number(e.target.value));
             }}
             placeholder="Masukan semester aktif"
           />
-
-          <InputError message={error ? "Hanya dapat memasukkan angka" : ""} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="status">Status</Label>
 
           <Select
+            defaultValue="true"
             onValueChange={(e) => {
               setData("is_active", e === "true" ? true : false);
             }}

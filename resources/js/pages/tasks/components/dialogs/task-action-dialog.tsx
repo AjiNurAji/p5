@@ -96,6 +96,7 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
             className="h-25 resize-none text-sm"
             id="task"
             name="task"
+            required
             value={data.task}
             onChange={(e) => setData("task", e.target.value)}
           />
@@ -103,7 +104,7 @@ export const TaskActionDialog = ({ currentRow, open, onOpenChange, matkuls }: Pr
         <div className="grid gap-2">
           <Label htmlFor="role">Mata Kuliah</Label>
 
-          <Select value={data.id_matkul} defaultValue={currentRow?.matkul.id_matkul} onValueChange={(e) => setData("id_matkul", e)}>
+          <Select required value={data.id_matkul} defaultValue={currentRow?.matkul.id_matkul} onValueChange={(e) => setData("id_matkul", e)}>
             <SelectTrigger>
               <SelectValue placeholder="Pilih mata kuliah" />
             </SelectTrigger>

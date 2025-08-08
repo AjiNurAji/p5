@@ -10,7 +10,9 @@ const kasSchema = z.object({
   user: User,
   payment_on: z.coerce.date(),
   nominal: z.any(),
-  method: z.string()
+  method: z.string(),
+  note: z.string(),
+  type: z.string()
 });
 
 export type Kas = z.infer<typeof kasSchema>;
