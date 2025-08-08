@@ -8,10 +8,9 @@ import { FormEventHandler, useRef } from "react";
 
 import HeadingSmall from "@/components/heading-small";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { InputPassword } from "@/components/ui/input-password";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -118,7 +117,7 @@ export default function Password() {
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>
-                {processing && <Loader2 className="h-4 w-4 animate-spin" />}
+                {processing && <Loader className="h-4 w-4 animate-spin" />}
                 Simpan Kata Sandi
               </Button>
 

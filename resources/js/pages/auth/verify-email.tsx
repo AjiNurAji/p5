@@ -1,6 +1,6 @@
 // Components
 import { Head, useForm } from "@inertiajs/react";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { FormEventHandler } from "react";
 
 import TextLink from "@/components/text-link";
@@ -31,7 +31,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
 
       <form onSubmit={submit} className="space-y-6 text-center">
         <Button disabled={processing} variant="secondary">
-          {processing && <Loader2 className="h-4 w-4 animate-spin" />}
+          {processing && <Loader className="h-4 w-4 animate-spin" />}
           Kirim ulang
         </Button>
 

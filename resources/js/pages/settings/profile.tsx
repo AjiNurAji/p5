@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useInitials } from "@/hooks/use-initials";
 import AppLayout from "@/layouts/app-layout";
 import SettingsLayout from "@/layouts/settings/layout";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { AvatarUpload } from "./components/avatar-upload";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -158,7 +158,7 @@ export default function Profile({
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>
-                {processing && <Loader2 className="h-4 w-4 animate-spin" />}
+                {processing && <Loader className="h-4 w-4 animate-spin" />}
                 Simpan
               </Button>
 
