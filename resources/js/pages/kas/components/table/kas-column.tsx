@@ -100,7 +100,7 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Waktu" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{useCurrency(row.getValue("payment_on"))}</div>
+      <div className="w-fit text-nowrap">{formatDate(row.getValue("payment_on"))}</div>
     ),
     enableSorting: false,
     enableHiding: true,
