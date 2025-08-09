@@ -67,7 +67,7 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Jenis Transaksi" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap capitalize">{row.getValue("type") == "income" ? "Pemasukan" : "Pengeluaran"}</div>
+      <div className="w-fit text-nowrap capitalize">{row.getValue("type") === "income" || !row.getValue("type") ? "Pemasukan" : "Pengeluaran"}</div>
     ),
     enableSorting: false,
     enableHiding: false,
