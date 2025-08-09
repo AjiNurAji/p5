@@ -155,11 +155,11 @@ class KasController extends Controller
     return Inertia::render("kas/report/index", [
       "cards" => [
         "cash" => [
-          "title" => "total transfer",
+          "title" => "total tunai",
           "count" => $kas->where("method", "cash")->sum("nominal"),
         ],
         "cashless" => [
-          "title" => "total tunai",
+          "title" => "total transfer",
           "count" => $kas->where("method", "cashless")->sum("nominal"),
         ],
         "total" => [
