@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -22,9 +23,39 @@ class KasController extends Controller
     $users = UserCacheHelper::getUserList();
     $kas = KasCacheHelper::getAllKas();
 
+    $income =  $kas->where("type", "income")->sum("nominal");
+    $expend = $kas->where("type", "expend")->sum("nominal");
+    $total = $income - $expend;
+
+    $cashIncome = $kas->where("method", "cash")->where("type", "income")->sum("nominal");
+    $cashExpend = $kas->where("method", "cash")->where("type", "expend")->sum("nominal");
+    $cashTotal = $cashIncome - $cashExpend;
+    
+    $cashlessIncome = $kas->where("method", "cashless")->where("type", "income")->sum("nominal");
+    $cashlessExpend = $kas->where("method", "cashless")->where("type", "expend")->sum("nominal");
+    $cashlessTotal = $cashlessIncome - $cashlessExpend;
+
     return Inertia::render("kas/kas", [
       "users" => $users,
       "kaslist" => $kas,
+      "cards" => [
+        "cash" => [
+          "title" => "total tunai",
+          "count" => $cashTotal,
+        ],
+        "cashless" => [
+          "title" => "total transfer",
+          "count" => $cashlessTotal,
+        ],
+        "total" => [
+          "title" => "total uang kas",
+          "count" => $total,
+        ],
+        "expand" => [
+          "title" => "total pengeluaran",
+          "count" => $expend,
+        ],
+      ]
     ]);
   }
 
@@ -53,11 +84,19 @@ class KasController extends Controller
     if (
       $user->role !== "superadmin" &&
       $user->role !== "kosma" &&
-      $user->role !== "wakosma" &&
       $user->role !== "bendahara"
     ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
     ]);
+
+    if ($request->input("type") === "expend") {
+      $kas = KasCacheHelper::getAllKas();
+      $income =  $kas->where("type", "income")->sum("nominal");
+      $expend = $kas->where("type", "expend")->sum("nominal");
+      $total = $income - $expend;
+
+      if ($total - $request->input("nominal") <= 0) $this->throwError(["message" => "Saldo kas tidak cukup!"]);
+    }
 
     // process transaction
     $data = Kas::create([
@@ -100,7 +139,6 @@ class KasController extends Controller
     if (
       $user->role !== "superadmin" &&
       $user->role !== "kosma" &&
-      $user->role !== "wakosma" &&
       $user->role !== "bendahara"
     ) return $this->throwError([
       "role" => "Kamu tidak memiliki akses!",
@@ -151,26 +189,21 @@ class KasController extends Controller
   public function report(): Response
   {
     $kas = KasCacheHelper::getAllKas();
+    $user = Auth::user();
+    $kasMe = $kas->where("id_number", $user->id_number);
 
     return Inertia::render("kas/report/index", [
       "cards" => [
-        "cash" => [
-          "title" => "total tunai",
-          "count" => $kas->where("method", "cash")->sum("nominal"),
-        ],
-        "cashless" => [
-          "title" => "total transfer",
-          "count" => $kas->where("method", "cashless")->sum("nominal"),
+        "week_payment" => [
+          "title" => "sampai minggu ke",
+          "count" => ($kasMe->sum("nominal") / 5000),
         ],
         "total" => [
-          "title" => "total uang kas",
-          "count" => $kas->sum("nominal"),
+          "title" => "total pembayaran",
+          "count" => $kasMe->sum("nominal"),
         ],
-        "expand" => [
-          "title" => "total pengeluaran",
-          "count" => $kas->where("type", "expand")->sum("nominal"),
-        ],
-      ]
+      ],
+      "kaslist" => $kas,
     ]);
   }
 }

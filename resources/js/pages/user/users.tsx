@@ -1,7 +1,7 @@
 import Heading from "@/components/heading";
 import AppLayout from "@/layouts/app-layout";
 import { AuthorizedLayout, getAccess } from "@/layouts/authorized-layout";
-import { BreadcrumbItem, SharedData } from "@/types";
+import { BreadcrumbItem, SharedData, User } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
 import { userListSchema } from "./components/data/schema";
 import { columns } from "./components/tables/user-column";
@@ -21,9 +21,9 @@ const UsersPage = () => {
   const {
     users,
     auth: { user },
-  } = usePage<SharedData>().props;
+  } = usePage<SharedData & { users: User[] }>().props;
 
-  const userList = userListSchema.parse(users);
+  const userList = userListSchema.parse(users.filter(({ id_number }) => id_number !== import.meta.env.VITE_EXPEND_ID));
   const accessRole = ["superadmin", "kosma", "wakosma"];
 
   return (

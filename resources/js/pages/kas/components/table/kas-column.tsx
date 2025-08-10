@@ -1,16 +1,16 @@
+import { formatDate } from "@/components/custom/date-picker";
 import { TableColumnHeader } from "@/components/custom/table-column-header";
 import { TableRowActions } from "@/components/custom/table-row-actions";
 import { LongText } from "@/components/long-text";
 import { Checkbox } from "@/components/ui/checkbox";
+import useCurrency from "@/hooks/use-currency";
+import { getAccess } from "@/layouts/authorized-layout";
 import { cn } from "@/lib/utils";
+import { SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useKas } from "../../context/kas-context";
 import { Kas } from "../../data/schema";
-import { formatDate } from "@/components/custom/date-picker";
-import useCurrency from "@/hooks/use-currency";
-import { usePage } from "@inertiajs/react";
-import { SharedData } from "@/types";
-import { getAccess } from "@/layouts/authorized-layout";
 
 export const columns: ColumnDef<Kas>[] = [
   {
@@ -49,7 +49,11 @@ export const columns: ColumnDef<Kas>[] = [
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Nama Mahasiswa" />
     ),
-    cell: ({ getValue }) => (<LongText className="max-w-36 capitalize">{getValue() as string}</LongText>),
+    cell: ({ getValue }) => (
+      <LongText className="max-w-36 capitalize">
+        {getValue() as string}
+      </LongText>
+    ),
     meta: {
       className: cn(
         "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] lg:drop-shadow-none dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]",
@@ -59,7 +63,7 @@ export const columns: ColumnDef<Kas>[] = [
     },
     enableHiding: false,
     sortDescFirst: false,
-    filterFn: "includesString"
+    filterFn: "includesString",
   },
   {
     accessorKey: "type",
@@ -67,7 +71,11 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Jenis Transaksi" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap capitalize">{row.getValue("type") === "income" || !row.getValue("type") ? "Pemasukan" : "Pengeluaran"}</div>
+      <div className="w-fit text-nowrap capitalize">
+        {row.getValue("type") === "income" || !row.getValue("type")
+          ? "Pemasukan"
+          : "Pengeluaran"}
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -78,7 +86,9 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Metode" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap capitalize">{row.getValue("method") == "cash" ? "Tunai" : "Transfer"}</div>
+      <div className="w-fit text-nowrap capitalize">
+        {row.getValue("method") == "cash" ? "Tunai" : "Transfer"}
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -89,18 +99,20 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Nominal" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{useCurrency(row.getValue("nominal"))}</div>
+      <div className="w-fit text-nowrap">
+        {useCurrency(row.getValue("nominal"))}
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "payment_on",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Waktu" />
-    ),
+    header: ({ column }) => <TableColumnHeader column={column} title="Waktu" />,
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{formatDate(row.getValue("payment_on"))}</div>
+      <div className="w-fit text-nowrap">
+        {formatDate(row.getValue("payment_on"))}
+      </div>
     ),
     enableSorting: false,
     enableHiding: true,
@@ -111,7 +123,7 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Catatan" />
     ),
     cell: ({ row }) => (
-      <div className="w-40 text-wrap">{formatDate(row.getValue("note"))}</div>
+      <div className="w-40 text-wrap">{row.getValue("note")}</div>
     ),
     enableSorting: false,
     enableHiding: true,
@@ -119,7 +131,9 @@ export const columns: ColumnDef<Kas>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const { auth: { user } } = usePage<SharedData>().props;
+      const {
+        auth: { user },
+      } = usePage<SharedData>().props;
 
       if (!getAccess(user.role, ["superadmin", "bendahara"])) return;
 

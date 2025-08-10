@@ -31,12 +31,12 @@ export const sidebarData: SidebarData = {
           icon: IoWalletOutline,
           items: [
             {
+              access: ["superadmin", "bendahara", "kosma"],
               title: "kas",
               href: route("kas.index"),
               icon: ReceiptText,
             },
             {
-              access: ["superadmin", "bendahara", "kosma"],
               title: "Laporan Kas",
               href: route("kas.report"),
               icon: PiInvoice

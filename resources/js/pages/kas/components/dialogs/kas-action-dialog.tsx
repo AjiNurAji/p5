@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useCurrency from "@/hooks/use-currency";
 import { Kas, User } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import React, { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 import { KasUserFilter } from "../kas-user-filter";
 
@@ -25,7 +25,7 @@ type KasForm = {
   nominal: number;
   payment_on: Date;
   note: string;
-  type: "income" | "expand" | string;
+  type: "income" | "expend" | string;
   method: "cash" | "cashless" | string;
 };
 
@@ -36,8 +36,9 @@ export const KasActionDialog = ({
   users,
 }: Props) => {
   const isEdit = !!currentRow;
+  const [isIncome, setIsIncome] = React.useState<boolean>(true);
 
-  const { data, setData, post, processing, isDirty } = useForm<Required<KasForm>>(
+  const { data, setData, post, processing } = useForm<Required<KasForm>>(
     isEdit
       ? {
           id_number: currentRow.id_number,
@@ -64,7 +65,7 @@ export const KasActionDialog = ({
 
   const paymentType = [
     { value: "income", label: "Pemasukan" },
-    { value: "expand", label: "Pengeluaran" },
+    { value: "expend", label: "Pengeluaran" },
   ];
 
   const handleSubmit: FormEventHandler = (e) => {
@@ -72,7 +73,10 @@ export const KasActionDialog = ({
     const loading = toast.loading("Menyimpan data...");
 
     post(isEdit ? route("kas.update", currentRow.id_kas) : route("kas.store"), {
-      onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
+      onSuccess: (e) => {
+        toast.success(e.props.success.message, { id: loading });
+        onOpenChange(false);
+      },
       onError: (e) => {
         if (e?.message) {
           return toast.error(e?.message, { id: loading });
@@ -94,10 +98,7 @@ export const KasActionDialog = ({
 
         return toast.error("Terjadi kesalahan, silahkan coba lagi!");
       },
-      onFinish: () => {
-        onOpenChange(false);
-        handleResetForm();
-      },
+      onFinish: () => handleResetForm(),
     });
   };
 
@@ -128,6 +129,7 @@ export const KasActionDialog = ({
 
           <KasUserFilter
             id="student"
+            disabled={!isIncome}
             users={users}
             value={data.id_number}
             setData={setData}
@@ -177,7 +179,16 @@ export const KasActionDialog = ({
               name="type"
               id="type"
               defaultValue={data.type}
-              onValueChange={(value) => setData("type", value)}
+              onValueChange={(value) => {
+                if (value === "income") {
+                  setIsIncome(true);
+                } else {
+                  setIsIncome(false);
+                  setData("id_number", import.meta.env.VITE_EXPEND_ID);
+                }
+
+                setData("type", value);
+              }}
             >
               {paymentType.map(({ value, label }) => (
                 <div className="flex items-center space-x-2" key={value}>

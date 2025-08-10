@@ -1,4 +1,6 @@
 import { ErrorPage } from "@/components/errors/error-page";
+import { useLayout } from "@/hooks/use-layout";
+import { cn } from "@/lib/utils";
 import { SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
 import React from "react";
@@ -18,12 +20,14 @@ export const AuthorizedLayout = ({ canAccess, children }: AuthorizedProps) => {
   } = usePage<SharedData>().props;
 
   const access = getAccess(user.role, canAccess);
+  const { layout } = useLayout()
 
   return !access ? (
     <ErrorPage
       withDashBtn
       code={403}
       error="Akses Dibatasi!"
+      className={cn(layout === "header" && "h-screen!")}
       message={
         <p>
           Upss! Anda tidak memiliki izin <br />

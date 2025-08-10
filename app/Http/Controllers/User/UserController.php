@@ -28,6 +28,12 @@ class UserController extends Controller
     $semester = SemesterCacheHelper::getActiveSemester();
     $matkul = MatkulCacheHelper::getMatkulOnlyActiveSemester();
 
+    $incomeMe = $kas->where("id_number", $auth->id_number)->sum("nominal");
+
+    $income =  $kas->where("type", "income")->sum("nominal");
+    $expend = $kas->where("type", "expend")->sum("nominal");
+    $total = $income - $expend;
+
     if (
       $auth->role !== "superadmin" &&
       $auth->role !== "kosma" &&
@@ -37,7 +43,7 @@ class UserController extends Controller
         "cards" => [
           "mykas" => [
             "title" => "total kas saya",
-            "count" => $kas->where("id_number", $auth->id_number)->sum("nominal"),
+            "count" => $incomeMe,
           ],
           "task_card" => [
             "title" => "total tugas",
@@ -49,7 +55,7 @@ class UserController extends Controller
           ],
           "kas_card" => [
             "title" => "total kas",
-            "count" => $kas->sum("nominal"),
+            "count" => $total,
           ],
           "matkul_card" => [
             "title" => "total mata kuliah",
@@ -72,7 +78,7 @@ class UserController extends Controller
         "cards" => [
           "user_card" => [
             "title" => "total mahasiswa",
-            "count" => $user->count(),
+            "count" => $user->count() - 1,
           ],
           "task_card" => [
             "title" => "total tugas",
@@ -84,11 +90,11 @@ class UserController extends Controller
           ],
           "kas_card" => [
             "title" => "total kas",
-            "count" => $kas->sum("nominal"),
+            "count" => $total,
           ],
           "mykas" => [
             "title" => "total kas saya",
-            "count" => $kas->where("id_number", $auth->id_number)->sum("nominal"),
+            "count" => $incomeMe,
           ],
           "matkul_card" => [
             "title" => "total mata kuliah",
@@ -101,7 +107,6 @@ class UserController extends Controller
         ],
         "payment_kas" => [
           "title" => "pembayaran kas",
-          "transaction_per_month" => $kas->whereBetween("payment_on", [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count(),
           "data" => $kas->take(5),
         ]
       ]);
