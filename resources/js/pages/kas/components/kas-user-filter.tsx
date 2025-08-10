@@ -16,7 +16,7 @@ interface Props {
   [key: string]: any;
 }
 
-export const KasUserFilter = ({ users, value, setData, ...props}: Props) => {
+export const KasUserFilter = ({ users, value, setData, ...props }: Props) => {
   const handleChange = React.useCallback((value: string) => {
     setData("id_number", value);
   }, []);
@@ -24,7 +24,11 @@ export const KasUserFilter = ({ users, value, setData, ...props}: Props) => {
   const selected = users?.find((user) => user.id_number === value);
 
   return (
-    <Select required value={value} onValueChange={(value) => handleChange(value)}>
+    <Select
+      required
+      value={value}
+      onValueChange={(value) => handleChange(value)}
+    >
       <SelectTrigger className="w-full" {...props}>
         {selected ? (
           <SelectValue>{selected?.name}</SelectValue>
@@ -35,7 +39,12 @@ export const KasUserFilter = ({ users, value, setData, ...props}: Props) => {
       <SelectContent position="popper" align="end">
         <ScrollArea className="h-auto max-h-50">
           {users?.map((user) => (
-            <SelectItem key={user.id_number} value={user.id_number} id={user.id_number}>
+            <SelectItem
+              key={user.id_number}
+              value={user.id_number}
+              id={user.id_number}
+              disabled={user.id_number === import.meta.env.VITE_EXPEND_ID}
+            >
               {user.name}
             </SelectItem>
           ))}

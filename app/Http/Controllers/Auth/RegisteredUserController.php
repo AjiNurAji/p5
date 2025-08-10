@@ -37,8 +37,7 @@ class RegisteredUserController extends Controller
     ]);
 
     if (
-      ($request->user()->role !== "kosma" ||
-      $request->user()->role !== "wakosma") && 
+      $request->user()->role !== "superadmin" &&
       $request->input('role') === 'superadmin'
     ) throw $this->throwError([
       'role' => 'Kamu tidak memiliki akses untuk menambah superadmin!',

@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Kas;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class KasCacheHelper
@@ -13,7 +14,7 @@ class KasCacheHelper
       return Kas::with(["user" => fn($u) => $u->withTrashed()])->orderBy("updated_at", "DESC")->get();
     });
   }
-
+  
   public static function forgetKas()
   {
     Cache::forget("all-kas");

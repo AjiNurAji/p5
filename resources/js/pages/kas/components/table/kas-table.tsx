@@ -8,16 +8,18 @@ import { TablePagination } from "@/components/custom/table-pagination";
 import { Kas } from "../../data/schema";
 import { WhenVisible } from "@inertiajs/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps {
   columns: ColumnDef<Kas>[];
   data: Kas[];
   all: boolean;
-  setAll: (value: boolean) => void;
+  className?: string;
+  setAll?: (value: boolean) => void;
 }
 
 
-export const KasTable = ({ columns, data, all, setAll }: DataTableProps) => {
+export const KasTable = ({ columns, data, all, setAll, className }: DataTableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -45,7 +47,7 @@ export const KasTable = ({ columns, data, all, setAll }: DataTableProps) => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", className)}>
       <KasTableToolbar all={all} setAll={setAll} table={table} />
       <WhenVisible data="kaslist" fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
         <div className="rounded-md border">

@@ -236,7 +236,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
 
               <InputPassword
                 id="password"
-                required
+                required={!isEdit}
                 name="password"
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}

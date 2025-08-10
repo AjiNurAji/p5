@@ -123,7 +123,7 @@ export const columns: ColumnDef<Kas>[] = [
       <TableColumnHeader column={column} title="Catatan" />
     ),
     cell: ({ row }) => (
-      <div className="w-40 text-wrap">{formatDate(row.getValue("note"))}</div>
+      <div className="w-40 text-wrap">{row.getValue("note")}</div>
     ),
     enableSorting: false,
     enableHiding: true,

@@ -2,11 +2,16 @@ import { CardDashboard } from "@/components/custom/card-dashboard";
 import Heading from "@/components/heading";
 import useCurrency from "@/hooks/use-currency";
 import AppLayout from "@/layouts/app-layout";
-import { BreadcrumbItem, CardProps, SharedData } from "@/types";
-import { Head, usePage } from "@inertiajs/react";
-import { TbCash, TbTransfer } from "react-icons/tb";
-import { FaRegPaperPlane } from "react-icons/fa";
-import { FaRupiahSign } from "react-icons/fa6";
+import { getAccess } from "@/layouts/authorized-layout";
+import { BreadcrumbItem, CardProps, Kas, SharedData } from "@/types";
+import { Head, usePage, WhenVisible } from "@inertiajs/react";
+import { FaRegMoneyBill1 } from "react-icons/fa6";
+import { GrMoney } from "react-icons/gr";
+import { columns } from "../components/table/kas-column";
+import { KasTable } from "../components/table/kas-table";
+import KasProvider from "../context/kas-context";
+import { kasListSchema } from "../data/schema";
+import { CardSkeleton } from "./components/card-skeleton";
 
 const breadcrumb: BreadcrumbItem[] = [
   {
@@ -21,65 +26,54 @@ const breadcrumb: BreadcrumbItem[] = [
 
 type ReportProps = SharedData & {
   cards: {
-    cash: CardProps;
-    cashless: CardProps;
     total: CardProps;
-    expand: CardProps;
+    week_payment: CardProps;
   };
+  kaslist: Kas[];
 };
 
 const Report = () => {
   const page = usePage<ReportProps>();
   const {
-    cards: { cash, cashless, total, expand },
+    kaslist,
+    auth: { user },
+    cards: { total, week_payment },
   } = page.props;
+
+  const kasList = kasListSchema.parse(
+    kaslist.filter(({ id_number }) => id_number === user.id_number),
+  );
+
   return (
     <AppLayout breadcrumbs={breadcrumb}>
       <Head title="Laporan Kas" />
-      <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-        <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
-          <Heading
-            title="Laporan Kas"
-            description="Laporan kas kini lebih transparan dan terkontrol, pantau setiap transaksi dengan mudah!"
-          />
-          {/* {getAccess(user.role, [
-            "superadmin",
-            "bendahara",
-            "kosma",
-            "wakosma",
-          ]) && <KasButton />} */}
-        </div>
-        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-          <div className="grid auto-rows-min gap-4 sm:grid-cols-2">
-            <CardDashboard
-              title={total.title}
-              value={useCurrency(total.count)}
-              icon={FaRupiahSign}
-            />
-            <CardDashboard
-              title={expand.title}
-              value={useCurrency(expand.count)}
-              icon={FaRegPaperPlane}
-            />
-            <CardDashboard
-              title={cash.title}
-              value={useCurrency(cash.count)}
-              icon={TbCash}
-            />
-            <CardDashboard
-              title={cashless.title}
-              value={useCurrency(cashless.count)}
-              icon={TbTransfer}
+      <KasProvider>
+        <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+          <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
+            <Heading
+              title="Laporan Kas"
+              description="Laporan kas kini lebih transparan dan terkontrol, pantau setiap transaksi dengan mudah!"
             />
           </div>
-          {/* <KasTable
-            data={kasList}
-            columns={columns}
-            all={all}
-            setAll={setAll}
-          /> */}
+          <WhenVisible data="cards" fallback={<CardSkeleton />}>
+            <div className="grid auto-rows-min gap-4 sm:grid-cols-2">
+              <CardDashboard
+                title={total.title}
+                value={useCurrency(total.count)}
+                icon={GrMoney}
+              />
+              <CardDashboard
+                title={week_payment.title}
+                value={week_payment.count}
+                icon={FaRegMoneyBill1}
+              />
+            </div>
+          </WhenVisible>
+          <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
+              <KasTable data={kasList} columns={columns} all={false} />
+          </div>
         </div>
-      </div>
+      </KasProvider>
     </AppLayout>
   );
 };

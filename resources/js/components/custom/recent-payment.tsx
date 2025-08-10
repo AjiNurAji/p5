@@ -11,37 +11,53 @@ export const RecentPayment = ({ data }: { data: Kas[] }) => {
 
   return (
     <div className="space-y-8">
-      {data.map(({ id_kas, nominal, payment_on, method, user }) => (
-        <div className="flex items-center gap-4" key={id_kas}>
-          <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-            <AvatarImage src={`/storage/${user.avatar}`} className="w-full h-auto object-cover" alt={user.name} />
-            <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-              {getInitials(user.name)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-1 flex-wrap items-center justify-between">
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs text-muted-foreground">
-                {formatDate(new Date(payment_on))}
-              </span>
-            </div>
-            <div className="grid flex-1 text-sm leading-tight">
-              <span className="ml-auto truncate font-medium">
-                {useCurrency(nominal)}
-              </span>
-              <Badge
-                variant="secondary"
-                className={cn(
-                  "ml-auto",
-                  method === "cash" && "bg-yellow-500/10 text-yellow-500",
-                  method === "cashless" && "bg-blue-500/10 text-blue-500",
-                )}
-              >
-                <span className="truncate text-[10px] capitalize">
-                  {method === "cash" ? "tunai" : "transfer"}
+      {data.map(({ id_kas, nominal, payment_on, method, user, note, type }) => (
+        <div key={id_kas} className="space-y-1">
+          <div className="flex items-start gap-4">
+            <Avatar className="h-8 w-8 overflow-hidden rounded-full">
+              <AvatarImage
+                src={`/storage/${user.avatar}`}
+                className="h-auto w-full object-cover"
+                alt={user.name}
+              />
+              <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                {getInitials(user.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid grid-cols-2 gap-1 w-full">
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate text-xs text-muted-foreground">
+                  {formatDate(new Date(payment_on))}
                 </span>
-              </Badge>
+              </div>
+              <div className="grid flex-1 text-sm leading-tight">
+                <span
+                  className={cn(
+                    "ml-auto truncate font-medium",
+                    type === "income" && "text-green-600",
+                  )}
+                >
+                  {type === "income" ? "+" : "-"}
+                  {useCurrency(nominal)}
+                </span>
+                <Badge
+                  variant="secondary"
+                  className={cn(
+                    "ml-auto",
+                    method === "cash" && "bg-yellow-500/10 text-yellow-500",
+                    method === "cashless" && "bg-blue-500/10 text-blue-500",
+                  )}
+                >
+                  <span className="truncate text-[10px] capitalize">
+                    {method === "cash" ? "tunai" : "transfer"}
+                  </span>
+                </Badge>
+              </div>
+              <div className="w-full col-span-2 flex items-start gap-1 max-w-full truncate text-wrap">
+                <span className="text-sm text-muted-foreground w-max">Catatan:</span>
+                <p className="text-sm text-muted-foreground">{note}</p>
+              </div>
             </div>
           </div>
         </div>
