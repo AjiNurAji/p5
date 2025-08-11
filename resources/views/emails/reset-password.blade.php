@@ -1,4 +1,4 @@
-<x-layout:layout>
+<x-mail::layout>
 
     <!-- Body -->
     <tr>
@@ -10,9 +10,9 @@
     </tr>
 
     <!-- Call to action Button -->
-    <x-ui::button :url="$resetUrl">
+    <x-mail::button :url="$resetUrl">
       Reset Kata Sandi
-    </x-ui::button>
+    </x-mail::button>
 
 
     <tr>
@@ -38,4 +38,4 @@
             </td>
         </tr>
     </x-slot:subcopy>
-</x-layout:layout>
+</x-mail::layout>
