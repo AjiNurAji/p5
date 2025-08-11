@@ -1,4 +1,4 @@
-<x-layout::layout>
+<x-layout:layout>
 
     <!-- Body -->
     <tr>
@@ -38,4 +38,4 @@
             </td>
         </tr>
     </x-slot:subcopy>
-</x-layout::layout>
+</x-layout:layout>
