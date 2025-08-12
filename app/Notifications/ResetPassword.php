@@ -2,21 +2,17 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 
 class ResetPassword extends Notification
 {
-  use Queueable;
   public $token;
 
   /**
    * Create a new notification instance.
    */
-  public function __construct(string $token)
+  public function __construct($token)
   {
     $this->token = $token;
   }
@@ -37,16 +33,18 @@ class ResetPassword extends Notification
   public function toMail(object $notifiable): MailMessage
   {
 
-    $resetLink = URL::temporarySignedRoute("password.reset", now()->addMinute(60), [
-      "token" => $this->token,
-    ]);
+    $user = $notifiable;
+
+    $resetUrl = url(route('password.reset', [
+      'token' => $this->token,
+      'email' => $notifiable->getEmailForPasswordReset(),
+    ], false));
+
+    $count = config('auth.passwords.' . config('auth.defaults.passwords') . '.expire');
 
     return (new MailMessage)
       ->subject("Atur Ulang Kata Sandi Anda 🔐")
-      ->view("emails.reset-password", [
-        "user" => $notifiable,
-        "resetLink" => $resetLink,
-      ]);
+      ->view("emails.reset-password", compact("user", "resetUrl", "count"));
   }
 
   /**
