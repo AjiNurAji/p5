@@ -113,7 +113,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               {props.matkul.lecturer}
             </p>
           </div>
-          <div className="ml-auto space-x-1">
+          <div className="ml-auto space-x-1 flex justify-end flex-wrap">
             <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
               Semester {props.matkul.semester.semester}
             </Badge>
@@ -138,7 +138,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
       </CardHeader>
       <CardContent className="overflow-hidden p-3 wrap-break-word">
         <div
-          className="text-2xl"
+          className="text-sm lg:text-base"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.task) }}
         />
       </CardContent>

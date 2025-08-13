@@ -12,14 +12,16 @@ class ExecutionTaskObserver
    */
   public function created(ExecutionTask $executionTask): void
   {
+    TaskCacheHelper::forgetTask();
     TaskCacheHelper::forgetExecutionTask($executionTask->id_task);
   }
-
+  
   /**
    * Handle the ExecutionTask "updated" event.
-   */
+  */
   public function updated(ExecutionTask $executionTask): void
   {
+    TaskCacheHelper::forgetTask();
     TaskCacheHelper::forgetExecutionTask($executionTask->id_task);
   }
 
@@ -28,6 +30,7 @@ class ExecutionTaskObserver
    */
   public function deleted(ExecutionTask $executionTask): void
   {
+    TaskCacheHelper::forgetTask();
     TaskCacheHelper::forgetExecutionTask($executionTask->id_task);
   }
 
@@ -36,6 +39,7 @@ class ExecutionTaskObserver
    */
   public function restored(ExecutionTask $executionTask): void
   {
+    TaskCacheHelper::forgetTask();
     TaskCacheHelper::forgetExecutionTask($executionTask->id_task);
   }
 
@@ -44,6 +48,7 @@ class ExecutionTaskObserver
    */
   public function forceDeleted(ExecutionTask $executionTask): void
   {
+    TaskCacheHelper::forgetTask();
     TaskCacheHelper::forgetExecutionTask($executionTask->id_task);
   }
 }
