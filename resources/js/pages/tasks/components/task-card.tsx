@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { Matkul } from "@/pages/matkul/components/data/schema";
 import { SharedData, User } from "@/types";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import DOMPurify from "dompurify";
 import { CalendarCheck, Ellipsis, Loader } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
@@ -112,7 +113,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               {props.matkul.lecturer}
             </p>
           </div>
-          <div className="ml-auto space-x-1">
+          <div className="ml-auto space-x-1 flex justify-end flex-wrap">
             <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
               Semester {props.matkul.semester.semester}
             </Badge>
@@ -136,7 +137,10 @@ export const TaskCard = ({ props }: TaskCardProps) => {
         </div>
       </CardHeader>
       <CardContent className="overflow-hidden p-3 wrap-break-word">
-        <p className="text-2xl">{props.task}</p>
+        <div
+          className="text-sm lg:text-base"
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.task) }}
+        />
       </CardContent>
       <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
         <Separator />
