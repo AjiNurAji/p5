@@ -1,99 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Kata Sandi</title>
-    <style>
-        :root {
-            --background: oklch(1 0 0);
-            --foreground: oklch(0.145 0 0);
-            --card: oklch(1 0 0);
-            --card-foreground: oklch(0.145 0 0);
-            --primary: oklch(0.205 0 0);
-            --primary-foreground: oklch(0.985 0 0);
-            --muted: oklch(0.97 0 0);
-            --muted-foreground: oklch(0.556 0 0);
-            --accent: oklch(0.97 0 0/10%);
-            --accent-foreground: oklch(0.205 0 0);
-            --destructive: oklch(0.577 0.245 27.325);
-            --destructive-foreground: oklch(0.577 0.245 27.325);
-            --border: oklch(0.922 0 0);
-        }
-
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background: oklch(0.145 0 0);
-                --foreground: oklch(0.985 0 0);
-                --card: oklch(0.205 0 0);
-                --card-foreground: oklch(0.985 0 0);
-                --primary: oklch(0.922 0 0);
-                --primary-foreground: oklch(0.205 0 0);
-                --muted: oklch(0.269 0 0);
-                --muted-foreground: oklch(0.708 0 0);
-                --accent: oklch(0.97 0 0/4%);
-                --accent-foreground: oklch(0.985 0 0);
-                --destructive: oklch(0.396 0.141 25.723);
-                --destructive-foreground: oklch(0.637 0.237 25.331);
-                --border: oklch(1 0 0/10%);
-            }
-        }
-
-        body {
-            background-color: var(--background);
-            color: var(--foreground);
-        }
-
-        * {
-            font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-                "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-
-        #button {
-            text-decoration: none;
-            background-color: var(--primary);
-            color: var(--primary-foreground);
-            padding: 10px 15px;
-            border-radius: 10px;
-        }
-
-        .footer p {
-            font-size: 12px;
-        }
-
-        @media screen and (max-width: 600px) {
-            .content {
-                width: 100% !important;
-                display: block !important;
-                padding: 10px !important;
-            }
-
-            .header,
-            .body,
-            .footer {
-                padding: 20px !important;
-            }
-
-            .header span {
-                font-size: 18px;
-            }
-
-            * {
-                font-size: 12px;
-            }
-
-            ::selection {
-                background-color: var(--foreground);
-                color: var(--background);
-            }
-
-            .footer p {
-                font-size: 10px;
-            }
-        }
-    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -101,24 +13,25 @@
         rel="stylesheet">
 </head>
 
-<body>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<body
+    style="margin:0; padding:0; background-color:#ffffff; color:#252525; font-family:'Instrument Sans',ui-sans-serif,system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding:20px;">
         <tr>
-            <td align="center" style="padding: 20px;">
-                <table class="content" width="600" border="0" cellspacing="0" cellpadding="0"
-                    style="border-collapse: collapse; border: 1px solid var(--border); background-color: var(--card);">
+            <td align="center">
+                <table width="600" border="0" cellspacing="0" cellpadding="0"
+                    style="border-collapse:collapse; border:1px solid #ebebeb; background-color:#ffffff;">
                     <!-- Header -->
                     <tr>
-                        <td class="header"
-                            style="padding: 20px; text-align: center; color: var(--accent-foreground) !important; font-size: 24px; background-color: var(--accent)">
+                        <td
+                            style="padding:20px; text-align:center; color:#343434; font-size:24px; background-color:#f7f7f7;">
                             <img src="https://p5.ajinuraji.my.id/storage/avatars/5173-1754921359.jpg" alt="logo"
-                                style="width: 70px; height: 70px; border-radius: 99999px;" />
-                            <span style="display: block;">Reset Kata Sandi</span>
+                                style="width:70px; height:70px; border-radius:99999px;" />
+                            <span style="display:block;">Reset Kata Sandi</span>
                         </td>
                     </tr>
                     <!-- Body -->
                     <tr>
-                        <td class="body" style="padding: 40px; text-align: left; font-size: 16px; line-height: 1.6;">
+                        <td style="padding:40px; text-align:left; font-size:16px; line-height:1.6; color:#252525;">
                             <p>Hai 👋, {{ $user->name }}</p>
                             <p>Kami menerima permintaan reset kata sandi untuk akun anda. Klik tombol di bawah untuk
                                 melanjutkan proses:</p>
@@ -127,44 +40,44 @@
 
                     <!-- Call to action Button -->
                     <tr>
-                        <td style="padding: 0px 40px; text-align: center;">
-                            <!-- CTA Button -->
-                            <table cellspacing="0" cellpadding="0" style="margin: auto;">
+                        <td style="padding:0 40px; text-align:center;">
+                            <table cellspacing="0" cellpadding="0" style="margin:auto;">
                                 <tr>
                                     <td align="center">
-                                        <a href="{{ $resetUrl }}" target="_blank" id="button">Reset Kata
-                                            Sandi</a>
+                                        <a href="{{ $resetUrl }}" target="_blank"
+                                            style="display:inline-block; text-decoration:none; background-color:#343434; color:#fbfbfb; padding:10px 15px; border-radius:10px; font-weight:bold;">
+                                            Reset Kata Sandi
+                                        </a>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
 
-
+                    <!-- Extra Info -->
                     <tr>
-                        <td class="body"
-                            style="padding: 30px; text-align: left; font-size: 16px; line-height: 1.6; border-bottom: 1px solid var(--border)">
+                        <td
+                            style="padding:30px; text-align:left; font-size:16px; line-height:1.6; color:#252525; border-bottom:1px solid #ebebeb;">
                             <p>Jika anda tidak meminta reset kata sandi, abaikan email ini. Tautan ini akan kadaluarsa
                                 dalam {{ $count }} menit.</p>
-                            <p>Terimakasih,
-                                <br><strong>{{ config('app.name') }}</strong>
-                            </p>
+                            <p>Terimakasih,<br><strong>{{ config('app.name') }}</strong></p>
                         </td>
                     </tr>
+
                     <tr>
-                        <td class="body"
-                            style="padding: 40px; text-align: left; font-size: 16px; line-height: 1.6; color: var(--muted-foreground)">
+                        <td style="padding:40px; text-align:left; font-size:16px; line-height:1.6; color:#8e8e8e;">
                             <p>Jika anda memiliki kesulitan menekan tombol "Reset Kata Sandi", salin dan tempel URL
                                 berikut ke browser:
                                 <a href="{{ $resetUrl }}" target="_blank"
-                                    style="color: var(--destructive)">{{ $resetUrl }}</a>
+                                    style="color:#ba3732;">{{ $resetUrl }}</a>
                             </p>
                         </td>
                     </tr>
+
                     <!-- Footer -->
                     <tr>
-                        <td class="footer"
-                            style="background-color: var(--accent); padding: 40px; text-align: center; color: var(--accent-foreground);">
+                        <td
+                            style="background-color:#f7f7f7; padding:40px; text-align:center; color:#343434; font-size:12px;">
                             <p>&copy; {{ date('Y') }} Pioneers Five. All Right Reversed.</p>
                         </td>
                     </tr>
