@@ -34,7 +34,7 @@ export const editorTheme: EditorThemeClasses = {
       "list-outside !list-[upper-alpha]",
       "list-outside !list-[lower-alpha]",
     ],
-    ul: "m-0 p-0 list-outside",
+    ul: "m-0 p-0 list-disc list-outside",
   },
   hashtag: "text-blue-600 bg-blue-100 rounded-md px-1",
   text: {
