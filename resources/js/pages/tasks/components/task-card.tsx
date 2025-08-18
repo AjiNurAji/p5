@@ -1,4 +1,5 @@
 import { formatDate } from "@/components/custom/date-picker";
+import ShowMarkdown from "@/components/custom/show-markdown";
 import { TableRowActions } from "@/components/custom/table-row-actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +21,6 @@ import { cn } from "@/lib/utils";
 import { Matkul } from "@/pages/matkul/components/data/schema";
 import { SharedData, User } from "@/types";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import DOMPurify from "dompurify";
 import { CalendarCheck, Ellipsis, Loader } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
@@ -30,6 +30,7 @@ interface TaskCardProps {
   props: {
     task: string;
     matkul: Matkul;
+    markdown: string;
     deadline: Date;
     id_task: string;
     execution: {
@@ -113,7 +114,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               {props.matkul.lecturer}
             </p>
           </div>
-          <div className="ml-auto space-x-1 flex justify-end flex-wrap">
+          <div className="ml-auto flex flex-wrap justify-end gap-1">
             <Badge className="bg-yellow-500/20 text-[10px] text-yellow-500">
               Semester {props.matkul.semester.semester}
             </Badge>
@@ -137,10 +138,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
         </div>
       </CardHeader>
       <CardContent className="overflow-hidden p-3 wrap-break-word">
-        <div
-          className="text-sm lg:text-base"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.task) }}
-        />
+        <ShowMarkdown markdown={props.markdown} />
       </CardContent>
       <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
         <Separator />
@@ -175,7 +173,11 @@ export const TaskCard = ({ props }: TaskCardProps) => {
                       .slice(0, 3)
                       .map(({ user }) => (
                         <Avatar className="size-6" key={user.name}>
-                          <AvatarImage src={`/storage/${user.avatar}`} alt={user.name} />
+                          <AvatarImage
+                            src={`/storage/${user.avatar}`}
+                            className="w-full h-auto object-cover"
+                            alt={user.name}
+                          />
                           <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
                             {getInitials(user.name)}
                           </AvatarFallback>

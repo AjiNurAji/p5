@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Task;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class TaskCacheHelper
 {
@@ -17,11 +18,17 @@ class TaskCacheHelper
   public static function getTaskWithMatkulAndExecution()
   {
     return Cache::rememberForever("task-with-matkul-and-execution", function () {
-      return Task::with([
+      $tasks = Task::with([
         "matkul.semester",
         "execution.user" => fn($e) => $e->withTrashed()->orderBy("updated_at", "ASC")
       ])
         ->orderBy("updated_at", "DESC")->get();
+
+      foreach ($tasks as $i => $task) {
+        $tasks[$i]->markdown = Storage::disk("public")->get($task->task);
+      }
+
+      return $tasks;
     });
   }
 
