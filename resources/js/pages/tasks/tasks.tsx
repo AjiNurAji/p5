@@ -1,17 +1,18 @@
 import Heading from "@/components/heading";
 import { Card, CardContent } from "@/components/ui/card";
 import AppLayout from "@/layouts/app-layout";
+import { getAccess } from "@/layouts/authorized-layout";
 import { BreadcrumbItem, SharedData, User } from "@/types";
 import { Head, usePage, WhenVisible } from "@inertiajs/react";
 import { useState } from "react";
 import { Matkul } from "../matkul/components/data/schema";
+import { DialogWrapper } from "./components/dialog-wrapper";
 import { TaskDialogs } from "./components/dialogs/task-dialogs";
 import { TaskButton } from "./components/task-buttons";
 import { TaskCard } from "./components/task-card";
 import { TaskFilters } from "./components/task-filters";
 import { TaskSkeleton } from "./components/task-skeleton";
 import TasksProvider from "./context/tasks-context";
-import { getAccess } from "@/layouts/authorized-layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -25,6 +26,7 @@ interface TasksProps {
   task: string;
   deadline: Date;
   matkul: Matkul;
+  markdown: string;
   execution: {
     id_task: string;
     id_number: string;
@@ -91,53 +93,60 @@ const TaskPage = () => {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Daftar Tugas" />
       <TasksProvider matkuls={matkuls}>
-        <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-          <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
-            <Heading
-              title="Daftar Tugas"
-              description="Kelola daftar tugas yang harus diselesaikan di halaman ini."
+        <DialogWrapper>
+          <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
+              <Heading
+                title="Daftar Tugas"
+                description="Kelola daftar tugas yang harus diselesaikan di halaman ini."
+              />
+              {getAccess(user.role, [
+                "superadmin",
+                "sekertaris",
+                "kosma",
+                "wakosma",
+              ]) && <TaskButton />}
+            </div>
+            <TaskFilters
+              matkuls={matkuls}
+              matkulFilter={matkulFilter}
+              setMatkulFilter={setMatkulFilter}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              statusType={statusType}
+              setStatusType={setStatusType}
             />
-            {getAccess(user.role, ["superadmin", "sekertaris", "kosma", "wakosma"]) && <TaskButton />}
+            <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
+              <WhenVisible data="tasks" fallback={<TaskSkeleton />}>
+                {tasks.length && filteredTasks.length ? (
+                  <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
+                    {filteredTasks.map((task) => (
+                      <WhenVisible
+                        key={task.id_task}
+                        data={task.toString()}
+                        fallback={<TaskSkeleton isSingle />}
+                      >
+                        <TaskCard key={task.id_task} props={task} />
+                      </WhenVisible>
+                    ))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent>
+                      <p className="w-full text-center">
+                        {!tasks.length && !filteredTasks.length
+                          ? "Belum ada tugas yang ditambahkan."
+                          : "Tugas tidak ditemukan."}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </WhenVisible>
+            </div>
           </div>
-          <TaskFilters
-            matkuls={matkuls}
-            matkulFilter={matkulFilter}
-            setMatkulFilter={setMatkulFilter}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            statusType={statusType}
-            setStatusType={setStatusType}
-          />
-          <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-            <WhenVisible data="tasks" fallback={<TaskSkeleton />}>
-              {tasks.length && filteredTasks.length ? (
-                <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
-                  {filteredTasks.map((task) => (
-                    <WhenVisible
-                      key={task.id_task}
-                      data={task.toString()}
-                      fallback={<TaskSkeleton isSingle />}
-                    >
-                      <TaskCard key={task.id_task} props={task} />
-                    </WhenVisible>
-                  ))}
-                </div>
-              ) : (
-                <Card>
-                  <CardContent>
-                    <p className="w-full text-center">
-                      {!tasks.length && !filteredTasks.length
-                        ? "Belum ada tugas yang ditambahkan."
-                        : "Tugas tidak ditemukan."}
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
-            </WhenVisible>
-          </div>
-        </div>
 
-        <TaskDialogs />
+          <TaskDialogs />
+        </DialogWrapper>
       </TasksProvider>
     </AppLayout>
   );

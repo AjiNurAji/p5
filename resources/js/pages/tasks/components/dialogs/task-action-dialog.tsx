@@ -14,10 +14,11 @@ import {
 import { Matkul } from "@/pages/matkul/components/data/schema";
 import { TaskType } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { SerializedEditorState } from "lexical";
 import React, { FormEventHandler } from "react";
 import toast from "react-hot-toast";
-import { initialState, resetState } from "../data/initialStateEditor";
+import { useEditorContext } from "../../context/editor-context";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $getRoot } from "lexical";
 
 interface Props {
   open: boolean;
@@ -39,9 +40,8 @@ export const TaskActionDialog = ({
   matkuls,
 }: Props) => {
   const isEdit = !!currentRow;
-
-  const [editorState, setEditorState] =
-    React.useState<SerializedEditorState>(initialState);
+  const { editorSerializedState, onSerializedChange } = useEditorContext();
+  const [editor] = useLexicalComposerContext();
 
   const { data, setData, post, processing } = useForm<
     Required<TaskForm> & { markdown?: string }
@@ -92,8 +92,14 @@ export const TaskActionDialog = ({
     );
   };
 
+  const ResetEditor = React.useCallback(() => {
+    editor.update(() => {
+      $getRoot().clear();
+    })
+  }, [])
+
   const handleResetForm = () => {
-    setEditorState(resetState);
+    ResetEditor();
     setData({
       markdown: "",
       task: "",
@@ -117,8 +123,8 @@ export const TaskActionDialog = ({
           <Label htmlFor="task">Tugas</Label>
 
           <EditorInput
-            state={editorState}
-            setState={setEditorState}
+            state={editorSerializedState}
+            setState={onSerializedChange}
             keyName="markdown"
             setData={setData}
           />
