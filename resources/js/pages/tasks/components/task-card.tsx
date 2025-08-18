@@ -175,6 +175,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
                         <Avatar className="size-6" key={user.name}>
                           <AvatarImage
                             src={`/storage/${user.avatar}`}
+                            className="w-full h-auto object-cover"
                             alt={user.name}
                           />
                           <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">

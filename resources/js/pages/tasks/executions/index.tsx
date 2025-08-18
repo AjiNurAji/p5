@@ -29,7 +29,7 @@ const ExecutionPage = () => {
       href: route("tasks.index"),
     },
     {
-      title: tasks.task,
+      title: tasks.matkul.name,
       href: route("tasks.index"),
     },
   ];
@@ -41,7 +41,7 @@ const ExecutionPage = () => {
         <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
           <Heading
             title="Daftar Pengerjaan Tugas"
-            description={`Berikut ini adalah daftar yang sudah mengerjakan tugas ${tasks.matkul.name} dengan tugas ${tasks.task}`}
+            description={`Berikut ini adalah daftar yang sudah mengerjakan tugas ${tasks.matkul.name}`}
           />
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">

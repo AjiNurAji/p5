@@ -23,7 +23,7 @@ class UserController extends Controller
   {
     $auth = Auth::user();
     $task = TaskCacheHelper::getAllTask();
-    $execute_task = $auth->execute_task;
+    $execute_task = $auth->execute_task->where("status", "finished");
     $kas = KasCacheHelper::getAllKas();
     $semester = SemesterCacheHelper::getActiveSemester();
     $matkul = MatkulCacheHelper::getMatkulOnlyActiveSemester();
