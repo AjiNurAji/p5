@@ -11,6 +11,7 @@ use App\Models\Task;
 use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -22,6 +23,7 @@ class TaskController extends Controller
   {
     $tasks = TaskCacheHelper::getTaskWithMatkulAndExecution();
     $matkuls = MatkulCacheHelper::getAllMatkul();
+
 
     return Inertia::render("tasks/tasks", [
       "tasks" => $tasks,
@@ -51,15 +53,19 @@ class TaskController extends Controller
 
     // validate request
     $request->validate([
-      "task" => "required|string|max:255",
       "deadline" => "required",
       "id_matkul" => "required|string",
+      "markdown" => "required",
     ]);
+
+    // save markdown
+    $path = "//tasks//".$request->input("id_matkul")."//".uniqid().".md";
+    Storage::disk("public")->put($path, $request->input("markdown"));
 
     // create task
     Task::create([
       "id_task" => Str::uuid(),
-      "task" => $request->task,
+      "task" => $path,
       "deadline" => Carbon::parse($request->deadline),
       "id_matkul" => $request->id_matkul,
     ]);

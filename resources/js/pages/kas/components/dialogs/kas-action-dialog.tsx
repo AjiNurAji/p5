@@ -75,7 +75,6 @@ export const KasActionDialog = ({
     post(isEdit ? route("kas.update", currentRow.id_kas) : route("kas.store"), {
       onSuccess: (e) => {
         toast.success(e.props.success.message, { id: loading });
-        onOpenChange(false);
       },
       onError: (e) => {
         if (e?.message) {

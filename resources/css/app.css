@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -188,13 +189,43 @@
     @apply !pointer-events-auto cursor-not-allowed;
   }
 
-  input, input[type="time"], button[role="combobox"] {
+  input,
+  input[type="time"],
+  button[role="combobox"] {
     @apply dark:!bg-input/30;
   }
-  
+
   input[role="combobox"] {
     @apply dark:!bg-transparent;
   }
+
+  /* .markdown > h1 {
+    @apply text-2xl font-extrabold tracking-tight lg:text-3xl;
+  }
+
+  .markdown > h2 {
+    @apply border-b pb-2 text-xl font-semibold tracking-tight first:mt-0;
+  }
+
+  .markdown > h3 {
+    @apply text-lg font-semibold tracking-tight;
+  }
+
+  .markdown > h4 {
+    @apply text-base font-semibold tracking-tight;
+  }
+
+  .markdown > h5 {
+    @apply text-sm font-semibold tracking-tight;
+  }
+
+  .markdown > h5 {
+    @apply text-xs font-semibold tracking-tight;
+  }
+
+  .markdown > a {
+    
+  } */
 }
 
 .CollapsibleContent {
