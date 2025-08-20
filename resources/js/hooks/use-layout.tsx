@@ -12,7 +12,7 @@ const setCookie = (name: string, value: string, days = 365) => {
 };
 
 export const useLayout = () => {
-  const [layout, setLayout] = useState<Layout>(localStorage.getItem('layout') || 'sidebar');
+  const [layout, setLayout] = useState<Layout>(localStorage.getItem('layout') || 'header');
 
   const updateLayout = useCallback((mode: Layout) => {
     setLayout(mode);
