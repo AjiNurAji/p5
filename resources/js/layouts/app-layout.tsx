@@ -8,6 +8,7 @@ import { Loader } from "lucide-react";
 import { type ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import AppHeaderLayout from "./app/app-header-layout";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ interface AppLayoutProps {
 
 export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
   const { layout, setLayout } = useLayout();
+  const isMobile = useIsMobile();
 
   return (
     <LayoutContext.Provider value={{ layout, setLayout }}>
@@ -29,7 +31,7 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
               },
             }}
           />
-          {layout === "sidebar" ? (
+          {layout === "sidebar" && !isMobile ? (
             <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
               {children}
             </AppLayoutTemplate>
