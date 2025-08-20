@@ -18,7 +18,9 @@ class HandleAppearance
     {
         View::share('appearance', $request->cookie('appearance') ?? 'system');
 
-        View::share('layout', $request->cookie('layout') ?? 'header' );
+        $retVal = ($request->cookie('layout') == 'sidebar') ? 'header' : 'sidebar';
+
+        View::share('layout', $retVal ?? 'header' );
 
         return $next($request);
     }
