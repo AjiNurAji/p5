@@ -2,13 +2,14 @@ import { NavItem, SidebarData } from "@/types";
 import {
   BookOpen,
   Folder,
+  History,
   LayoutGrid,
   ListTodo,
   ReceiptText,
   UsersRound,
 } from "lucide-react";
-import { PiInvoice, PiStudent } from "react-icons/pi";
 import { IoWalletOutline } from "react-icons/io5";
+import { PiInvoice, PiStudent } from "react-icons/pi";
 
 export const sidebarData: SidebarData = {
   navGroup: [
@@ -39,9 +40,15 @@ export const sidebarData: SidebarData = {
             {
               title: "Laporan Kas",
               href: route("kas.report"),
-              icon: PiInvoice
-            }
-          ]
+              icon: PiInvoice,
+            },
+            {
+              access: ["superadmin", "bendahara", "kosma"],
+              title: "Riwayat Transaksi",
+              href: route("kas.history"),
+              icon: History,
+            },
+          ],
         },
       ],
     },

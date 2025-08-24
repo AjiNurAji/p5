@@ -34,6 +34,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     e.preventDefault();
     post(route("password.store"), {
       onFinish: () => reset("password", "password_confirmation"),
+      showProgress: false,
     });
   };
 

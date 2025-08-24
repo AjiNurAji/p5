@@ -67,6 +67,7 @@ export const AvatarUpload = () => {
           toast.error(e?.avatar, { id: loading });
         }
       },
+      showProgress: false,
     });
   };
 

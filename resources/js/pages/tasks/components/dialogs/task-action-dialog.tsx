@@ -88,6 +88,7 @@ export const TaskActionDialog = ({
         onFinish: () => {
           handleResetForm();
         },
+        showProgress: false,
       },
     );
   };

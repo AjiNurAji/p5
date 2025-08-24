@@ -47,6 +47,7 @@ export default function Password() {
           currentPasswordInput.current?.focus();
         }
       },
+      showProgress: false,
     });
   };
 

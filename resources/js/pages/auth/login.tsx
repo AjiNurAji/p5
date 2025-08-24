@@ -36,6 +36,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
       onSuccess: () => toast.success('Berhasil masuk!', { id: loading }),
       onError: () => toast.error('NIM atau kata sandi yang Anda masukkan tidak sesuai.', { id: loading }),
       onFinish: () => reset('password'),
+      showProgress: false,
     });
   };
 

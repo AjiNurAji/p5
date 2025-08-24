@@ -98,6 +98,7 @@ export const KasActionDialog = ({
         return toast.error("Terjadi kesalahan, silahkan coba lagi!");
       },
       onFinish: () => handleResetForm(),
+      showProgress: false,
     });
   };
 

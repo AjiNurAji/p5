@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Kas;
 
+use App\Helpers\BillCacheHelper;
 use App\Helpers\KasCacheHelper;
 use App\Helpers\UserCacheHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Bill;
 use App\Models\Kas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,6 +23,8 @@ class KasController extends Controller
   public function index(): Response
   {
     $users = UserCacheHelper::getUserList();
+    $kaslist = UserCacheHelper::getUserWithKas();
+    $bills = BillCacheHelper::getAllBill();
     $kas = KasCacheHelper::getAllKas();
 
     $income =  $kas->where("type", "income")->sum("nominal");
@@ -30,33 +34,41 @@ class KasController extends Controller
     $cashIncome = $kas->where("method", "cash")->where("type", "income")->sum("nominal");
     $cashExpend = $kas->where("method", "cash")->where("type", "expend")->sum("nominal");
     $cashTotal = $cashIncome - $cashExpend;
-    
+
     $cashlessIncome = $kas->where("method", "cashless")->where("type", "income")->sum("nominal");
     $cashlessExpend = $kas->where("method", "cashless")->where("type", "expend")->sum("nominal");
     $cashlessTotal = $cashlessIncome - $cashlessExpend;
 
-    return Inertia::render("kas/kas", [
-      "users" => $users,
-      "kaslist" => $kas,
-      "cards" => [
-        "cash" => [
-          "title" => "total tunai",
-          "count" => $cashTotal,
-        ],
-        "cashless" => [
-          "title" => "total transfer",
-          "count" => $cashlessTotal,
-        ],
-        "total" => [
-          "title" => "total uang kas",
-          "count" => $total,
-        ],
-        "expand" => [
-          "title" => "total pengeluaran",
-          "count" => $expend,
-        ],
-      ]
-    ]);
+    $cards = [
+      "cash" => [
+        "title" => "total tunai",
+        "count" => $cashTotal,
+      ],
+      "cashless" => [
+        "title" => "total transfer",
+        "count" => $cashlessTotal,
+      ],
+      "total" => [
+        "title" => "total uang kas",
+        "count" => $total,
+      ],
+      "expand" => [
+        "title" => "total pengeluaran",
+        "count" => $expend,
+      ],
+    ];
+
+    $active_bill = BillCacheHelper::getActiveBill();
+    $canAdded = !BillCacheHelper::canAdded();
+
+    return Inertia::render("kas/kas", compact(
+      "users",
+      "kaslist",
+      "cards",
+      "bills",
+      "active_bill",
+      "canAdded"
+    ));
   }
 
   /**
@@ -188,22 +200,63 @@ class KasController extends Controller
    */
   public function report(): Response
   {
-    $kas = KasCacheHelper::getAllKas();
+    $kaslist = KasCacheHelper::getAllKas();
     $user = Auth::user();
-    $kasMe = $kas->where("id_number", $user->id_number);
+    $kasMe = $kaslist->where("id_number", $user->id_number);
 
-    return Inertia::render("kas/report/index", [
-      "cards" => [
-        "week_payment" => [
-          "title" => "sampai minggu ke",
-          "count" => ($kasMe->sum("nominal") / 5000),
-        ],
-        "total" => [
-          "title" => "total pembayaran",
-          "count" => $kasMe->sum("nominal"),
-        ],
+    $cards = [
+      "week_payment" => [
+        "title" => "sampai minggu ke",
+        "count" => ($kasMe->sum("nominal") / 5000),
       ],
-      "kaslist" => $kas,
+      "total" => [
+        "title" => "total pembayaran",
+        "count" => $kasMe->sum("nominal"),
+      ],
+    ];
+
+    return Inertia::render("kas/report/index", compact("kaslist", "cards"));
+  }
+
+  /**
+   * Add bill function
+   */
+  public function addBill(Request $request)
+  {
+    // validate authenticate
+    $noAccess = $request->user()->role !== "bendahara" && $request->user()->role !== "kosma" && $request->user()->role !== "superadmin";
+
+    if ($noAccess) {
+      return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
+    }
+
+    $checkCanAdded = BillCacheHelper::canAdded(); // if false can but if true can't
+
+    if ($checkCanAdded) return $this->throwError(["message" => "Tidak bisa menambah tagihan pada minggu yang sama!"]);
+
+    $bill = BillCacheHelper::getAllBill();
+
+    $name = "Minggu ke " . $bill->count() + 1;
+
+    $data = Bill::create([
+      "id_bill" => Str::uuid(),
+      "name" => $name,
+      "date_of_bill" => Carbon::now(),
     ]);
+
+    if (!$data) return $this->throwError(["message" => "Gagal menambah tagihan, silahkan coba lagi!"]);
+
+    return back()->with("success", ["message" => "Berhasil menambah tagihan"]);
+  }
+
+  /**
+   * History of kas transaction
+   */
+  public function history(): Response
+  {
+    $kaslist = KasCacheHelper::getAllKas();
+    $users = UserCacheHelper::getUserList();
+
+    return Inertia::render("kas/history/index", compact("kaslist", "users"));
   }
 }

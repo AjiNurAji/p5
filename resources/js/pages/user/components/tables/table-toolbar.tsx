@@ -8,10 +8,14 @@ import { ViewOptions } from "./view-options";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  withRole?: boolean;
+  withView?: boolean;
 }
 
 export const TableToolbar = <TData,>({
   table,
+  withRole = true,
+  withView = true,
 }: DataTableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -27,12 +31,16 @@ export const TableToolbar = <TData,>({
           className="h-8 w-full lg:w-[250px]"
         />
         <div className="flex w-full gap-x-2">
-          {table.getColumn("role") && (
-            <FacetedFilter
-              column={table.getColumn("role")}
-              title="Peran"
-              options={userTypes.map((t) => ({ ...t }))}
-            />
+          {withRole && (
+            <>
+              {table.getColumn("role") && (
+                <FacetedFilter
+                  column={table.getColumn("role")}
+                  title="Peran"
+                  options={userTypes.map((t) => ({ ...t }))}
+                />
+              )}
+            </>
           )}
           {isFiltered && (
             <Button
@@ -47,7 +55,7 @@ export const TableToolbar = <TData,>({
           <ViewOptions className="flex sm:hidden" table={table} />
         </div>
       </div>
-      <ViewOptions table={table} />
+      {withView && <ViewOptions table={table} />}
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\KasCacheHelper;
 use App\Helpers\UserCacheHelper;
 use App\Models\User;
 
@@ -21,6 +22,7 @@ class UserObserver
   public function updated(User $user): void
   {
     UserCacheHelper::forgetUserList();
+    KasCacheHelper::forgetKas();
   }
 
   /**

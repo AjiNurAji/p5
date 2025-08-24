@@ -49,6 +49,7 @@ export default function Profile({
 
     patch(route("profile.update"), {
       preserveScroll: true,
+      showProgress: false,
     });
   };
 

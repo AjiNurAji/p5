@@ -29,6 +29,7 @@ export const DeleteDialog = ({ open, onOpenChange, currentRow }: Props) => {
       onSuccess: (e) => toast.success(e.props.success.message, { id: loading }),
       onError: (e) => toast.error(e.role, { id: loading }),
       onFinish: () => setValue(""),
+      showProgress: false,
     });
     onOpenChange(false);
   };

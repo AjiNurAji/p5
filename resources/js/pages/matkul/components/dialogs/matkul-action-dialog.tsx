@@ -78,6 +78,7 @@ export const MatkulsActionDialog = ({
           });
         },
         onFinish: () => onOpenChange(false),
+        showProgress: false,
       },
     );
   };
