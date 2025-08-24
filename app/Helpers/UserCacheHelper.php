@@ -14,8 +14,21 @@ class UserCacheHelper
     });
   }
 
+  public static function getUserWithKas()
+  {
+    return Cache::rememberForever("user-with-kas", function () {
+      return User::with("kas")->orderBy("name", "ASC")->get();
+    });
+  }
+
+  public static function forgetUserWithKas()
+  {
+    Cache::forget("user-with-kas");
+  }
+  
   public static function forgetUserList()
   {
+    Cache::forget("user-with-kas");
     Cache::forget("users");
   }
 }

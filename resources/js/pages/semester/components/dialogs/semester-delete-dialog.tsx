@@ -29,6 +29,7 @@ export const SemesterDeleteDialog = ({
         return toast.error("Terjadi kesalahan, silahkan coba lagi!", { id: loading });
       },
       onFinish: () => onOpenChange(false),
+      showProgress: false,
     });
   };
 

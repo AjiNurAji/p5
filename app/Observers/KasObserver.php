@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Helpers\KasCacheHelper;
+use App\Helpers\UserCacheHelper;
 use App\Models\Kas;
 
 class KasObserver
@@ -13,6 +14,7 @@ class KasObserver
   public function created(Kas $kas): void
   {
     KasCacheHelper::forgetKas();
+    UserCacheHelper::forgetUserWithKas();
   }
 
   /**
@@ -21,6 +23,7 @@ class KasObserver
   public function updated(Kas $kas): void
   {
     KasCacheHelper::forgetKas();
+    UserCacheHelper::forgetUserWithKas();
   }
 
   /**
@@ -29,6 +32,7 @@ class KasObserver
   public function deleted(Kas $kas): void
   {
     KasCacheHelper::forgetKas();
+    UserCacheHelper::forgetUserWithKas();
   }
 
   /**
@@ -37,6 +41,7 @@ class KasObserver
   public function restored(Kas $kas): void
   {
     KasCacheHelper::forgetKas();
+    UserCacheHelper::forgetUserWithKas();
   }
 
   /**
@@ -45,5 +50,6 @@ class KasObserver
   public function forceDeleted(Kas $kas): void
   {
     KasCacheHelper::forgetKas();
+    UserCacheHelper::forgetUserWithKas();
   }
 }

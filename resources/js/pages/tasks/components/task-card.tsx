@@ -100,6 +100,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
             id: loading,
           });
         },
+        showProgress: false,
       },
     );
   };

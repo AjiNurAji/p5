@@ -122,6 +122,7 @@ export const ActionDialog = ({ currentRow, open, onOpenChange }: Props) => {
           });
           onOpenChange(false);
         },
+        showProgress: false,
       },
     );
   };

@@ -22,6 +22,7 @@ export const TaskDeleteDialog = ({ open, onOpenChange, currentRow }: Props) => {
       onError: (e) =>
         toast.error("Terjadi kesalahan, silahkan coba lagi!", { id: loading }),
       onFinish: () => onOpenChange(false),
+      showProgress: false,
     });
   };
 

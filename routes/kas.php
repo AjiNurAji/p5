@@ -10,4 +10,8 @@ Route::middleware("auth")->group(function () {
   Route::delete("/kas/{id_kas}", [KasController::class, "destroy"])->name("kas.destroy");
 
   Route::get("/kas/report", [KasController::class, "report"])->name("kas.report");
+  Route::get("/kas/history", [KasController::class, "history"])->name("kas.history");
+
+  // bill route
+  Route::post("/bills/create", [KasController::class, "addBill"])->name("bill.store");
 });

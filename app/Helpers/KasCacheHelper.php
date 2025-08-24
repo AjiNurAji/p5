@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\Kas;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class KasCacheHelper

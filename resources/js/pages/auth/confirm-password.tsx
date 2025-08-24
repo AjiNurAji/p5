@@ -21,6 +21,7 @@ export default function ConfirmPassword() {
 
     post(route("password.confirm"), {
       onFinish: () => reset("password"),
+      showProgress: false,
     });
   };
 

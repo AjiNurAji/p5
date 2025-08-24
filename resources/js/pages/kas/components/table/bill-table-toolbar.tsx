@@ -11,7 +11,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export const KasTableToolbar = <TData,>({
+export const BillTableToolbar = <TData,>({
   table,
 }: DataTableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -28,9 +28,9 @@ export const KasTableToolbar = <TData,>({
           <Input
             placeholder="Cari transaksi mahasiswa..."
             id="mhs"
-            value={(table.getColumn("user")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("user")?.setFilterValue(event.target.value)
+              table.getColumn("name")?.setFilterValue(event.target.value)
             }
             className="h-8 w-full lg:w-[250px]"
           />
@@ -46,7 +46,6 @@ export const KasTableToolbar = <TData,>({
           )}
         </div>
       )}
-      <KasViewOptions table={table} />
     </div>
   );
 };

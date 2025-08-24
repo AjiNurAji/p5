@@ -5,18 +5,19 @@ import { ColumnDef, ColumnFiltersState, SortingState, useReactTable, VisibilityS
 import { useState } from "react";
 import { KasTableToolbar } from "./kas-table-toolbar";
 import { TablePagination } from "@/components/custom/table-pagination";
-import { Kas } from "../../data/schema";
 import { WhenVisible } from "@inertiajs/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { KasOfWeek } from "../../data/kas-of-week-schema";
+import { TableToolbar } from "@/pages/user/components/tables/table-toolbar";
 
 interface DataTableProps {
-  columns: ColumnDef<Kas>[];
-  data: Kas[];
+  columns: ColumnDef<KasOfWeek>[];
+  data: KasOfWeek[];
   className?: string;
 }
 
-export const KasTable = ({ columns, data, className }: DataTableProps) => {
+export const KasOfWeekTable = ({ columns, data, className }: DataTableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -45,7 +46,7 @@ export const KasTable = ({ columns, data, className }: DataTableProps) => {
 
   return (
     <div className={cn("space-y-4", className)}>
-      <KasTableToolbar table={table} />
+      <TableToolbar withView={false} withRole={false} table={table} />
       <WhenVisible data="kaslist" fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
         <div className="rounded-md border">
           <Table>

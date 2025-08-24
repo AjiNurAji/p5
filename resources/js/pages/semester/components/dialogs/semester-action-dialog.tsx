@@ -55,6 +55,7 @@ export const SemesterActionDialog = ({ open, onOpenChange }: Props) => {
         });
       },
       onFinish: () => onOpenChange(false),
+      showProgress: false,
     });
   };
 

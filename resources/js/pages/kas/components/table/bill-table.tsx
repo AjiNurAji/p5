@@ -3,20 +3,20 @@ import { flexRender, getFacetedRowModel, getFacetedUniqueValues, getSortedRowMod
 import { getCoreRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import { ColumnDef, ColumnFiltersState, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table"
 import { useState } from "react";
-import { KasTableToolbar } from "./kas-table-toolbar";
 import { TablePagination } from "@/components/custom/table-pagination";
-import { Kas } from "../../data/schema";
 import { WhenVisible } from "@inertiajs/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { BillTableToolbar } from "./bill-table-toolbar";
+import { Bill } from "../../data/bill-schema";
 
 interface DataTableProps {
-  columns: ColumnDef<Kas>[];
-  data: Kas[];
+  columns: ColumnDef<Bill>[];
+  data: Array<Bill>;
   className?: string;
 }
 
-export const KasTable = ({ columns, data, className }: DataTableProps) => {
+export const BillTable = ({ columns, data, className }: DataTableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -45,8 +45,8 @@ export const KasTable = ({ columns, data, className }: DataTableProps) => {
 
   return (
     <div className={cn("space-y-4", className)}>
-      <KasTableToolbar table={table} />
-      <WhenVisible data="kaslist" fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
+      <BillTableToolbar table={table} />
+      <WhenVisible data="bills" fallback={<Skeleton className="w-full h-20 rounded-xl" />}>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
