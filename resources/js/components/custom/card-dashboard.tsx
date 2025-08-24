@@ -18,7 +18,7 @@ export const CardDashboard = ({
 }: CardDashboardProps) => {
   return (
     <Card className={cn("pt-0", className)}>
-      <CardContent className="flex flex-wrap justify-between gap-2 px-6 pt-6">
+      <CardContent className="flex flex-wrap-reverse justify-between gap-2 px-6 pt-6">
         <div>
           <p className="text-xs tracking-wide text-muted-foreground uppercase">
             {title}

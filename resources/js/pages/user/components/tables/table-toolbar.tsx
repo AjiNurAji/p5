@@ -52,7 +52,7 @@ export const TableToolbar = <TData,>({
               <X className="ml-2 h-4 w-4" />
             </Button>
           )}
-          <ViewOptions className="flex sm:hidden" table={table} />
+          {withView && <ViewOptions className="flex sm:hidden" table={table} />}
         </div>
       </div>
       {withView && <ViewOptions table={table} />}

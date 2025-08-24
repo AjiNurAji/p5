@@ -40,7 +40,7 @@ export const CardBillAdded = ({className}: { className?: string }) => {
   return (
     <Card className={cn("pt-0", className)}>
       <CardContent className="px-6 pt-6 flex items-center">
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center">
           <span className="text-lg font-bold">{active_bill?.name}</span>
           <span className="text-sm text-muted-foreground">
             ({formatDate(new Date(active_bill?.date_of_bill))})

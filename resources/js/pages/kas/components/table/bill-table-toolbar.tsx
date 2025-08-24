@@ -26,7 +26,7 @@ export const BillTableToolbar = <TData,>({
       {Access && (
         <div className="flex w-full flex-1 items-center space-x-2">
           <Input
-            placeholder="Cari transaksi mahasiswa..."
+            placeholder="Cari data tagihan..."
             id="mhs"
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>

@@ -226,6 +226,30 @@
   .markdown > a {
     
   } */
+
+  #nprogress {
+    pointer-events: none;
+  }
+
+  #nprogress .bar {
+    position: fixed;
+    z-index: 99999;
+    top: env(safe-area-inset-top, 0);
+    left: 0;
+    width: 100%;
+    height: 5px !important;
+    display: block !important;
+  }
+
+  #nprogress .peg {
+    display: block !important;
+    position: absolute;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    opacity: 1;
+    transform: rotate(3deg);
+  }
 }
 
 .CollapsibleContent {
