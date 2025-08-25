@@ -118,6 +118,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.87 0 0);
+  --selection-foreground: oklch(0.922 0 0);
+  --selection: oklch(0.205 0 0);
 }
 
 .dark {
@@ -198,34 +200,6 @@
   input[role="combobox"] {
     @apply dark:!bg-transparent;
   }
-
-  /* .markdown > h1 {
-    @apply text-2xl font-extrabold tracking-tight lg:text-3xl;
-  }
-
-  .markdown > h2 {
-    @apply border-b pb-2 text-xl font-semibold tracking-tight first:mt-0;
-  }
-
-  .markdown > h3 {
-    @apply text-lg font-semibold tracking-tight;
-  }
-
-  .markdown > h4 {
-    @apply text-base font-semibold tracking-tight;
-  }
-
-  .markdown > h5 {
-    @apply text-sm font-semibold tracking-tight;
-  }
-
-  .markdown > h5 {
-    @apply text-xs font-semibold tracking-tight;
-  }
-
-  .markdown > a {
-    
-  } */
 
   #nprogress {
     pointer-events: none;

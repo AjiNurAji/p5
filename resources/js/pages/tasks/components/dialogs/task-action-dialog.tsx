@@ -14,16 +14,17 @@ import {
 import { Matkul } from "@/pages/matkul/components/data/schema";
 import { TaskType } from "@/types";
 import { useForm } from "@inertiajs/react";
+import { $convertFromMarkdownString, TRANSFORMERS } from "@lexical/markdown";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $getRoot } from "lexical";
 import React, { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 import { useEditorContext } from "../../context/editor-context";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getRoot } from "lexical";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow?: TaskType | null;
+  currentRow?: (TaskType & { markdown?: string }) | null;
   matkuls: Matkul[] | null;
 }
 
@@ -51,7 +52,7 @@ export const TaskActionDialog = ({
           task: currentRow.task,
           id_matkul: currentRow.matkul.id_matkul,
           deadline: currentRow.deadline,
-          markdown: "",
+          markdown: currentRow.markdown,
         }
       : {
           task: "",
@@ -96,8 +97,16 @@ export const TaskActionDialog = ({
   const ResetEditor = React.useCallback(() => {
     editor.update(() => {
       $getRoot().clear();
-    })
-  }, [])
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (!isEdit) return;
+
+    editor.update(() =>
+      $convertFromMarkdownString(currentRow.markdown ?? "", TRANSFORMERS),
+    );
+  }, [currentRow?.markdown]);
 
   const handleResetForm = () => {
     ResetEditor();

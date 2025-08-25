@@ -28,7 +28,6 @@ export const CardBillAdded = ({className}: { className?: string }) => {
         onSuccess: (e) =>
           toast.success(e.props.success?.message, { id: loading }),
         onError: (e) => {
-          console.log(e)
           toast.error(e?.message, { id: loading })
         },
         showProgress: false,
