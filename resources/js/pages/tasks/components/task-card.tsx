@@ -1,6 +1,7 @@
 import { formatDate } from "@/components/custom/date-picker";
 import ShowMarkdown from "@/components/custom/show-markdown";
 import { TableRowActions } from "@/components/custom/table-row-actions";
+import TextLink from "@/components/text-link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ interface TaskCardProps {
       user: User;
     }[];
   };
+  detail?: boolean;
 }
 
 type ExecutionTaskForm = {
@@ -48,7 +50,7 @@ type ExecutionTaskForm = {
   id_number: string;
 };
 
-export const TaskCard = ({ props }: TaskCardProps) => {
+export const TaskCard = ({ detail = false, props }: TaskCardProps) => {
   const {
     auth: { user },
   } = usePage<SharedData>().props;
@@ -139,7 +141,15 @@ export const TaskCard = ({ props }: TaskCardProps) => {
         </div>
       </CardHeader>
       <CardContent className="overflow-hidden p-3 wrap-break-word">
-        <ShowMarkdown markdown={props.markdown} />
+        <div className={cn("overflow-hidden", !detail && "max-h-30")}>
+          <ShowMarkdown markdown={props.markdown} />
+        </div>
+        {!detail && <TextLink
+          href={route("tasks.show", props.id_task)}
+          className="text-xs text-destructive decoration-destructive/50! sm:text-sm"
+        >
+          Lihat selengkapnya
+        </TextLink>}
       </CardContent>
       <CardFooter className="mt-auto flex flex-col gap-2 px-3 pb-2">
         <Separator />
@@ -176,7 +186,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
                         <Avatar className="size-6" key={user.name}>
                           <AvatarImage
                             src={`/storage/${user.avatar}`}
-                            className="w-full h-auto object-cover"
+                            className="h-auto w-full object-cover"
                             alt={user.name}
                           />
                           <AvatarFallback className="rounded-lg bg-neutral-200 text-sm text-black dark:bg-neutral-700 dark:text-white">
@@ -199,7 +209,7 @@ export const TaskCard = ({ props }: TaskCardProps) => {
               </TooltipContent>
             </Tooltip>
           )}
-          {user.role !== "member" && (
+          {user.role !== "member" && !detail && (
             <TableRowActions
               table={false}
               row={props}

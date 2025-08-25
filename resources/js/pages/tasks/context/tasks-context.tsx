@@ -18,7 +18,7 @@ const TasksContext = React.createContext<TasksContextType | null>(null);
 
 interface Props {
   children: React.ReactNode;
-  matkuls: Matkul[];
+  matkuls?: Matkul[];
 }
 
 const TasksProvider = ({ children, matkuls: data }: Props) => {

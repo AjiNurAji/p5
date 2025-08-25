@@ -24,7 +24,6 @@ class TaskController extends Controller
     $tasks = TaskCacheHelper::getTaskWithMatkulAndExecution();
     $matkuls = MatkulCacheHelper::getAllMatkul();
 
-
     return Inertia::render("tasks/tasks", [
       "tasks" => $tasks,
       "matkuls" => $matkuls,
@@ -74,6 +73,19 @@ class TaskController extends Controller
   }
 
   /**
+   * detail task
+   */
+  public function show(string $id_task)
+  {
+    $task = TaskCacheHelper::findExecutionTask($id_task);
+    $task->markdown = Storage::disk("public")->get($task->task);
+
+    return Inertia::render("tasks/detail/task", [
+      "task" => $task
+    ]);
+  }
+
+  /**
    * Update the specified resource in storage.
    */
   public function update(Request $request, string $id_task)
@@ -100,8 +112,15 @@ class TaskController extends Controller
 
     if (!$task) return $this->throwError(["message" => "Tugas tidak ditemukan."]);
 
+    // delete markdown previously
+    Storage::disk("public")->delete($task->task);
+
+    // save markdown
+    $path = "//tasks//".$request->input("id_matkul")."//".uniqid().".md";
+    Storage::disk("public")->put($path, $request->input("markdown"));
+
     $task->update([
-      "task" => $request->input("task"),
+      "task" => $path,
       "id_matkul" => $request->input("id_matkul"),
       "deadline" => Carbon::parse($request->input("deadline")),
     ]);
@@ -130,6 +149,9 @@ class TaskController extends Controller
     ) return $this->throwError(["message" => "Anda tidak memiliki akses!"]);
 
     $task = Task::find($id_task);
+
+    // delete markdown previously
+    Storage::disk("public")->delete($task->task);
 
     if (!$task) return $this->throwError([
       'message' => 'Tugas tidak ditemukan!',
