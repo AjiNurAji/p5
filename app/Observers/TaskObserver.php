@@ -13,6 +13,7 @@ class TaskObserver
   public function created(Task $task): void
   {
     TaskCacheHelper::forgetTask();
+    TaskCacheHelper::forgetExecutionTask($task->id_task);
   }
 
   /**
@@ -21,6 +22,7 @@ class TaskObserver
   public function updated(Task $task): void
   {
     TaskCacheHelper::forgetTask();
+    TaskCacheHelper::forgetExecutionTask($task->id_task);
   }
 
   /**
@@ -29,6 +31,7 @@ class TaskObserver
   public function deleted(Task $task): void
   {
     TaskCacheHelper::forgetTask();
+    TaskCacheHelper::forgetExecutionTask($task->id_task);
   }
 
   /**
@@ -37,6 +40,7 @@ class TaskObserver
   public function restored(Task $task): void
   {
     TaskCacheHelper::forgetTask();
+    TaskCacheHelper::forgetExecutionTask($task->id_task);
   }
 
   /**
@@ -45,5 +49,6 @@ class TaskObserver
   public function forceDeleted(Task $task): void
   {
     TaskCacheHelper::forgetTask();
+    TaskCacheHelper::forgetExecutionTask($task->id_task);
   }
 }
