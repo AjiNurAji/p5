@@ -22,6 +22,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ClickableLinkPlugin } from "@lexical/react/LexicalClickableLinkPlugin";
+import { InsertImage } from "@/components/editor/plugins/toolbar/block-insert/insert-image";
+import { BlockInsertPlugin } from "@/components/editor/plugins/toolbar/block-insert-toolbar";
+import { ImagesPlugin } from "@/components/editor/plugins/image-plugin";
 
 export function Plugins() {
   const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -41,11 +44,11 @@ export function Plugins() {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative overflow-visible">
       {/* toolbar plugins */}
       <ToolbarPlugin>
         {({ blockType }) => (
-          <div className="vertical-align-middle sticky top-0 z-10 mb-2 flex gap-2 overflow-auto rounded-md border border-b border-border bg-card p-2">
+          <div className="vertical-align-middle sticky top-0 z-10 mb-2 flex flex-wrap gap-2 rounded-md border border-b border-border bg-card p-2">
             {fontFormat.map(({ format, tooltip }, i) => (
               <Tooltip key={i}>
                 <TooltipTrigger asChild>
@@ -71,6 +74,9 @@ export function Plugins() {
               <FormatBulletedList />
               <FormatQuote />
             </BlockFormatDropDown>
+            <BlockInsertPlugin>
+              <InsertImage />
+            </BlockInsertPlugin>
           </div>
         )}
       </ToolbarPlugin>
@@ -95,6 +101,7 @@ export function Plugins() {
         <AutoLinkPlugin />
         <LinkPlugin />
         <ListPlugin />
+        <ImagesPlugin />
 
         <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
       </div>

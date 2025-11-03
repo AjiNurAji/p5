@@ -71,6 +71,13 @@ class KasController extends Controller
     ));
   }
 
+  public function create(Request $request)
+  {
+    $users = UserCacheHelper::getUserList();
+
+    return Inertia::render("kas/create/index", compact("users"));
+  }
+
   /**
    * Store a newly created resource in storage.
    */

@@ -43,7 +43,6 @@ export const sidebarData: SidebarData = {
               icon: PiInvoice,
             },
             {
-              access: ["superadmin", "bendahara", "kosma"],
               title: "Riwayat Transaksi",
               href: route("kas.history"),
               icon: History,
